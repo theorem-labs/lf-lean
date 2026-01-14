@@ -87,17 +87,21 @@ cp "$RESULT_DIR/lean.out" "/workdir/Imported.out"
 echo "  Copied lean.out as Imported.out"
 
 # Copy result-specific Isomorphisms files into existing folder (merge, not replace)
-# Also strip "Typeclasses Opaque rel_iso" which fails because rel_iso is a Record, not a Definition
+# Fix incompatibilities: rel_iso is a Record but proofs assume it's a Definition
+# - Strip "Typeclasses Opaque rel_iso" (can't make Records opaque)
+# - Strip "unfold rel_iso in *." (can't unfold Records)
 if [ -d "$RESULT_DIR/theories/Isomorphisms" ]; then
     for f in "$RESULT_DIR/theories/Isomorphisms"/*.v; do
         if [ -f "$f" ]; then
             fname=$(basename "$f")
-            # Copy file, stripping the problematic Typeclasses Opaque line
-            sed '/^Typeclasses Opaque rel_iso/d' "$f" > "$THEORIES_DIR/Isomorphisms/$fname"
+            # Copy file, fixing rel_iso incompatibilities
+            sed -e '/^Typeclasses Opaque rel_iso/d' \
+                -e 's/unfold rel_iso in \*\.//' \
+                "$f" > "$THEORIES_DIR/Isomorphisms/$fname"
             ADDED_ISO_FILES="$ADDED_ISO_FILES $THEORIES_DIR/Isomorphisms/$fname"
         fi
     done
-    echo "  Copied result-specific Isomorphisms files (stripped Typeclasses Opaque rel_iso)"
+    echo "  Copied result-specific Isomorphisms files (fixed rel_iso incompatibilities)"
 fi
 
 # Copy Checker folder from the result

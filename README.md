@@ -1,8 +1,8 @@
 # SF-Bench Part 1: Rocq to Lean Translation Verification
 
-This repository contains verified translations of all of the statements all of the the **Logical Foundations** volume of [Software Foundations](https://softwarefoundations.cis.upenn.edu/) from Rocq to Lean 4.
+This repository contains verified translations of statements from the **Logical Foundations** volume of [Software Foundations](https://softwarefoundations.cis.upenn.edu/) from Rocq to Lean 4.
 
-The repository includes 869 translation results, each with a formally verified proof that the Lean translation is semantically equivalent to the original Rocq definition. Note that these statements cover all of LF through either the statement itself, or one of the dependencies.
+The repository includes 871 translation results, each with a formally verified proof that the Lean translation is semantically equivalent to the original Rocq definition.
 
 ## Repository Structure
 
@@ -11,18 +11,20 @@ sf-bench-part1/
 ├── theories/                    # Core Rocq verification infrastructure
 │   ├── Original.v               # Original Software Foundations definitions
 │   ├── Imported.v               # Imports Lean definitions into Rocq
-│   ├── Checker.v                # Combined checker file
-│   └── Isomorphisms.v           # Combined isomorphism proofs
-├── results/                     # 869 individual translation results
+│   ├── IsomorphismDefinitions.v # Core isomorphism type definitions
+│   ├── EqualityLemmas.v         # Helper lemmas for isomorphism proofs
+│   └── Isomorphisms/            # 1276 base isomorphism proof files
+├── results/                     # 871 individual translation results
 │   └── result-N/
 │       ├── solution.lean        # Lean translation of a theorem/definition
 │       ├── lean.out             # lean4export output
 │       ├── scores.json          # Evaluation scores for the translation
 │       └── theories/
-│           ├── Checker/         # Compile this to verify the translation
-│           ├── Interface/       # Module interface definitions
-│           └── Isomorphisms/    # Type isomorphism proofs
+│           ├── Checker/         # Verification checker (compile to verify)
+│           └── Isomorphisms/    # Result-specific isomorphism proofs
 ├── Dockerfile                   # Docker environment for verification
+├── scripts/
+│   └── verify.sh                # Verification script
 └── problem-deps.json            # Dependencies between problems
 ```
 
@@ -34,15 +36,13 @@ Each translation is verified through a type isomorphism proof that demonstrates 
 
 2. **Export**: `lean4export` exports the Lean definitions to `lean.out`, a text format that can be imported into Rocq
 
-3. **Import into Rocq**: The `LeanImport` library imports the Lean definitions into Rocq (see `theories/Imported.v`)
+3. **Import into Rocq**: The `LeanImport` library imports the Lean definitions into Rocq via `theories/Imported.v`
 
-4. **Isomorphism Proof**: The files in `theories/Isomorphisms/` prove that the original Rocq definition is type-isomorphic to the imported Lean definition
+4. **Isomorphism Proof**: Files in `theories/Isomorphisms/` prove that the original Rocq definition is type-isomorphic to the imported Lean definition
 
-5. **Verification**: If the Checker file compiles successfully, the translation is verified correct
+5. **Verification**: If the Checker compiles successfully, the translation is verified correct
 
-## Verifying the Results
-
-You can verify the results using the provided Docker environment.
+## Verifying Results
 
 ### Prerequisites
 
@@ -60,63 +60,76 @@ This builds an image with:
 - rocq-lean-import (for importing Lean definitions into Rocq)
 - Lean 4.20.0-rc5 (via elan)
 - lean4export tool
+- Pre-compiled base theories
 
-### Step 2: Run a Container
+Build time: approximately 15-20 minutes.
 
-```bash
-docker run -it --rm -v $(pwd):/workdir sf-bench-part1
-```
+### Step 2: Verify a Result
 
-### Step 3: Verify a Result
-
-To verify a single result (e.g., result-1):
-
-#### 3a. Verify Lean Compilation
+Use the `verify` command to verify a single result:
 
 ```bash
-cd /workdir/results/result-1
-lean solution.lean
+docker run --rm -v $(pwd):/host sf-bench-part1 verify result-1
 ```
 
-A successful compilation (no errors) means the Lean code is valid.
+**Important**: Mount the current directory at `/host`, not `/workdir`. The container's `/workdir` contains pre-compiled theories that should not be shadowed.
 
-#### 3b. Verify lean4export Output
+The verify script will:
+1. Check that `solution.lean` compiles with Lean
+2. Copy the result's `lean.out` as `Imported.out`
+3. Copy and compile result-specific Isomorphisms files
+4. Compile the Checker files
+5. Report success or failure
+
+Example output for a successful verification:
+```
+=== Verifying result-1 ===
+
+Step 1: Checking Lean compilation...
+  ✓ Lean compiles successfully
+
+Step 2: Checking Rocq Checker compilation...
+  Copied lean.out as Imported.out
+  Copied result-specific Isomorphisms files (stripped Typeclasses Opaque rel_iso)
+  Copied Checker folder
+  Regenerating Makefile.coq...
+  Compiling Imported.v...
+  Compiling result-specific Isomorphisms...
+  Compiling Checker...
+  ✓ Rocq Checker compiles successfully
+
+=== result-1 verified successfully ===
+```
+
+### Step 3: Verify Multiple Results
+
+To verify multiple results:
 
 ```bash
-cd /workdir/results/result-1
-lean4export solution.lean > lean.out.new
-diff lean.out lean.out.new
+# Verify results 1 through 10
+for i in $(seq 1 10); do
+  docker run --rm -v $(pwd):/host sf-bench-part1 verify result-$i
+done
 ```
 
-No diff output means the export matches.
+### Interactive Mode
 
-#### 3c. Verify Rocq Checker Compiles
-
-Copy the result's theories into the main theories directory and compile:
+To explore the container interactively:
 
 ```bash
-eval $(opam env)
-cd /workdir
-
-# Copy the result's lean.out as Imported.out
-cp results/result-1/lean.out theories/Imported.out
-
-# Copy the result's Interface, Isomorphisms, and Checker folders
-cp -r results/result-1/theories/* theories/
-
-# Compile the Checker (this verifies the translation is correct)
-cd theories
-rocq c -Q . IsomorphismChecker Checker/*.v
+docker run -it --rm -v $(pwd):/host sf-bench-part1 bash
 ```
 
-If the Checker compiles without errors, the translation is verified correct.
+Then you can manually run commands:
 
-## Quick Verification Checklist
+```bash
+# Verify Lean compilation
+lean /host/results/result-1/solution.lean
 
-1. Build the Docker image successfully
-2. Verify `lean solution.lean` compiles for a sample result
-3. Verify `lean4export` output matches the stored `lean.out`
-4. Verify the Rocq Checker compiles for the result
+# Check lean4export output matches
+lean4export /host/results/result-1/solution.lean > /tmp/new.out
+diff /host/results/result-1/lean.out /tmp/new.out
+```
 
 ## Understanding the Results
 
@@ -150,6 +163,12 @@ A score of 1.0 indicates a complete, verified isomorphism.
 ### Isomorphism Files
 
 The `.v` files in `theories/Isomorphisms/` contain Rocq proofs that establish a bijection between the original and translated definitions, proving semantic equivalence.
+
+## Known Issues
+
+### Typeclasses Opaque rel_iso
+
+Some result-specific Isomorphisms files contain `Typeclasses Opaque rel_iso`, which fails because `rel_iso` is defined as a Record in `IsomorphismDefinitions.v`, not a Definition. The verify script automatically strips this line when copying files.
 
 ## Tool Versions
 
