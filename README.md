@@ -31,7 +31,8 @@ sf-bench-part1/
 │           └── Isomorphisms/    # Result-specific isomorphism proofs
 ├── Dockerfile                   # Docker environment for verification
 ├── scripts/
-│   ├── verify.sh                # Verification script
+│   ├── verify.sh                # Verification script (single/sequential)
+│   ├── verify-parallel.sh       # Parallel verification script (faster)
 │   └── test-build.sh            # Build test script
 ├── problem-deps.json            # Dependencies between isomorphism problems
 ├── problem-results.json         # Mapping of isomorphisms to result folders
@@ -128,6 +129,37 @@ This will verify each result and print a summary at the end:
 SUMMARY: 136 passed, 0 failed (out of 136)
 ==========================================
 ```
+
+### Parallel Verification (Faster)
+
+For faster verification, use the parallel script which runs multiple Docker containers concurrently:
+
+```bash
+./scripts/verify-parallel.sh
+```
+
+This runs 8 parallel workers by default. Adjust with `--jobs`:
+
+```bash
+./scripts/verify-parallel.sh --jobs 16
+```
+
+Example output:
+```
+Verifying 136 results with 8 parallel workers...
+
+result-1 success
+result-5 success
+result-3 success
+result-2 success
+...
+
+==========================================
+SUMMARY: 136 passed, 0 failed (out of 136)
+==========================================
+```
+
+This is approximately 8x faster than sequential verification (~17 minutes vs 2+ hours).
 
 ### Interactive Mode
 
