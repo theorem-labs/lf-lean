@@ -1,0 +1,1 @@
+From IsomorphismChecker Require Original Imported. Definition imported_Original_LF__DOT__Poly_LF_Poly_test__partition1 := Imported.Original_LF__DOT__Poly_LF_Poly_test__partition1. Axiom Original_LF__DOT__Poly_LF_Poly_test__partition1_iso : Original.LF_DOT_Poly.LF.Poly.test_partition1.

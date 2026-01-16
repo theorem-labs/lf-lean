@@ -1,0 +1,21 @@
+From IsomorphismChecker Require Import AutomationDefinitions IsomorphismStatementAutomationDefinitions EqualityLemmas IsomorphismDefinitions.
+Import IsoEq.
+From LeanImport Require Import Lean.
+#[local] Unset Universe Polymorphism.
+#[local] Set Implicit Arguments.
+From IsomorphismChecker Require Original Imported.
+(* Print Imported. *)
+#[local] Set Printing Coercions.
+
+
+From IsomorphismChecker Require Export Isomorphisms.U_original__U2_lf_dot_U_lists__U2_lf__U_lists__U_natU_list__natlist__iso.
+
+Definition imported_Original_LF__DOT__Lists_LF_Lists_NatList_oddmembers : imported_Original_LF__DOT__Lists_LF_Lists_NatList_natlist -> imported_Original_LF__DOT__Lists_LF_Lists_NatList_natlist := Imported.Original_LF__DOT__Lists_LF_Lists_NatList_oddmembers.
+(* Since oddmembers is Admitted in Original.v, we use an axiom for the isomorphism *)
+Axiom Original_LF__DOT__Lists_LF_Lists_NatList_oddmembers_iso : forall (x1 : Original.LF_DOT_Lists.LF.Lists.NatList.natlist) (x2 : imported_Original_LF__DOT__Lists_LF_Lists_NatList_natlist),
+  rel_iso Original_LF__DOT__Lists_LF_Lists_NatList_natlist_iso x1 x2 ->
+  rel_iso Original_LF__DOT__Lists_LF_Lists_NatList_natlist_iso (Original.LF_DOT_Lists.LF.Lists.NatList.oddmembers x1) (imported_Original_LF__DOT__Lists_LF_Lists_NatList_oddmembers x2).
+Instance: KnownConstant Original.LF_DOT_Lists.LF.Lists.NatList.oddmembers := {}. (* only needed when rel_iso is typeclasses opaque *)
+Instance: KnownConstant Imported.Original_LF__DOT__Lists_LF_Lists_NatList_oddmembers := {}. (* only needed when rel_iso is typeclasses opaque *)
+Instance: IsoStatementProofFor Original.LF_DOT_Lists.LF.Lists.NatList.oddmembers Original_LF__DOT__Lists_LF_Lists_NatList_oddmembers_iso := {}.
+Instance: IsoStatementProofBetween Original.LF_DOT_Lists.LF.Lists.NatList.oddmembers Imported.Original_LF__DOT__Lists_LF_Lists_NatList_oddmembers Original_LF__DOT__Lists_LF_Lists_NatList_oddmembers_iso := {}.

@@ -1,0 +1,38 @@
+From IsomorphismChecker Require Import AutomationDefinitions IsomorphismStatementAutomationDefinitions EqualityLemmas IsomorphismDefinitions.
+Import IsoEq.
+From LeanImport Require Import Lean.
+#[local] Set Universe Polymorphism.
+#[local] Set Implicit Arguments.
+From IsomorphismChecker Require Original Imported.
+(* Print Imported. *)
+#[local] Set Printing Coercions.
+
+
+From IsomorphismChecker Require Export Isomorphisms.U_corelib__U_init__U_logic__eq__iso Isomorphisms.U_original__U2_lf_dot_U_poly__U2_lf__U_poly__cons__iso Isomorphisms.U_original__U2_lf_dot_U_poly__U2_lf__U_poly__nil__iso Isomorphisms.U_original__U2_lf_dot_U_poly__U2_lf__U_poly__pair__iso Isomorphisms.U_original__U2_lf_dot_U_poly__U2_lf__U_poly__partition__iso Isomorphisms.__0__iso Isomorphisms.U_original__U2_lf_dot_U_basics__U2_lf__U_basics__false__iso Isomorphisms.U_s__iso.
+
+Monomorphic Definition imported_Original_LF__DOT__Poly_LF_Poly_test__partition2 : imported_Corelib_Init_Logic_eq
+    (imported_Original_LF__DOT__Poly_LF_Poly_partition (fun _ : imported_nat => imported_Original_LF__DOT__Basics_LF_Basics_false)
+       (imported_Original_LF__DOT__Poly_LF_Poly_cons (imported_S (imported_S (imported_S (iterate1 imported_S 2%nat imported_0))))
+          (imported_Original_LF__DOT__Poly_LF_Poly_cons (imported_S (imported_S (imported_S (iterate1 imported_S 6%nat imported_0))))
+             (imported_Original_LF__DOT__Poly_LF_Poly_cons imported_0 (imported_Original_LF__DOT__Poly_LF_Poly_nil imported_nat)))))
+    (imported_Original_LF__DOT__Poly_LF_Poly_pair (imported_Original_LF__DOT__Poly_LF_Poly_nil imported_nat)
+       (imported_Original_LF__DOT__Poly_LF_Poly_cons (imported_S (imported_S (imported_S (iterate1 imported_S 2%nat imported_0))))
+          (imported_Original_LF__DOT__Poly_LF_Poly_cons (imported_S (imported_S (imported_S (iterate1 imported_S 6%nat imported_0))))
+             (imported_Original_LF__DOT__Poly_LF_Poly_cons imported_0 (imported_Original_LF__DOT__Poly_LF_Poly_nil imported_nat))))) := Imported.Original_LF__DOT__Poly_LF_Poly_test__partition2.
+Monomorphic Instance Original_LF__DOT__Poly_LF_Poly_test__partition2_iso : rel_iso
+    (Corelib_Init_Logic_eq_iso
+       (Original_LF__DOT__Poly_LF_Poly_partition_iso (fun _ : nat => Original.LF_DOT_Basics.LF.Basics.false) (fun _ : imported_nat => imported_Original_LF__DOT__Basics_LF_Basics_false)
+          (fun (x1 : nat) (x2 : imported_nat) (_ : rel_iso nat_iso x1 x2) => Original_LF__DOT__Basics_LF_Basics_false_iso)
+          (Original_LF__DOT__Poly_LF_Poly_cons_iso (S_iso (S_iso (S_iso (iterate1D2 S imported_S S_iso 2%nat 0%nat imported_0 _0_iso))))
+             (Original_LF__DOT__Poly_LF_Poly_cons_iso (S_iso (S_iso (S_iso (iterate1D2 S imported_S S_iso 6%nat 0%nat imported_0 _0_iso))))
+                (Original_LF__DOT__Poly_LF_Poly_cons_iso _0_iso (Original_LF__DOT__Poly_LF_Poly_nil_iso nat_iso)))))
+       (Original_LF__DOT__Poly_LF_Poly_pair_iso (Original_LF__DOT__Poly_LF_Poly_nil_iso nat_iso)
+          (Original_LF__DOT__Poly_LF_Poly_cons_iso (S_iso (S_iso (S_iso (iterate1D2 S imported_S S_iso 2%nat 0%nat imported_0 _0_iso))))
+             (Original_LF__DOT__Poly_LF_Poly_cons_iso (S_iso (S_iso (S_iso (iterate1D2 S imported_S S_iso 6%nat 0%nat imported_0 _0_iso))))
+                (Original_LF__DOT__Poly_LF_Poly_cons_iso _0_iso (Original_LF__DOT__Poly_LF_Poly_nil_iso nat_iso))))))
+    Original.LF_DOT_Poly.LF.Poly.test_partition2 imported_Original_LF__DOT__Poly_LF_Poly_test__partition2.
+Admitted.
+Instance: KnownConstant Original.LF_DOT_Poly.LF.Poly.test_partition2 := {}. (* only needed when rel_iso is typeclasses opaque *)
+Instance: KnownConstant Imported.Original_LF__DOT__Poly_LF_Poly_test__partition2 := {}. (* only needed when rel_iso is typeclasses opaque *)
+Instance: IsoStatementProofFor Original.LF_DOT_Poly.LF.Poly.test_partition2 Original_LF__DOT__Poly_LF_Poly_test__partition2_iso := {}.
+Instance: IsoStatementProofBetween Original.LF_DOT_Poly.LF.Poly.test_partition2 Imported.Original_LF__DOT__Poly_LF_Poly_test__partition2 Original_LF__DOT__Poly_LF_Poly_test__partition2_iso := {}.

@@ -1,0 +1,22 @@
+From IsomorphismChecker Require Import AutomationDefinitions IsomorphismStatementAutomationDefinitions EqualityLemmas IsomorphismDefinitions.
+Import IsoEq.
+From LeanImport Require Import Lean.
+#[local] Set Universe Polymorphism.
+#[local] Set Implicit Arguments.
+From IsomorphismChecker Require Original Imported.
+
+From IsomorphismChecker Require Export Isomorphisms.U_corelib__U_init__U_logic__eq__iso Isomorphisms.U_original__U2_lf_dot_U_basics__U2_lf__U_basics__U_eq__iso Isomorphisms.U_original__U2_lf_dot_U_basics__U2_lf__U_basics__U_f__iso Isomorphisms.U_original__U2_lf_dot_U_basics__U2_lf__U_basics__U_grade__iso Isomorphisms.U_original__U2_lf_dot_U_basics__U2_lf__U_basics__U_plus__iso Isomorphisms.U_original__U2_lf_dot_U_basics__U2_lf__U_basics__grade____comparison__iso.
+
+Definition imported_Original_LF__DOT__Basics_LF_Basics_test__grade__comparison3 := Imported.Original_LF__DOT__Basics_LF_Basics_test__grade__comparison3.
+
+Instance Original_LF__DOT__Basics_LF_Basics_test__grade__comparison3_iso : rel_iso
+    (Corelib_Init_Logic_eq_iso
+       (Original_LF__DOT__Basics_LF_Basics_grade__comparison_iso (Original_LF__DOT__Basics_LF_Basics_Grade_iso Original_LF__DOT__Basics_LF_Basics_F_iso Original_LF__DOT__Basics_LF_Basics_Plus_iso)
+          (Original_LF__DOT__Basics_LF_Basics_Grade_iso Original_LF__DOT__Basics_LF_Basics_F_iso Original_LF__DOT__Basics_LF_Basics_Plus_iso))
+       Original_LF__DOT__Basics_LF_Basics_Eq_iso)
+    Original.LF_DOT_Basics.LF.Basics.test_grade_comparison3 imported_Original_LF__DOT__Basics_LF_Basics_test__grade__comparison3.
+Admitted.
+Instance: KnownConstant Original.LF_DOT_Basics.LF.Basics.test_grade_comparison3 := {}.
+Instance: KnownConstant Imported.Original_LF__DOT__Basics_LF_Basics_test__grade__comparison3 := {}.
+Instance: IsoStatementProofFor Original.LF_DOT_Basics.LF.Basics.test_grade_comparison3 Original_LF__DOT__Basics_LF_Basics_test__grade__comparison3_iso := {}.
+Instance: IsoStatementProofBetween Original.LF_DOT_Basics.LF.Basics.test_grade_comparison3 Imported.Original_LF__DOT__Basics_LF_Basics_test__grade__comparison3 Original_LF__DOT__Basics_LF_Basics_test__grade__comparison3_iso := {}.

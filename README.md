@@ -2,7 +2,7 @@
 
 This repository contains verified translations of statements from the **Logical Foundations** volume of [Software Foundations](https://softwarefoundations.cis.upenn.edu/) from Rocq to Lean 4.
 
-The repository includes 119 translation results, each with a formally verified proof that the Lean translation is semantically equivalent to the original Rocq definition.
+The repository includes 100 translation results, each with a formally verified proof that the Lean translation is semantically equivalent to the original Rocq definition.
 
 ## Repository Structure
 
@@ -25,7 +25,7 @@ sf-bench-part1/
 │   ├── Interface/               # Individual interface files
 │   ├── Isomorphisms.v           # Base isomorphism proof file
 │   └── Isomorphisms/            # Individual isomorphism proof files
-├── results/                     # 119 individual translation results
+├── results/                     # 100 individual translation results
 │   └── result-N/
 │       ├── solution.lean        # Lean translation of a theorem/definition
 │       ├── lean.out             # lean4export output for Rocq import
@@ -150,7 +150,7 @@ Alternatively, verify all results sequentially (slower, but shows full output):
 
 Example parallel output:
 ```
-Verifying 119 results with 16 parallel workers...
+Verifying 100 results with 16 parallel workers...
 
 result-1 success
 result-5 success
