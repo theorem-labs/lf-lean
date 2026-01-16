@@ -50,14 +50,6 @@ Run the verify script directly from the project directory:
 
 The script automatically detects if it's running on the host and invokes Docker with the correct mount configuration.
 
-Alternatively, you can run it manually in Docker:
-
-```bash
-docker run --rm -v $(pwd):/host sf-bench-part1 verify result-1
-```
-
-**Note**: When running Docker manually, mount the current directory at `/host`, not `/workdir`. The container's `/workdir` contains pre-compiled theories that should not be shadowed.
-
 The verify script will:
 1. Check that `solution.lean` compiles with Lean
 2. Copy the result's `lean.out` as `Imported.out`
@@ -89,6 +81,14 @@ Step 4: Compiling Checker files...
 === result-1 verified successfully ===
 ```
 
+Alternatively, you can run it manually in Docker:
+
+```bash
+docker run --rm -v $(pwd):/host sf-bench-part1 verify result-1
+```
+
+**Note**: When running Docker manually, mount the current directory at `/host`, not `/workdir`. The container's `/workdir` contains pre-compiled theories that should not be shadowed.
+
 ### Step 3: Verify All Results
 
 To verify all results in parallel, use the verify-all script which runs multiple Docker containers concurrently. It will use 16 parallel workers by default.
@@ -106,7 +106,6 @@ result-5 success
 result-3 success
 result-2 success
 ...
-
 ==========================================
 SUMMARY: 100 passed, 0 failed (out of 100)
 ==========================================
@@ -117,7 +116,6 @@ Alternatively, verify all results sequentially (slower, but shows full output):
 
 ```bash
 ./scripts/verify.sh --all
-
 ```
 
 ### Interactive Mode
@@ -134,9 +132,21 @@ Then you can manually run commands:
 # Verify Lean compilation
 lean /host/results/result-1/solution.lean
 
-# Check lean4export output matches
-lean4export /host/results/result-1/solution.lean > /tmp/new.out
-diff /host/results/result-1/lean.out /tmp/new.out
+# Copy lean.out for Rocq import
+cp /host/results/result-1/lean.out /workdir/Imported.out
+
+# Copy isomorphism files to theories directory
+cp /host/results/result-1/theories/Isomorphisms/*.v /workdir/theories/Isomorphisms/
+mkdir -p /workdir/theories/Checker
+cp /host/results/result-1/theories/Checker/*.v /workdir/theories/Checker/
+
+# Regenerate Makefile and compile
+cd /workdir
+echo "-Q theories IsomorphismChecker" > _CoqProject
+find theories -name "*.v" | sort >> _CoqProject
+coq_makefile -f _CoqProject -o Makefile.coq
+make -f Makefile.coq theories/Imported.vo
+make -f Makefile.coq theories/Checker/U_nat__add__iso.vo
 ```
 
 ## Problem Information
