@@ -5,7 +5,7 @@ From LeanImport Require Import Lean.
 #[local] Set Implicit Arguments.
 From IsomorphismChecker Require Original Imported.
 (* Print Imported. *)
-(* (* Typeclasses Opaque rel_iso *). *) (* for speed *)
+(* Typeclasses Opaque rel_iso. *) (* for speed *)
 
 
 From IsomorphismChecker Require Export Isomorphisms.U_original__U2_lf_dot_U_maps__U2_lf__U_maps__total____map__iso.
@@ -15,8 +15,8 @@ Definition imported_Original_LF__DOT__Maps_LF_Maps_t__update : forall x : Type, 
 (* Helper: convert between Coq bool and Imported.mybool *)
 Definition bool_to_mybool (b : bool) : Imported.mybool :=
   match b with
-  | true => Imported.Original_LF__DOT__Basics_LF_Basics_bool_true
-  | false => Imported.Original_LF__DOT__Basics_LF_Basics_bool_false
+  | true => Imported.mybool_mytrue
+  | false => Imported.mybool_myfalse
   end.
 
 Lemma string_eqb_compat_core : forall (s1 s2 : String.string),
@@ -39,7 +39,7 @@ Proof.
       simpl.
       destruct b0, b1, b2, b3, b4, b5, b6, b7, c0, c1_, c2_, c3, c4, c5, c6, c7;
       simpl; try (exact (IH rest1 rest2)); try exact IsomorphismDefinitions.eq_refl.
-Qed.
+Defined.
 
 Lemma string_eqb_compat : forall (s1 s2 : String.string) (t1 t2 : imported_String_string),
   rel_iso String_string_iso s1 t1 ->
@@ -54,7 +54,7 @@ Proof.
   apply f_equal2.
   - exact H1'.
   - exact H2'.
-Qed.
+Defined.
 
 Instance Original_LF__DOT__Maps_LF_Maps_t__update_iso : forall (x1 x2 : Type) (hx : IsoOrSortRelaxed x1 x2) (x3 : Original.LF_DOT_Maps.LF.Maps.total_map x1) (x4 : imported_String_string -> x2),
   (forall (x5 : String.string) (x6 : imported_String_string), rel_iso String_string_iso x5 x6 -> rel_iso_sort hx (x3 x5) (x4 x6)) ->
@@ -71,15 +71,15 @@ Proof.
   pose proof (@string_eqb_compat k1 x1' k2 x2' Hk Hx) as Heqb.
   destruct (String.eqb k1 x1') eqn:E1.
   - (* k1 = x1' in Coq, so String_eqb k2 x2' should be mybool_mytrue *)
-    assert (Imported.String_eqb k2 x2' = Imported.Original_LF__DOT__Basics_LF_Basics_bool_true) as E2.
+    assert (Imported.String_eqb k2 x2' = Imported.mybool_mytrue) as E2.
     { apply eq_of_seq. apply (eq_trans (eq_sym Heqb)). simpl. exact IsomorphismDefinitions.eq_refl. }
     rewrite E2. simpl. exact Hv.
   - (* k1 <> x1' in Coq, so String_eqb k2 x2' should be mybool_myfalse *)
-    assert (Imported.String_eqb k2 x2' = Imported.Original_LF__DOT__Basics_LF_Basics_bool_false) as E2.
+    assert (Imported.String_eqb k2 x2' = Imported.mybool_myfalse) as E2.
     { apply eq_of_seq. apply (eq_trans (eq_sym Heqb)). simpl. exact IsomorphismDefinitions.eq_refl. }
     rewrite E2. simpl.
     apply Hm. exact Hx.
-Qed.
+Defined.
 
 Instance: KnownConstant (@Original.LF_DOT_Maps.LF.Maps.t_update) := {}. (* only needed when rel_iso is typeclasses opaque *)
 Instance: KnownConstant (@Imported.Original_LF__DOT__Maps_LF_Maps_t__update) := {}. (* only needed when rel_iso is typeclasses opaque *)

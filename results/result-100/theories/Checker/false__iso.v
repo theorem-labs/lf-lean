@@ -10,7 +10,7 @@ Module Type Args <: Interface.false__iso.Args := Checker.bool__iso.Args <+ Check
 #[global] Strategy -1 [ Isomorphisms.false__iso.imported_false Isomorphisms.false__iso.false_iso ].
 
 Module Checker (Import args : Args) <: Interface.false__iso.Interface args
-  with Definition imported_false := Imported.mybool_myfalse.
+  with Definition imported_false := Imported.Coqbool_Coqfalse.
 
 Definition imported_false := Isomorphisms.false__iso.imported_false.
 Definition false_iso := Isomorphisms.false__iso.false_iso.

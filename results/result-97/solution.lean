@@ -60,9 +60,6 @@ def Nat_sub := nat_sub
 def Nat_mul := nat_mul
 def Nat_pred := nat_pred
 
--- PeanoNat.Nat.add (same as nat_add but with expected name)
-def PeanoNat_Nat_add := nat_add
-
 def nat_eqb : nat → nat → mybool
   | nat.O, nat.O => mybool.mytrue
   | nat.S n, nat.S m => nat_eqb n m
@@ -239,6 +236,15 @@ def Original_LF__DOT__Imp_LF_Imp_CSeq := Original_LF__DOT__Imp_LF_Imp_com.CSeq
 def Original_LF__DOT__Imp_LF_Imp_CIf := Original_LF__DOT__Imp_LF_Imp_com.CIf
 def Original_LF__DOT__Imp_LF_Imp_CWhile := Original_LF__DOT__Imp_LF_Imp_com.CWhile
 
+-- loop = while true do skip end
+def Original_LF__DOT__Imp_LF_Imp_loop : Original_LF__DOT__Imp_LF_Imp_com :=
+  Original_LF__DOT__Imp_LF_Imp_com.CWhile
+    Original_LF__DOT__Imp_LF_Imp_bexp.BTrue
+    Original_LF__DOT__Imp_LF_Imp_com.CSkip
+
+-- pup_to_n is Admitted in Original.v, so we use an axiom
+axiom Original_LF__DOT__Imp_LF_Imp_pup__to__n : Original_LF__DOT__Imp_LF_Imp_com
+
 -- aeval: evaluates arithmetic expression in a state
 def Original_LF__DOT__Imp_LF_Imp_aeval (st : Original_LF__DOT__Imp_LF_Imp_state) : Original_LF__DOT__Imp_LF_Imp_aexp → nat
   | Original_LF__DOT__Imp_LF_Imp_aexp.ANum n => n
@@ -285,12 +291,30 @@ inductive Original_LF__DOT__Imp_LF_Imp_ceval : Original_LF__DOT__Imp_LF_Imp_com 
       Original_LF__DOT__Imp_LF_Imp_ceval (Original_LF__DOT__Imp_LF_Imp_com.CWhile b c) st' st'' →
       Original_LF__DOT__Imp_LF_Imp_ceval (Original_LF__DOT__Imp_LF_Imp_com.CWhile b c) st st''
 
--- plus2 command: X := X + 2
-def Original_LF__DOT__Imp_LF_Imp_plus2 : Original_LF__DOT__Imp_LF_Imp_com :=
-  Original_LF__DOT__Imp_LF_Imp_com.CAsgn Original_LF__DOT__Imp_LF_Imp_X
-    (Original_LF__DOT__Imp_LF_Imp_aexp.APlus
-      (Original_LF__DOT__Imp_LF_Imp_aexp.AId Original_LF__DOT__Imp_LF_Imp_X)
-      (Original_LF__DOT__Imp_LF_Imp_aexp.ANum (nat.S (nat.S nat.O))))
+-- loop_never_stops: forall st st', ~(st =[ loop ]=> st')
+-- This is Admitted in Original.v
+axiom Original_LF__DOT__Imp_LF_Imp_loop__never__stops :
+  ∀ (st st' : Original_LF__DOT__Imp_LF_Imp_state),
+    Original_LF__DOT__Imp_LF_Imp_ceval Original_LF__DOT__Imp_LF_Imp_loop st st' → FalseType
+
+-- pup_to_2_ceval: (X !-> 2) =[ pup_to_n ]=> (X !-> 0 ; Y !-> 3 ; X !-> 1 ; Y !-> 2 ; Y !-> 0 ; X !-> 2)
+-- This is Admitted in Original.v
+-- Note: Correct order is X=2, Y=0, Y=2, X=1, Y=3, X=0 (per Original.v)
+axiom Original_LF__DOT__Imp_LF_Imp_pup__to__2__ceval :
+  Original_LF__DOT__Imp_LF_Imp_ceval
+    Original_LF__DOT__Imp_LF_Imp_pup__to__n
+    (fun x => Original_LF__DOT__Maps_LF_Maps_t__update Original_LF__DOT__Imp_LF_Imp_empty__st Original_LF__DOT__Imp_LF_Imp_X (nat.S (nat.S nat.O)) x)
+    (fun x => Original_LF__DOT__Maps_LF_Maps_t__update
+      (fun x0 => Original_LF__DOT__Maps_LF_Maps_t__update
+        (fun x1 => Original_LF__DOT__Maps_LF_Maps_t__update
+          (fun x2 => Original_LF__DOT__Maps_LF_Maps_t__update
+            (fun x3 => Original_LF__DOT__Maps_LF_Maps_t__update
+              (fun x4 => Original_LF__DOT__Maps_LF_Maps_t__update Original_LF__DOT__Imp_LF_Imp_empty__st Original_LF__DOT__Imp_LF_Imp_X (nat.S (nat.S nat.O)) x4)
+              Original_LF__DOT__Imp_LF_Imp_Y nat.O x3)
+            Original_LF__DOT__Imp_LF_Imp_Y (nat.S (nat.S nat.O)) x2)
+          Original_LF__DOT__Imp_LF_Imp_X (nat.S nat.O) x1)
+        Original_LF__DOT__Imp_LF_Imp_Y (nat.S (nat.S (nat.S nat.O))) x0)
+      Original_LF__DOT__Imp_LF_Imp_X nat.O x)
 
 -- Note: TrueType already defined at top of file
 
@@ -301,29 +325,6 @@ inductive Corelib_Init_Logic_eq {A : Type} (a : A) : A → Prop
 -- Equality type for Prop arguments (will become SProp -> SProp in Rocq)
 inductive Corelib_Init_Logic_eq_Prop {A : Prop} (a : A) : A → Prop
 | refl : Corelib_Init_Logic_eq_Prop a a
-
--- plus2_spec theorem (Admitted in original, so we use axiom)
-axiom Original_LF__DOT__Imp_LF_Imp_plus2__spec :
-  ∀ (st : Original_LF__DOT__Imp_LF_Imp_state) (n : nat) (st' : Original_LF__DOT__Imp_LF_Imp_state),
-    Corelib_Init_Logic_eq (st Original_LF__DOT__Imp_LF_Imp_X) n →
-    Original_LF__DOT__Imp_LF_Imp_ceval Original_LF__DOT__Imp_LF_Imp_plus2 st st' →
-    Corelib_Init_Logic_eq (st' Original_LF__DOT__Imp_LF_Imp_X) (PeanoNat_Nat_add n (nat.S (nat.S nat.O)))
-
--- ceval_deterministic' (Admitted in original)
-axiom Original_LF__DOT__Auto_LF_Auto_ceval__deterministic' :
-  ∀ (c : Original_LF__DOT__Imp_LF_Imp_com) 
-    (st st1 st2 : Original_LF__DOT__Imp_LF_Imp_state),
-    Original_LF__DOT__Imp_LF_Imp_ceval c st st1 →
-    Original_LF__DOT__Imp_LF_Imp_ceval c st st2 →
-    Corelib_Init_Logic_eq st1 st2
-
--- ceval_deterministic'''' (Admitted in original)
-axiom Original_LF__DOT__Auto_LF_Auto_ceval__deterministic'''' :
-  ∀ (c : Original_LF__DOT__Imp_LF_Imp_com) 
-    (st st1 st2 : Original_LF__DOT__Imp_LF_Imp_state),
-    Original_LF__DOT__Imp_LF_Imp_ceval c st st1 →
-    Original_LF__DOT__Imp_LF_Imp_ceval c st st2 →
-    Corelib_Init_Logic_eq st1 st2
 
 -- List_In (membership predicate)
 def List_In {A : Type} (x : A) (l : list A) : Prop :=
@@ -606,23 +607,3 @@ axiom Original_LF__DOT__Imp_LF_Imp_ceval__example1 :
           Original_LF__DOT__Imp_LF_Imp_empty__st Original_LF__DOT__Imp_LF_Imp_X
           (nat.S (nat.S nat.O)))
        Original_LF__DOT__Imp_LF_Imp_Z (nat.S (nat.S (nat.S (nat.S nat.O)))))
-
--- ceval_example2 (admitted in Original.v)
--- ceval (X := 0; Y := 1; Z := 2) empty_st (Z !-> 2 ; Y !-> 1 ; X !-> 0)
-axiom Original_LF__DOT__Imp_LF_Imp_ceval__example2 :
-  Original_LF__DOT__Imp_LF_Imp_ceval
-    (Original_LF__DOT__Imp_LF_Imp_com.CSeq
-       (Original_LF__DOT__Imp_LF_Imp_com.CAsgn Original_LF__DOT__Imp_LF_Imp_X
-          (Original_LF__DOT__Imp_LF_Imp_aexp.ANum nat.O))
-       (Original_LF__DOT__Imp_LF_Imp_com.CSeq
-          (Original_LF__DOT__Imp_LF_Imp_com.CAsgn Original_LF__DOT__Imp_LF_Imp_Y
-             (Original_LF__DOT__Imp_LF_Imp_aexp.ANum (nat.S nat.O)))
-          (Original_LF__DOT__Imp_LF_Imp_com.CAsgn Original_LF__DOT__Imp_LF_Imp_Z
-             (Original_LF__DOT__Imp_LF_Imp_aexp.ANum (nat.S (nat.S nat.O))))))
-    Original_LF__DOT__Imp_LF_Imp_empty__st
-    (Original_LF__DOT__Maps_LF_Maps_t__update
-       (Original_LF__DOT__Maps_LF_Maps_t__update
-          (Original_LF__DOT__Maps_LF_Maps_t__update
-             Original_LF__DOT__Imp_LF_Imp_empty__st Original_LF__DOT__Imp_LF_Imp_X nat.O)
-          Original_LF__DOT__Imp_LF_Imp_Y (nat.S nat.O))
-       Original_LF__DOT__Imp_LF_Imp_Z (nat.S (nat.S nat.O)))

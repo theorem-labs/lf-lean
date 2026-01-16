@@ -10,40 +10,47 @@ From IsomorphismChecker Require Original Imported.
 
 Definition imported_nat : Type := Imported.nat.
 
-Definition nat_to_imported : nat -> imported_nat :=
-  fix f (n : nat) : imported_nat :=
-    match n with
-    | O => Imported.nat_O
-    | S m => Imported.nat_S (f m)
-    end.
+(* Forward and backward conversions between nat and Imported.nat *)
+Fixpoint nat_to_imported (n : nat) : Imported.nat :=
+  match n with
+  | O => Imported.nat_O
+  | S n' => Imported.nat_S (nat_to_imported n')
+  end.
 
-Definition imported_to_nat : imported_nat -> nat :=
-  fix g (n : imported_nat) : nat :=
-    match n with
-    | Imported.nat_O => O
-    | Imported.nat_S m => S (g m)
-    end.
+Fixpoint imported_to_nat (n : Imported.nat) : nat :=
+  match n with
+  | Imported.nat_O => O
+  | Imported.nat_S n' => S (imported_to_nat n')
+  end.
+
+Lemma nat_roundtrip : forall n : nat, Logic.eq (imported_to_nat (nat_to_imported n)) n.
+Proof.
+  fix IH 1.
+  intros n. destruct n as [| n']; simpl.
+  - reflexivity.
+  - apply Logic.f_equal. apply IH.
+Defined.
+
+Lemma imported_nat_roundtrip : forall n : Imported.nat, Logic.eq (nat_to_imported (imported_to_nat n)) n.
+Proof.
+  fix IH 1.
+  intros n. destruct n as [| n']; simpl.
+  - reflexivity.
+  - apply Logic.f_equal. apply IH.
+Defined.
 
 Instance nat_iso : Iso nat imported_nat.
 Proof.
-  exists (fix f (n : nat) : imported_nat :=
-            match n with
-            | O => Imported.nat_O
-            | S m => Imported.nat_S (f m)
-            end)
-         (fix g (n : imported_nat) : nat :=
-            match n with
-            | Imported.nat_O => O
-            | Imported.nat_S m => S (g m)
-            end).
-  - fix IH 1. intros n.
-    destruct n as [|m].
-    + apply IsomorphismDefinitions.eq_refl.
-    + simpl. apply (IsoEq.f_equal Imported.nat_S). apply IH.
-  - fix IH 1. intros [|m].
-    + apply IsomorphismDefinitions.eq_refl.
-    + simpl. apply (IsoEq.f_equal S). apply IH.
+  refine {|
+    to := nat_to_imported;
+    from := imported_to_nat;
+    to_from := _;
+    from_to := _
+  |}.
+  - intros n. apply seq_of_eq. apply imported_nat_roundtrip.
+  - intros n. apply seq_of_eq. apply nat_roundtrip.
 Defined.
+
 Instance: KnownConstant nat := {}. (* only needed when rel_iso is typeclasses opaque *)
 Instance: KnownConstant Imported.nat := {}. (* only needed when rel_iso is typeclasses opaque *)
 Instance: IsoStatementProofFor nat nat_iso := {}.

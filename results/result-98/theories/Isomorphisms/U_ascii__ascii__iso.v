@@ -1,7 +1,7 @@
 From IsomorphismChecker Require Import AutomationDefinitions IsomorphismStatementAutomationDefinitions EqualityLemmas IsomorphismDefinitions.
 Import IsoEq.
 From LeanImport Require Import Lean.
-#[local] Unset Universe Polymorphism.
+#[local] Set Universe Polymorphism.
 #[local] Set Implicit Arguments.
 From IsomorphismChecker Require Original Imported.
 From IsomorphismChecker Require Export Isomorphisms.bool__iso.
@@ -31,13 +31,13 @@ Lemma mybool_to_from : forall b : Imported.mybool,
   IsomorphismDefinitions.eq (to bool_iso (from bool_iso b)) b.
 Proof.
   intro b. destruct b; apply IsomorphismDefinitions.eq_refl.
-Qed.
+Defined.
 
 Lemma mybool_from_to : forall b : bool,
   IsomorphismDefinitions.eq (from bool_iso (to bool_iso b)) b.
 Proof.
   intro b. destruct b; apply IsomorphismDefinitions.eq_refl.
-Qed.
+Defined.
 
 Lemma ascii_to_from : forall a : imported_Ascii_ascii,
   IsomorphismDefinitions.eq (ascii_to_imported (imported_to_ascii a)) a.
@@ -46,7 +46,7 @@ Proof.
   destruct b0; destruct b1; destruct b2; destruct b3;
   destruct b4; destruct b5; destruct b6; destruct b7;
   apply IsomorphismDefinitions.eq_refl.
-Qed.
+Defined.
 
 Lemma ascii_from_to : forall a : Ascii.ascii,
   IsomorphismDefinitions.eq (imported_to_ascii (ascii_to_imported a)) a.
@@ -55,7 +55,7 @@ Proof.
   destruct b0; destruct b1; destruct b2; destruct b3;
   destruct b4; destruct b5; destruct b6; destruct b7;
   apply IsomorphismDefinitions.eq_refl.
-Qed.
+Defined.
 
 Instance Ascii_ascii_iso : Iso Ascii.ascii imported_Ascii_ascii :=
   Build_Iso ascii_to_imported imported_to_ascii ascii_to_from ascii_from_to.

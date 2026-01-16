@@ -1,13 +1,17 @@
 {
-  "bool": "mybool",
-  "true": "mybool_mytrue",
-  "false": "mybool_myfalse",
-  "Ascii_Ascii": "Ascii_ascii_Ascii",
-  "Ascii_ascii": "Ascii_ascii",
-  "True": "TrueType",
-  "False": "FalseType",
-  "_0": "nat_O",
+  "bool": "Coqbool",
+  "True": "CoqTrue",
+  "true": "Coqbool_Coqtrue",
+  "false": "Coqbool_Coqfalse",
+  "False": "CoqFalse",
+  "nat": "mynat",
+  "Original_LF__DOT__ImpParser_LF_ImpParser_isDigit": "isDigit",
+  "Original_LF__DOT__ImpParser_LF_ImpParser_isLowerAlpha": "isLowerAlpha",
+  "Original_LF__DOT__ImpParser_LF_ImpParser_list__of__string": "list_of_string",
+  "Original_LF__DOT__ImpParser_LF_ImpParser_parseIdentifier": "parseIdentifier",
+  "Original_LF__DOT__ImpParser_LF_ImpParser_parseNumber": "parseNumber",
   "S": "nat_S",
-  "Original_LF__DOT__Auto_LF_Auto_auto__example__1'": "Original_LF__DOT__Auto_LF_Auto_auto__example__1SQUOTE",
-  "Original_LF__DOT__Basics_LF_Basics_plus__O__n'": "Original_LF__DOT__Basics_LF_Basics_plus__O__nSQUOTE"
+  "String_EmptyString": "String_EmptyString",
+  "String_String": "String_String",
+  "_0": "nat_O"
 }

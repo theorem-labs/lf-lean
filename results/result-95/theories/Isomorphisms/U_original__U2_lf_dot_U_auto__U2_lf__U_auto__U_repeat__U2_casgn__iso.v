@@ -4,7 +4,7 @@ From LeanImport Require Import Lean.
 #[local] Set Universe Polymorphism.
 #[local] Set Implicit Arguments.
 From IsomorphismChecker Require Original Imported.
-(*Typeclasses Opaque rel_iso.*) (* for speed *)
+(* Typeclasses Opaque rel_iso. *) (* for speed *)
 
 From IsomorphismChecker Require Export Isomorphisms.U_original__U2_lf_dot_U_auto__U2_lf__U_auto__U_repeat__com__iso Isomorphisms.U_original__U2_lf_dot_U_imp__U2_lf__U_imp__aexp__iso Isomorphisms.U_string__string__iso.
 
@@ -16,9 +16,9 @@ Instance Original_LF__DOT__Auto_LF_Auto_Repeat_CAsgn_iso : forall (x1 : String.s
   rel_iso Original_LF__DOT__Auto_LF_Auto_Repeat_com_iso (Original.LF_DOT_Auto.LF.Auto.Repeat.CAsgn x1 x3) (imported_Original_LF__DOT__Auto_LF_Auto_Repeat_CAsgn x2 x4).
 Proof.
   intros x1 x2 H1 x3 x4 H2.
-  destruct H1 as [H1]. destruct H2 as [H2].
-  unfold imported_Original_LF__DOT__Auto_LF_Auto_Repeat_CAsgn.
+  destruct H1 as [H1]. destruct H2 as [H2]. simpl in H1, H2.
   constructor. simpl.
+  unfold imported_Original_LF__DOT__Auto_LF_Auto_Repeat_CAsgn.
   apply f_equal2; [exact H1 | exact H2].
 Defined.
 Instance: KnownConstant Original.LF_DOT_Auto.LF.Auto.Repeat.CAsgn := {}.

@@ -206,7 +206,7 @@ Proof.
   apply (eq_trans (beval_iso_core st st' Hst b)).
   apply (eq_trans (beval_aux_eq st' (bexp_to_imported b))).
   apply (f_equal (imported_Original_LF__DOT__Imp_LF_Imp_beval st') Hb).
-Qed.
+Defined.
 
 Instance: KnownConstant Original.LF_DOT_Imp.LF.Imp.beval := {}. (* only needed when rel_iso is typeclasses opaque *)
 Instance: KnownConstant Imported.Original_LF__DOT__Imp_LF_Imp_beval := {}. (* only needed when rel_iso is typeclasses opaque *)

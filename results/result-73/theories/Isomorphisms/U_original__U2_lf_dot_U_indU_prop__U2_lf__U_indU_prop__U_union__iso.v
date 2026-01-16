@@ -21,7 +21,7 @@ Proof.
   constructor. simpl.
   unfold imported_Original_LF__DOT__IndProp_LF_IndProp_Union.
   exact (IsoEq.f_equal2 (Imported.Original_LF__DOT__IndProp_LF_IndProp_reg__exp_Union x2) (proj_rel_iso H34) (proj_rel_iso H56)).
-Qed.
+Defined.
 Instance: KnownConstant (@Original.LF_DOT_IndProp.LF.IndProp.Union) := {}. (* only needed when rel_iso is typeclasses opaque *)
 Instance: KnownConstant (@Imported.Original_LF__DOT__IndProp_LF_IndProp_Union) := {}. (* only needed when rel_iso is typeclasses opaque *)
 Instance: IsoStatementProofFor (@Original.LF_DOT_IndProp.LF.IndProp.Union) Original_LF__DOT__IndProp_LF_IndProp_Union_iso := {}.

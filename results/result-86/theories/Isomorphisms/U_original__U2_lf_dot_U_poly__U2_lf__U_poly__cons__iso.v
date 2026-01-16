@@ -5,7 +5,7 @@ From LeanImport Require Import Lean.
 #[local] Set Implicit Arguments.
 From IsomorphismChecker Require Original Imported.
 (* Print Imported. *)
-(* Typeclasses Opaque rel_iso. *) (* for speed *)
+(*Typeclasses Opaque rel_iso.*) (* for speed *)
 
 
 From IsomorphismChecker Require Export Isomorphisms.U_original__U2_lf_dot_U_poly__U2_lf__U_poly__list__iso.
@@ -18,7 +18,8 @@ Instance Original_LF__DOT__Poly_LF_Poly_cons_iso : forall (x1 x2 : Type) (hx : I
   rel_iso (Original_LF__DOT__Poly_LF_Poly_list_iso hx) (Original.LF_DOT_Poly.LF.Poly.cons x3 x5) (imported_Original_LF__DOT__Poly_LF_Poly_cons x4 x6).
 Proof.
   intros x1 x2 hx x3 x4 H34 x5 x6 H56.
-  idtac.
+  destruct H34 as [H34]. destruct H56 as [H56].
+  constructor.
   unfold imported_Original_LF__DOT__Poly_LF_Poly_cons.
   simpl.
   apply (IsoEq.f_equal2 (Imported.Original_LF__DOT__Poly_LF_Poly_list_cons x2) H34 H56).

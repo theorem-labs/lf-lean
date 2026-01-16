@@ -10,7 +10,7 @@ From IsomorphismChecker Require Original Imported.
 
 Definition imported_nat : Type := Imported.nat.
 
-(* Forward and backward conversions between nat and Imported.nat *)
+(* Define the conversion functions *)
 Fixpoint nat_to_imported (n : nat) : Imported.nat :=
   match n with
   | O => Imported.nat_O
@@ -23,33 +23,30 @@ Fixpoint imported_to_nat (n : Imported.nat) : nat :=
   | Imported.nat_S n' => S (imported_to_nat n')
   end.
 
-Lemma nat_roundtrip : forall n : nat, Logic.eq (imported_to_nat (nat_to_imported n)) n.
-Proof.
-  fix IH 1.
-  intros n. destruct n as [| n']; simpl.
-  - reflexivity.
-  - apply Logic.f_equal. apply IH.
-Defined.
+(* Prove round-trip properties with standard equality *)
+Fixpoint nat_round_trip (n : nat) : imported_to_nat (nat_to_imported n) = n :=
+  match n with
+  | O => Coq.Init.Logic.eq_refl
+  | S n' => match nat_round_trip n' in (_ = m) return (S (imported_to_nat (nat_to_imported n')) = S m) with
+            | Coq.Init.Logic.eq_refl => Coq.Init.Logic.eq_refl
+            end
+  end.
 
-Lemma imported_nat_roundtrip : forall n : Imported.nat, Logic.eq (nat_to_imported (imported_to_nat n)) n.
-Proof.
-  fix IH 1.
-  intros n. destruct n as [| n']; simpl.
-  - reflexivity.
-  - apply Logic.f_equal. apply IH.
-Defined.
+Fixpoint imported_round_trip (n : Imported.nat) : nat_to_imported (imported_to_nat n) = n :=
+  match n with
+  | Imported.nat_O => Coq.Init.Logic.eq_refl
+  | Imported.nat_S n' => match imported_round_trip n' in (_ = m) return (Imported.nat_S (nat_to_imported (imported_to_nat n')) = Imported.nat_S m) with
+                         | Coq.Init.Logic.eq_refl => Coq.Init.Logic.eq_refl
+                         end
+  end.
 
-Instance nat_iso : Iso nat imported_nat.
-Proof.
-  refine {|
-    to := nat_to_imported;
-    from := imported_to_nat;
-    to_from := _;
-    from_to := _
-  |}.
-  - intros n. apply seq_of_eq. apply imported_nat_roundtrip.
-  - intros n. apply seq_of_eq. apply nat_roundtrip.
-Defined.
+(* Build the isomorphism *)
+Instance nat_iso : Iso nat imported_nat := {|
+  to := nat_to_imported;
+  from := imported_to_nat;
+  to_from := fun n => seq_of_eq (imported_round_trip n);
+  from_to := fun n => seq_of_eq (nat_round_trip n)
+|}.
 
 Instance: KnownConstant nat := {}. (* only needed when rel_iso is typeclasses opaque *)
 Instance: KnownConstant Imported.nat := {}. (* only needed when rel_iso is typeclasses opaque *)

@@ -1,15 +1,15 @@
 From IsomorphismChecker Require Import AutomationDefinitions IsomorphismStatementAutomationDefinitions EqualityLemmas IsomorphismDefinitions.
 Import IsoEq.
 From LeanImport Require Import Lean.
-#[local] Unset Universe Polymorphism.
+#[local] Set Universe Polymorphism.
 #[local] Set Implicit Arguments.
 From IsomorphismChecker Require Original Imported.
 From IsomorphismChecker Require Export Isomorphisms.nat__iso.
 (* Print Imported. *)
+(* (* (* Typeclasses Opaque rel_iso. *) *) *) (* for speed *)
 
 
-
-Monomorphic Definition imported_Original_LF__DOT__Lists_LF_Lists_NatList_natlist : Type := Imported.Original_LF__DOT__Lists_LF_Lists_NatList_natlist.
+Definition imported_Original_LF__DOT__Lists_LF_Lists_NatList_natlist : Type := Imported.Original_LF__DOT__Lists_LF_Lists_NatList_natlist.
 
 (* Forward: Original.natlist -> Imported.natlist *)
 Fixpoint natlist_to_imported (l : Original.LF_DOT_Lists.LF.Lists.NatList.natlist) : Imported.Original_LF__DOT__Lists_LF_Lists_NatList_natlist :=
@@ -31,7 +31,7 @@ Fixpoint imported_to_natlist (l : Imported.Original_LF__DOT__Lists_LF_Lists_NatL
         (imported_to_natlist t)
   end.
 
-Monomorphic Lemma natlist_roundtrip : forall l : Original.LF_DOT_Lists.LF.Lists.NatList.natlist, 
+Lemma natlist_roundtrip : forall l : Original.LF_DOT_Lists.LF.Lists.NatList.natlist, 
   Logic.eq (imported_to_natlist (natlist_to_imported l)) l.
 Proof.
   fix IH 1.
@@ -42,7 +42,7 @@ Proof.
     + apply nat_roundtrip.
 Qed.
 
-Monomorphic Lemma imported_natlist_roundtrip : forall l : Imported.Original_LF__DOT__Lists_LF_Lists_NatList_natlist,
+Lemma imported_natlist_roundtrip : forall l : Imported.Original_LF__DOT__Lists_LF_Lists_NatList_natlist,
   Logic.eq (natlist_to_imported (imported_to_natlist l)) l.
 Proof.
   fix IH 1.
@@ -53,7 +53,7 @@ Proof.
     + apply imported_nat_roundtrip.
 Qed.
 
-Monomorphic Instance Original_LF__DOT__Lists_LF_Lists_NatList_natlist_iso : Iso Original.LF_DOT_Lists.LF.Lists.NatList.natlist imported_Original_LF__DOT__Lists_LF_Lists_NatList_natlist.
+Instance Original_LF__DOT__Lists_LF_Lists_NatList_natlist_iso : Iso Original.LF_DOT_Lists.LF.Lists.NatList.natlist imported_Original_LF__DOT__Lists_LF_Lists_NatList_natlist.
 Proof.
   refine {|
     to := natlist_to_imported;

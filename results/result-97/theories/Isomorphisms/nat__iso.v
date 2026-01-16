@@ -1,7 +1,7 @@
 From IsomorphismChecker Require Import AutomationDefinitions IsomorphismStatementAutomationDefinitions EqualityLemmas IsomorphismDefinitions.
 Import IsoEq.
 From LeanImport Require Import Lean.
-#[local] Set Universe Polymorphism.
+#[local] Unset Universe Polymorphism.
 #[local] Set Implicit Arguments.
 From IsomorphismChecker Require Original Imported.
 (* Print Imported. *)
@@ -29,7 +29,7 @@ Proof.
   intros n. destruct n as [| n']; simpl.
   - reflexivity.
   - apply Logic.f_equal. apply IH.
-Defined.
+Qed.
 
 Lemma imported_nat_roundtrip : forall n : Imported.nat, Logic.eq (nat_to_imported (imported_to_nat n)) n.
 Proof.
@@ -37,7 +37,7 @@ Proof.
   intros n. destruct n as [| n']; simpl.
   - reflexivity.
   - apply Logic.f_equal. apply IH.
-Defined.
+Qed.
 
 Instance nat_iso : Iso nat imported_nat.
 Proof.

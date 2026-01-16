@@ -5,7 +5,7 @@ From LeanImport Require Import Lean.
 #[local] Set Implicit Arguments.
 From IsomorphismChecker Require Original Imported.
 (* Print Imported. *)
-#[local] Set Printing Coercions.
+(* Typeclasses Opaque rel_iso. *) (* for speed *)
 
 
 From IsomorphismChecker Require Export Isomorphisms.U_ascii__ascii__iso Isomorphisms.bool__iso.
@@ -26,7 +26,21 @@ Instance Ascii_Ascii_iso : forall (x1 : bool) (x2 : imported_bool),
   forall (x13 : bool) (x14 : imported_bool),
   rel_iso bool_iso x13 x14 ->
   forall (x15 : bool) (x16 : imported_bool), rel_iso bool_iso x15 x16 -> rel_iso Ascii_ascii_iso (Ascii.Ascii x1 x3 x5 x7 x9 x11 x13 x15) (imported_Ascii_Ascii x2 x4 x6 x8 x10 x12 x14 x16).
-Admitted.
+Proof.
+  intros x1 x2 H1 x3 x4 H3 x5 x6 H5 x7 x8 H7 x9 x10 H9 x11 x12 H11 x13 x14 H13 x15 x16 H15.
+  unfold imported_Ascii_Ascii.
+  constructor. simpl.
+  pose proof (eq_of_seq (proj_rel_iso H1)) as E1.
+  pose proof (eq_of_seq (proj_rel_iso H3)) as E3.
+  pose proof (eq_of_seq (proj_rel_iso H5)) as E5.
+  pose proof (eq_of_seq (proj_rel_iso H7)) as E7.
+  pose proof (eq_of_seq (proj_rel_iso H9)) as E9.
+  pose proof (eq_of_seq (proj_rel_iso H11)) as E11.
+  pose proof (eq_of_seq (proj_rel_iso H13)) as E13.
+  pose proof (eq_of_seq (proj_rel_iso H15)) as E15.
+  subst.
+  apply IsomorphismDefinitions.eq_refl.
+Defined.
 Instance: KnownConstant Ascii.Ascii := {}. (* only needed when rel_iso is typeclasses opaque *)
 Instance: KnownConstant Imported.Ascii_ascii_Ascii := {}. (* only needed when rel_iso is typeclasses opaque *)
 Instance: IsoStatementProofFor Ascii.Ascii Ascii_Ascii_iso := {}.

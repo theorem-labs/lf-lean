@@ -1,18 +1,16 @@
 From IsomorphismChecker Require Import AutomationDefinitions IsomorphismStatementAutomationDefinitions EqualityLemmas IsomorphismDefinitions.
 Import IsoEq.
 From LeanImport Require Import Lean.
-#[local] Set Universe Polymorphism.
+#[local] Unset Universe Polymorphism.
 #[local] Set Implicit Arguments.
 From IsomorphismChecker Require Original Imported.
 (* Print Imported. *)
-
+(* Typeclasses Opaque rel_iso. *) (* for speed *)
 
 
 From IsomorphismChecker Require Export Isomorphisms.U_string__string__iso.
 
-(* total_map A = string -> A, imported_total_map A = String_string -> A *)
-Definition imported_Original_LF__DOT__Maps_LF_Maps_total__map : Type -> Type := Imported.Original_LF__DOT__Maps_LF_Maps_total__map.
-
+Definition imported_Original_LF__DOT__Maps_LF_Maps_total__map : Type -> Type := fun x2 : Type => imported_String_string -> x2.
 Instance Original_LF__DOT__Maps_LF_Maps_total__map_iso : forall x1 x2 : Type, Iso x1 x2 -> Iso (Original.LF_DOT_Maps.LF.Maps.total_map x1) (imported_Original_LF__DOT__Maps_LF_Maps_total__map x2)
   := fun (x1 x2 : Type) (hx : Iso x1 x2) => IsoArrow String_string_iso hx.
 

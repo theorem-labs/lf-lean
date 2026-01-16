@@ -19,7 +19,7 @@ Proof.
   constructor. simpl.
   unfold imported_Original_LF__DOT__IndProp_LF_IndProp_Star.
   exact (IsoEq.f_equal (Imported.Original_LF__DOT__IndProp_LF_IndProp_reg__exp_Star x2) (proj_rel_iso H34)).
-Qed.
+Defined.
 Instance: KnownConstant (@Original.LF_DOT_IndProp.LF.IndProp.Star) := {}. (* only needed when rel_iso is typeclasses opaque *)
 Instance: KnownConstant (@Imported.Original_LF__DOT__IndProp_LF_IndProp_Star) := {}. (* only needed when rel_iso is typeclasses opaque *)
 Instance: IsoStatementProofFor (@Original.LF_DOT_IndProp.LF.IndProp.Star) Original_LF__DOT__IndProp_LF_IndProp_Star_iso := {}.

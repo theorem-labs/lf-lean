@@ -375,7 +375,7 @@ Proof.
   apply (eq_trans (ceval_step_iso_core i st st' (state_rel_to_eq st st' Hst) c)).
   apply (eq_trans (f_equal2 (fun c0 i0 => ceval_step_aux st' c0 i0) Hc Hi)).
   apply (ceval_step_aux_eq i' st' c').
-Qed.
+Defined.
 
 Instance: KnownConstant Original.LF_DOT_ImpCEvalFun.LF.ImpCEvalFun.ceval_step := {}.
 Instance: KnownConstant Imported.Original_LF__DOT__ImpCEvalFun_LF_ImpCEvalFun_ceval__step := {}.

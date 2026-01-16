@@ -4,7 +4,6 @@ Import IsoEq.
 #[local] Set Implicit Arguments.
 From IsomorphismChecker Require Original.
 From IsomorphismChecker Require Imported.
-(* (* (* Typeclasses Opaque rel_iso. *) *) *)
 
 (* Import the Prop variant *)
 From IsomorphismChecker Require Export Isomorphisms.U_corelib__U_init__U_logic__eq__iso__U_prop.

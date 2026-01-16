@@ -1,48 +1,49 @@
 From IsomorphismChecker Require Import AutomationDefinitions IsomorphismStatementAutomationDefinitions EqualityLemmas IsomorphismDefinitions.
 Import IsoEq.
 From LeanImport Require Import Lean.
-#[local] Unset Universe Polymorphism.
+#[local] Set Universe Polymorphism.
 #[local] Set Implicit Arguments.
 From IsomorphismChecker Require Original Imported.
 (* Print Imported. *)
-(* Typeclasses Opaque rel_iso. *) (* for speed *)
+(* (* (* Typeclasses Opaque rel_iso. *) *) *) (* for speed *)
 
 
 From IsomorphismChecker Require Export Isomorphisms.U_original__U2_lf_dot_U_basics__U2_lf__U_basics__bool__iso Isomorphisms.nat__iso.
 
-Monomorphic Definition imported_Original_LF__DOT__Basics_LF_Basics_leb : imported_nat -> imported_nat -> imported_Original_LF__DOT__Basics_LF_Basics_bool := Imported.Original_LF__DOT__Basics_LF_Basics_leb.
+Definition imported_Original_LF__DOT__Basics_LF_Basics_leb : imported_nat -> imported_nat -> imported_Original_LF__DOT__Basics_LF_Basics_bool := Imported.Original_LF__DOT__Basics_LF_Basics_leb.
 
-(* Helper: leb commutes with the nat isomorphism *)
-Monomorphic Lemma leb_commutes : forall (n m : nat),
-  IsomorphismDefinitions.eq 
-    (bool_to_imported (Original.LF_DOT_Basics.LF.Basics.leb n m))
-    (Imported.Original_LF__DOT__Basics_LF_Basics_leb (nat_to_imported n) (nat_to_imported m)).
+(* We need to prove that leb is preserved by the isomorphism *)
+(* First, let's prove a computational equivalence *)
+Lemma leb_equiv : forall (n m : nat),
+  bool_to_imported (Original.LF_DOT_Basics.LF.Basics.leb n m) =
+  Imported.Original_LF__DOT__Basics_LF_Basics_leb (nat_to_imported n) (nat_to_imported m).
 Proof.
-  fix IH 1.
+  fix IHn 1.
   intros n m.
-  destruct n as [|n'].
+  destruct n as [|n']; simpl.
   - (* n = 0 *)
-    simpl. apply IsomorphismDefinitions.eq_refl.
+    reflexivity.
   - (* n = S n' *)
-    destruct m as [|m'].
+    destruct m as [|m']; simpl.
     + (* m = 0 *)
-      simpl. apply IsomorphismDefinitions.eq_refl.
+      reflexivity.
     + (* m = S m' *)
-      simpl. apply IH.
-Defined.
+      apply IHn.
+Qed.
 
-Monomorphic Instance Original_LF__DOT__Basics_LF_Basics_leb_iso : forall (x1 : nat) (x2 : imported_nat),
+Instance Original_LF__DOT__Basics_LF_Basics_leb_iso : forall (x1 : nat) (x2 : imported_nat),
   rel_iso nat_iso x1 x2 ->
   forall (x3 : nat) (x4 : imported_nat),
   rel_iso nat_iso x3 x4 -> rel_iso Original_LF__DOT__Basics_LF_Basics_bool_iso (Original.LF_DOT_Basics.LF.Basics.leb x1 x3) (imported_Original_LF__DOT__Basics_LF_Basics_leb x2 x4).
 Proof.
   intros x1 x2 H12 x3 x4 H34.
-  destruct H12 as [H12]. destruct H34 as [H34]. simpl in *.
-  constructor. simpl.
-  apply eq_of_seq in H12. apply eq_of_seq in H34.
-  subst x2 x4.
-  apply leb_commutes.
+  destruct H12 as [H12]. destruct H34 as [H34].
+  constructor. simpl in *.
+  eapply eq_trans.
+  - apply seq_of_eq. apply leb_equiv.
+  - apply f_equal2; assumption.
 Defined.
+
 Instance: KnownConstant Original.LF_DOT_Basics.LF.Basics.leb := {}. (* only needed when rel_iso is typeclasses opaque *)
 Instance: KnownConstant Imported.Original_LF__DOT__Basics_LF_Basics_leb := {}. (* only needed when rel_iso is typeclasses opaque *)
 Instance: IsoStatementProofFor Original.LF_DOT_Basics.LF.Basics.leb Original_LF__DOT__Basics_LF_Basics_leb_iso := {}.

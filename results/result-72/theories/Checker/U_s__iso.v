@@ -10,7 +10,7 @@ Module Type Args <: Interface.U_s__iso.Args := Checker.nat__iso.Args <+ Checker.
 #[global] Strategy -1 [ Isomorphisms.U_s__iso.imported_S Isomorphisms.U_s__iso.S_iso ].
 
 Module Checker (Import args : Args) <: Interface.U_s__iso.Interface args
-  with Definition imported_S := Imported.S.
+  with Definition imported_S := Imported.nat_S.
 
 Definition imported_S := Isomorphisms.U_s__iso.imported_S.
 Definition S_iso := Isomorphisms.U_s__iso.S_iso.

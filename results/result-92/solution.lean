@@ -420,6 +420,10 @@ def Original_LF__DOT__Imp_LF_Imp_s__compile1 :
               (list.cons Original_LF__DOT__Imp_LF_Imp_sinstr.SMinus list.nil))))) :=
   Corelib_Init_Logic_eq.refl _
 
+-- s_execute axiom (admitted in Original.v)
+axiom Original_LF__DOT__Imp_LF_Imp_s__execute :
+  Original_LF__DOT__Imp_LF_Imp_state → list nat → list Original_LF__DOT__Imp_LF_Imp_sinstr → list nat
+
 -- aeval: evaluates arithmetic expression in a state
 def Original_LF__DOT__Imp_LF_Imp_aeval (st : Original_LF__DOT__Imp_LF_Imp_state) : Original_LF__DOT__Imp_LF_Imp_aexp → nat
   | Original_LF__DOT__Imp_LF_Imp_aexp.ANum n => n
@@ -428,59 +432,26 @@ def Original_LF__DOT__Imp_LF_Imp_aeval (st : Original_LF__DOT__Imp_LF_Imp_state)
   | Original_LF__DOT__Imp_LF_Imp_aexp.AMinus a1 a2 => nat_sub (Original_LF__DOT__Imp_LF_Imp_aeval st a1) (Original_LF__DOT__Imp_LF_Imp_aeval st a2)
   | Original_LF__DOT__Imp_LF_Imp_aexp.AMult a1 a2 => nat_mul (Original_LF__DOT__Imp_LF_Imp_aeval st a1) (Original_LF__DOT__Imp_LF_Imp_aeval st a2)
 
--- s_execute: executes stack machine program
-def Original_LF__DOT__Imp_LF_Imp_s__execute (st : Original_LF__DOT__Imp_LF_Imp_state) : list nat → list Original_LF__DOT__Imp_LF_Imp_sinstr → list nat
-  | stack, list.nil => stack
-  | stack, list.cons i prog =>
-    let newstack := match i, stack with
-      | Original_LF__DOT__Imp_LF_Imp_sinstr.SPush n, _ => list.cons n stack
-      | Original_LF__DOT__Imp_LF_Imp_sinstr.SLoad x, _ => list.cons (st x) stack
-      | Original_LF__DOT__Imp_LF_Imp_sinstr.SPlus, list.cons n1 (list.cons n2 rest) => list.cons (nat_add n2 n1) rest
-      | Original_LF__DOT__Imp_LF_Imp_sinstr.SMinus, list.cons n1 (list.cons n2 rest) => list.cons (nat_sub n2 n1) rest
-      | Original_LF__DOT__Imp_LF_Imp_sinstr.SMult, list.cons n1 (list.cons n2 rest) => list.cons (nat_mul n2 n1) rest
-      | _, _ => stack  -- underflow case: leave stack unchanged
-    Original_LF__DOT__Imp_LF_Imp_s__execute st newstack prog
-
--- s_execute1: Example s_execute1 := s_execute empty_st [] [SPush 5; SPush 3; SPush 1; SMinus] = [2; 5].
-def Original_LF__DOT__Imp_LF_Imp_s__execute1 :
-  @Corelib_Init_Logic_eq (list nat)
-    (Original_LF__DOT__Imp_LF_Imp_s__execute
-       Original_LF__DOT__Imp_LF_Imp_empty__st
-       list.nil
-       (list.cons (Original_LF__DOT__Imp_LF_Imp_sinstr.SPush (nat.S (nat.S (nat.S (nat.S (nat.S nat.O))))))
-          (list.cons (Original_LF__DOT__Imp_LF_Imp_sinstr.SPush (nat.S (nat.S (nat.S nat.O))))
-             (list.cons (Original_LF__DOT__Imp_LF_Imp_sinstr.SPush (nat.S nat.O))
-                (list.cons Original_LF__DOT__Imp_LF_Imp_sinstr.SMinus list.nil)))))
-    (list.cons (nat.S (nat.S nat.O))
-       (list.cons (nat.S (nat.S (nat.S (nat.S (nat.S nat.O))))) list.nil)) :=
-  Corelib_Init_Logic_eq.refl _
-
 -- s_execute2: Example s_execute2 := s_execute (X !-> 3) [3;4] [SPush 4; SLoad X; SMult; SPlus] = [15; 4].
-def Original_LF__DOT__Imp_LF_Imp_s__execute2 :
+-- This is admitted in Original.v
+-- Note: Using eta-expansion to match Interface expected form
+axiom Original_LF__DOT__Imp_LF_Imp_s__execute2 :
   @Corelib_Init_Logic_eq (list nat)
     (Original_LF__DOT__Imp_LF_Imp_s__execute
-       (Original_LF__DOT__Maps_LF_Maps_t__update Original_LF__DOT__Imp_LF_Imp_empty__st Original_LF__DOT__Imp_LF_Imp_X (nat.S (nat.S (nat.S nat.O))))
+       (fun x => Original_LF__DOT__Maps_LF_Maps_t__update (fun x0 => Original_LF__DOT__Imp_LF_Imp_empty__st x0) Original_LF__DOT__Imp_LF_Imp_X (nat.S (nat.S (nat.S nat.O))) x)
        (list.cons (nat.S (nat.S (nat.S nat.O))) (list.cons (nat.S (nat.S (nat.S (nat.S nat.O)))) list.nil))
        (list.cons (Original_LF__DOT__Imp_LF_Imp_sinstr.SPush (nat.S (nat.S (nat.S (nat.S nat.O)))))
           (list.cons (Original_LF__DOT__Imp_LF_Imp_sinstr.SLoad Original_LF__DOT__Imp_LF_Imp_X)
              (list.cons Original_LF__DOT__Imp_LF_Imp_sinstr.SMult
                 (list.cons Original_LF__DOT__Imp_LF_Imp_sinstr.SPlus list.nil)))))
     (list.cons (nat.S (nat.S (nat.S (nat.S (nat.S (nat.S (nat.S (nat.S (nat.S (nat.S (nat.S (nat.S (nat.S (nat.S (nat.S nat.O)))))))))))))))
-       (list.cons (nat.S (nat.S (nat.S (nat.S nat.O)))) list.nil)) :=
-  Corelib_Init_Logic_eq.refl _
+       (list.cons (nat.S (nat.S (nat.S (nat.S nat.O)))) list.nil))
 
--- execute_app: Theorem execute_app : forall st p1 p2 stack, s_execute st stack (p1 ++ p2) = s_execute st (s_execute st stack p1) p2.
+-- s_compile_correct_aux: Lemma s_compile_correct_aux : forall st e stack,
+--   s_execute st stack (s_compile e) = aeval st e :: stack.
 -- This is admitted in Original.v
-axiom Original_LF__DOT__Imp_LF_Imp_execute__app :
-  ∀ (st : Original_LF__DOT__Imp_LF_Imp_state) (p1 p2 : list Original_LF__DOT__Imp_LF_Imp_sinstr) (stack : list nat),
-    @Corelib_Init_Logic_eq (list nat)
-      (Original_LF__DOT__Imp_LF_Imp_s__execute st stack (app Original_LF__DOT__Imp_LF_Imp_sinstr p1 p2))
-      (Original_LF__DOT__Imp_LF_Imp_s__execute st (Original_LF__DOT__Imp_LF_Imp_s__execute st stack p1) p2)
-
--- s_compile_correct: Theorem s_compile_correct : forall (st : state) (e : aexp), s_execute st [] (s_compile e) = [ aeval st e ].
--- This is admitted in Original.v
-axiom Original_LF__DOT__Imp_LF_Imp_s__compile__correct :
-  ∀ (st : Original_LF__DOT__Imp_LF_Imp_state) (e : Original_LF__DOT__Imp_LF_Imp_aexp),
-    @Corelib_Init_Logic_eq (list nat)
-      (Original_LF__DOT__Imp_LF_Imp_s__execute st list.nil (Original_LF__DOT__Imp_LF_Imp_s__compile e))
-      (list.cons (Original_LF__DOT__Imp_LF_Imp_aeval st e) list.nil)
+axiom Original_LF__DOT__Imp_LF_Imp_s__compile__correct__aux :
+  ∀ (st : Original_LF__DOT__Imp_LF_Imp_state) (e : Original_LF__DOT__Imp_LF_Imp_aexp) (stack : list nat),
+  @Corelib_Init_Logic_eq (list nat)
+    (Original_LF__DOT__Imp_LF_Imp_s__execute st stack (Original_LF__DOT__Imp_LF_Imp_s__compile e))
+    (list.cons (Original_LF__DOT__Imp_LF_Imp_aeval st e) stack)

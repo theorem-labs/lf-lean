@@ -9,7 +9,7 @@ Module Type Args <: Interface.bool__iso.Args. End Args.
 #[global] Strategy -1 [ Isomorphisms.bool__iso.imported_bool Isomorphisms.bool__iso.bool_iso ].
 
 Module Checker (Import args : Args) <: Interface.bool__iso.Interface args
-  with Definition imported_bool := Imported.mybool.
+  with Definition imported_bool := Imported.Coqbool.
 
 Definition imported_bool := Isomorphisms.bool__iso.imported_bool.
 Definition bool_iso := Isomorphisms.bool__iso.bool_iso.

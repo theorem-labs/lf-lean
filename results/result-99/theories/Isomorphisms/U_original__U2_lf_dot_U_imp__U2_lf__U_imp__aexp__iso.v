@@ -1,7 +1,7 @@
 From IsomorphismChecker Require Import AutomationDefinitions IsomorphismStatementAutomationDefinitions EqualityLemmas IsomorphismDefinitions.
 Import IsoEq.
 From LeanImport Require Import Lean.
-#[local] Set Universe Polymorphism.
+#[local] Unset Universe Polymorphism.
 #[local] Set Implicit Arguments.
 From IsomorphismChecker Require Original Imported.
 (* Print Imported. *)
@@ -41,7 +41,7 @@ Proof.
   - apply (f_equal2 Imported.Original_LF__DOT__Imp_LF_Imp_aexp_APlus (IH a1) (IH a2)).
   - apply (f_equal2 Imported.Original_LF__DOT__Imp_LF_Imp_aexp_AMinus (IH a1) (IH a2)).
   - apply (f_equal2 Imported.Original_LF__DOT__Imp_LF_Imp_aexp_AMult (IH a1) (IH a2)).
-Defined.
+Qed.
 
 Lemma aexp_from_to : forall x : Original.LF_DOT_Imp.LF.Imp.aexp,
   IsomorphismDefinitions.eq (imported_to_aexp (aexp_to_imported x)) x.
@@ -52,7 +52,7 @@ Proof.
   - apply (f_equal2 Original.LF_DOT_Imp.LF.Imp.APlus (IH x1) (IH x2)).
   - apply (f_equal2 Original.LF_DOT_Imp.LF.Imp.AMinus (IH x1) (IH x2)).
   - apply (f_equal2 Original.LF_DOT_Imp.LF.Imp.AMult (IH x1) (IH x2)).
-Defined.
+Qed.
 
 Instance Original_LF__DOT__Imp_LF_Imp_aexp_iso : Iso Original.LF_DOT_Imp.LF.Imp.aexp imported_Original_LF__DOT__Imp_LF_Imp_aexp := {|
   to := aexp_to_imported;

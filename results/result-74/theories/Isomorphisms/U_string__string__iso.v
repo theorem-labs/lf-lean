@@ -1,44 +1,43 @@
 From IsomorphismChecker Require Import AutomationDefinitions IsomorphismStatementAutomationDefinitions EqualityLemmas IsomorphismDefinitions.
 Import IsoEq.
 From LeanImport Require Import Lean.
-#[local] Unset Universe Polymorphism.
+#[local] Set Universe Polymorphism.
 #[local] Set Implicit Arguments.
 From IsomorphismChecker Require Original Imported.
 (* Print Imported. *)
-(* Typeclasses Opaque rel_iso. *) (* for speed *)
 
 
-Monomorphic Definition imported_String_string : Type := Imported.String_string.
+Definition imported_String_string : Type := Imported.String_string.
 
 (* Bool isomorphism *)
-Monomorphic Definition mybool_to (b : bool) : Imported.mybool :=
+Definition mybool_to (b : bool) : Imported.Stdlib_bool :=
   match b with
-  | true => Imported.mybool_mytrue
-  | false => Imported.mybool_myfalse
+  | true => Imported.Stdlib_bool_true
+  | false => Imported.Stdlib_bool_false
   end.
 
-Monomorphic Definition mybool_from (b : Imported.mybool) : bool :=
+Definition mybool_from (b : Imported.Stdlib_bool) : bool :=
   match b with
-  | Imported.mybool_mytrue => true
-  | Imported.mybool_myfalse => false
+  | Imported.Stdlib_bool_true => true
+  | Imported.Stdlib_bool_false => false
   end.
 
 (* Ascii isomorphism *)
-Monomorphic Definition ascii_to (a : Ascii.ascii) : Imported.Ascii_ascii :=
+Definition ascii_to (a : Ascii.ascii) : Imported.Ascii_ascii :=
   match a with
   | Ascii.Ascii b0 b1 b2 b3 b4 b5 b6 b7 =>
     Imported.Ascii_ascii_Ascii (mybool_to b0) (mybool_to b1) (mybool_to b2) (mybool_to b3)
                                (mybool_to b4) (mybool_to b5) (mybool_to b6) (mybool_to b7)
   end.
 
-Monomorphic Definition ascii_from (a : Imported.Ascii_ascii) : Ascii.ascii :=
+Definition ascii_from (a : Imported.Ascii_ascii) : Ascii.ascii :=
   match a with
   | Imported.Ascii_ascii_Ascii b0 b1 b2 b3 b4 b5 b6 b7 =>
     Ascii.Ascii (mybool_from b0) (mybool_from b1) (mybool_from b2) (mybool_from b3)
                 (mybool_from b4) (mybool_from b5) (mybool_from b6) (mybool_from b7)
   end.
 
-Monomorphic Instance String_string_iso : Iso String.string imported_String_string.
+Instance String_string_iso : Iso String.string imported_String_string.
 Proof.
   exists (fix f (s : String.string) : imported_String_string :=
             match s with

@@ -16,13 +16,13 @@ Definition imported_Original_LF__DOT__Auto_LF_Auto_Repeat_ceval : imported_Origi
 
 Lemma rel_iso_to_eq : forall (A B : Type) (i : Iso A B) (x : A) (y : B),
   rel_iso i x y -> to i x = y.
-Proof. intros. destruct H as [H]. destruct H. reflexivity. Defined.
+Proof. intros. destruct H as [H]. destruct H. reflexivity. Qed.
 
 Lemma seq_to_eq : forall (A : Type) (x y : A), IsomorphismDefinitions.eq x y -> x = y.
-Proof. intros A x y H. destruct H. reflexivity. Defined.
+Proof. intros A x y H. destruct H. reflexivity. Qed.
 
-Lemma Imported_Eq_to_eq : forall (A : Type) (a b : A), Imported.Eq A a b -> a = b.
-Proof. intros A a b H. destruct H. reflexivity. Defined.
+Lemma Imported_Corelib_Init_Logic_eq_to_eq : forall (A : Type) (a b : A), Imported.Corelib_Init_Logic_eq A a b -> a = b.
+Proof. intros A a b H. destruct H. reflexivity. Qed.
 
 Definition state_to_imported (st : Original.LF_DOT_Imp.LF.Imp.state) : imported_String_string -> imported_nat :=
   fun s => to nat_iso (st (from String_string_iso s)).
@@ -80,6 +80,7 @@ Proof.
   pose proof (@Original_LF__DOT__Imp_LF_Imp_beval_iso st (state_to_imported st) (state_rel st)
                b (bexp_to_imported b) IsomorphismDefinitions.eq_refl) as H.
   destruct H as [H]. simpl in H. rewrite Hb in H.
+  unfold imported_Original_LF__DOT__Imp_LF_Imp_beval in H.
   apply eq_sym. exact H.
 Defined.
 
@@ -94,6 +95,7 @@ Proof.
   pose proof (@Original_LF__DOT__Imp_LF_Imp_beval_iso st (state_to_imported st) (state_rel st)
                b (bexp_to_imported b) IsomorphismDefinitions.eq_refl) as H.
   destruct H as [H]. simpl in H. rewrite Hb in H.
+  unfold imported_Original_LF__DOT__Imp_LF_Imp_beval in H.
   apply eq_sym. exact H.
 Defined.
 
@@ -352,8 +354,8 @@ Proof.
     destruct c_orig; try discriminate.
     injection Heq_c as Heq_x Heq_a.
     apply sinhabits.
-    match goal with H : Imported.Eq _ _ _ |- _ => rename H into e end.
-    apply Imported_Eq_to_eq in e.
+    match goal with H : Imported.Corelib_Init_Logic_eq _ _ _ |- _ => rename H into e end.
+    apply Imported_Corelib_Init_Logic_eq_to_eq in e.
     rewrite Heq_a in e.
     pose proof (t_update_translate st_orig x0 (Original.LF_DOT_Imp.LF.Imp.aeval st_orig a0)) as Ht_update.
     pose proof (fun y' => Logic.f_equal (fun f => f y') Ht_update) as Hpt.
@@ -418,9 +420,9 @@ Proof.
     destruct c_orig; try discriminate.
     injection Heq_c as Heq_b Heq_c1 Heq_c2.
     apply sinhabits.
-    match goal with H : Imported.Eq _ _ _ |- _ => rename H into Hcond end.
+    match goal with H : Imported.Corelib_Init_Logic_eq _ _ _ |- _ => rename H into Hcond end.
     rename H into Heval.
-    apply Imported_Eq_to_eq in Hcond.
+    apply Imported_Corelib_Init_Logic_eq_to_eq in Hcond.
     rewrite Heq_st1 in Hcond.
     rewrite Heq_b in Hcond.
     (* pose proof (Original_LF__DOT__Imp_LF_Imp_beval_iso) as Hbeval.
@@ -439,9 +441,9 @@ Proof.
     destruct c_orig; try discriminate.
     injection Heq_c as Heq_b Heq_c1 Heq_c2.
     apply sinhabits.
-    match goal with H : Imported.Eq _ _ _ |- _ => rename H into Hcond end.
+    match goal with H : Imported.Corelib_Init_Logic_eq _ _ _ |- _ => rename H into Hcond end.
     rename H into Heval.
-    apply Imported_Eq_to_eq in Hcond.
+    apply Imported_Corelib_Init_Logic_eq_to_eq in Hcond.
     rewrite Heq_st1 in Hcond.
     rewrite Heq_b in Hcond.
     pose proof (beval_compat st_orig b0) as Hcompat.
@@ -456,8 +458,8 @@ Proof.
     destruct c_orig; try discriminate.
     injection Heq_c as Heq_b Heq_c.
     apply sinhabits.
-    match goal with H : Imported.Eq _ _ _ |- _ => rename H into Hcond end.
-    apply Imported_Eq_to_eq in Hcond.
+    match goal with H : Imported.Corelib_Init_Logic_eq _ _ _ |- _ => rename H into Hcond end.
+    apply Imported_Corelib_Init_Logic_eq_to_eq in Hcond.
     rewrite Heq_st1 in Hcond.
     rewrite Heq_b in Hcond.
     pose proof (beval_compat st_orig b0) as Hcompat.
@@ -481,9 +483,9 @@ Proof.
       - apply to_from.
       - apply f_equal. apply to_from. }
     symmetry in Heq_st_mid.
-    match goal with H : Imported.Eq _ _ _ |- _ => rename H into Hcond end.
+    match goal with H : Imported.Corelib_Init_Logic_eq _ _ _ |- _ => rename H into Hcond end.
     rename H into Heval.
-    apply Imported_Eq_to_eq in Hcond.
+    apply Imported_Corelib_Init_Logic_eq_to_eq in Hcond.
     rewrite Heq_st1 in Hcond.
     rewrite Heq_b in Hcond.
     pose proof (beval_compat st_orig b0) as Hcompat.
@@ -507,7 +509,7 @@ Proof.
     destruct c_orig; try discriminate.
     injection Heq_c as Heq_c Heq_b.
     apply sinhabits.
-    match goal with H : Imported.Eq _ _ _ |- _ => rename H into Hcond end.
+    match goal with H : Imported.Corelib_Init_Logic_eq _ _ _ |- _ => rename H into Hcond end.
     pose (st_mid := fun x => from nat_iso (st' (to String_string_iso x))).
     assert (Heq_st_mid: state_to_imported st_mid = st').
     { apply eq_of_seq. apply functional_extensionality. intro x'.
@@ -517,7 +519,7 @@ Proof.
       - apply f_equal. apply to_from. }
     symmetry in Heq_st_mid.
     specialize (IH c st st' H c_orig st_orig st_mid Heq_c Heq_st1 Heq_st_mid).
-    apply Imported_Eq_to_eq in Hcond.
+    apply Imported_Corelib_Init_Logic_eq_to_eq in Hcond.
     rewrite Heq_st_mid in Hcond.
     rewrite Heq_b in Hcond.
     pose proof (beval_compat st_mid b0) as Hcompat.
@@ -534,7 +536,7 @@ Proof.
     destruct c_orig; try discriminate.
     injection Heq_c as Heq_c Heq_b.
     apply sinhabits.
-    match goal with H : Imported.Eq _ _ _ |- _ => rename H into Hcond end.
+    match goal with H : Imported.Corelib_Init_Logic_eq _ _ _ |- _ => rename H into Hcond end.
     pose (st_mid := fun x => from nat_iso (st' (to String_string_iso x))).
     assert (Heq_st_mid: state_to_imported st_mid = st').
     { apply eq_of_seq. apply functional_extensionality. intro x'.
@@ -544,7 +546,7 @@ Proof.
       - apply f_equal. apply to_from. }
     symmetry in Heq_st_mid.
     specialize (IH c st st' H c_orig st_orig st_mid Heq_c Heq_st1 Heq_st_mid) as IH1.
-    apply Imported_Eq_to_eq in Hcond.
+    apply Imported_Corelib_Init_Logic_eq_to_eq in Hcond.
     rewrite Heq_st_mid in Hcond.
     rewrite Heq_b in Hcond.
     pose proof (beval_compat st_mid b0) as Hcompat.

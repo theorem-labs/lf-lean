@@ -19,7 +19,7 @@ Proof.
   unfold imported_Original_LF__DOT__IndProp_LF_IndProp_EmptySet.
   unfold Imported.Original_LF__DOT__IndProp_LF_IndProp_EmptySet.
   apply IsomorphismDefinitions.eq_refl.
-Qed.
+Defined.
 Instance: KnownConstant (@Original.LF_DOT_IndProp.LF.IndProp.EmptySet) := {}. (* only needed when rel_iso is typeclasses opaque *)
 Instance: KnownConstant (@Imported.Original_LF__DOT__IndProp_LF_IndProp_EmptySet) := {}. (* only needed when rel_iso is typeclasses opaque *)
 Instance: IsoStatementProofFor (@Original.LF_DOT_IndProp.LF.IndProp.EmptySet) Original_LF__DOT__IndProp_LF_IndProp_EmptySet_iso := {}.

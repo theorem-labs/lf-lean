@@ -61,7 +61,7 @@ Proof.
     pattern (Imported.Original_LF__DOT__ImpCEvalFun_LF_ImpCEvalFun_ceval__step x2 x4 Imported.nat500).
     rewrite <- Hceval. simpl.
     apply IsomorphismDefinitions.eq_refl.
-Qed.
+Defined.
 
 Instance: KnownConstant Original.LF_DOT_ImpCEvalFun.LF.ImpCEvalFun.test_ceval := {}. (* only needed when rel_iso is typeclasses opaque *)
 Instance: KnownConstant Imported.Original_LF__DOT__ImpCEvalFun_LF_ImpCEvalFun_test__ceval := {}. (* only needed when rel_iso is typeclasses opaque *)

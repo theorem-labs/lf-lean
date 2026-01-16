@@ -4,11 +4,14 @@ From LeanImport Require Import Lean.
 #[local] Unset Universe Polymorphism.
 #[local] Set Implicit Arguments.
 From IsomorphismChecker Require Original Imported.
-(* Print Imported. *)
-#[local] Set Printing Coercions.
 
+Local Notation "5" := (S (S (S (S (S O))))) : nat_scope.
+Local Notation "2" := (S (S O)) : nat_scope.
+Local Notation "1" := (S O) : nat_scope.
+Local Notation "0" := O : nat_scope.
+Local Open Scope nat_scope.
 
-From IsomorphismChecker Require Export Isomorphisms.U_corelib__U_init__U_logic__eq__iso Isomorphisms.U_original__U2_lf_dot_U_maps__U2_lf__U_maps__t____update__iso Isomorphisms.__0__iso Isomorphisms.U_ascii__U_ascii__iso Isomorphisms.U_original__U2_lf_dot_U_imp__U2_lf__U_imp__U2_aid__iso Isomorphisms.U_original__U2_lf_dot_U_imp__U2_lf__U_imp__U2_anum__iso Isomorphisms.U_original__U2_lf_dot_U_imp__U2_lf__U_imp__U2_band__iso Isomorphisms.U_original__U2_lf_dot_U_imp__U2_lf__U_imp__U2_ble__iso Isomorphisms.U_original__U2_lf_dot_U_imp__U2_lf__U_imp__U2_bnot__iso Isomorphisms.U_original__U2_lf_dot_U_imp__U2_lf__U_imp__U2_btrue__iso Isomorphisms.U_original__U2_lf_dot_U_imp__U2_lf__U_imp__U_x__iso Isomorphisms.U_original__U2_lf_dot_U_imp__U2_lf__U_imp__beval__iso Isomorphisms.U_original__U2_lf_dot_U_imp__U2_lf__U_imp__empty____st__iso Isomorphisms.U_s__iso Isomorphisms.U_string__U_emptyU_string__iso Isomorphisms.U_string__U_string__iso Isomorphisms.false__iso Isomorphisms.true__iso.
+From IsomorphismChecker Require Export Isomorphisms.U_corelib__U_init__U_logic__eq__iso Isomorphisms.U_original__U2_lf_dot_U_maps__U2_lf__U_maps__t____update__iso Isomorphisms.__0__iso Isomorphisms.U_original__U2_lf_dot_U_imp__U2_lf__U_imp__U2_aid__iso Isomorphisms.U_original__U2_lf_dot_U_imp__U2_lf__U_imp__U2_anum__iso Isomorphisms.U_original__U2_lf_dot_U_imp__U2_lf__U_imp__U2_band__iso Isomorphisms.U_original__U2_lf_dot_U_imp__U2_lf__U_imp__U2_ble__iso Isomorphisms.U_original__U2_lf_dot_U_imp__U2_lf__U_imp__U2_bnot__iso Isomorphisms.U_original__U2_lf_dot_U_imp__U2_lf__U_imp__U2_btrue__iso Isomorphisms.U_original__U2_lf_dot_U_imp__U2_lf__U_imp__U_x__iso Isomorphisms.U_original__U2_lf_dot_U_imp__U2_lf__U_imp__beval__iso Isomorphisms.U_original__U2_lf_dot_U_imp__U2_lf__U_imp__empty____st__iso Isomorphisms.U_s__iso Isomorphisms.true__iso.
 
 Definition imported_Original_LF__DOT__Imp_LF_Imp_bexp1 : imported_Corelib_Init_Logic_eq
     (imported_Original_LF__DOT__Imp_LF_Imp_beval
@@ -20,6 +23,7 @@ Definition imported_Original_LF__DOT__Imp_LF_Imp_bexp1 : imported_Corelib_Init_L
              (imported_Original_LF__DOT__Imp_LF_Imp_BLe (imported_Original_LF__DOT__Imp_LF_Imp_AId imported_Original_LF__DOT__Imp_LF_Imp_X)
                 (imported_Original_LF__DOT__Imp_LF_Imp_ANum (imported_S (imported_S (imported_S (iterate1 imported_S 1 imported_0)))))))))
     imported_true := Imported.Original_LF__DOT__Imp_LF_Imp_bexp1.
+
 Instance Original_LF__DOT__Imp_LF_Imp_bexp1_iso : rel_iso
     (Corelib_Init_Logic_eq_iso
        (Original_LF__DOT__Imp_LF_Imp_beval_iso (Original.LF_DOT_Maps.LF.Maps.t_update Original.LF_DOT_Imp.LF.Imp.empty_st Original.LF_DOT_Imp.LF.Imp.X 5)
@@ -39,7 +43,8 @@ Instance Original_LF__DOT__Imp_LF_Imp_bexp1_iso : rel_iso
        true_iso)
     Original.LF_DOT_Imp.LF.Imp.bexp1 imported_Original_LF__DOT__Imp_LF_Imp_bexp1.
 Admitted.
-Instance: KnownConstant Original.LF_DOT_Imp.LF.Imp.bexp1 := {}. (* only needed when rel_iso is typeclasses opaque *)
-Instance: KnownConstant Imported.Original_LF__DOT__Imp_LF_Imp_bexp1 := {}. (* only needed when rel_iso is typeclasses opaque *)
+
+Instance: KnownConstant Original.LF_DOT_Imp.LF.Imp.bexp1 := {}.
+Instance: KnownConstant Imported.Original_LF__DOT__Imp_LF_Imp_bexp1 := {}.
 Instance: IsoStatementProofFor Original.LF_DOT_Imp.LF.Imp.bexp1 Original_LF__DOT__Imp_LF_Imp_bexp1_iso := {}.
 Instance: IsoStatementProofBetween Original.LF_DOT_Imp.LF.Imp.bexp1 Imported.Original_LF__DOT__Imp_LF_Imp_bexp1 Original_LF__DOT__Imp_LF_Imp_bexp1_iso := {}.
