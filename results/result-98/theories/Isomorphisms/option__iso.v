@@ -1,7 +1,7 @@
 From IsomorphismChecker Require Import AutomationDefinitions IsomorphismStatementAutomationDefinitions EqualityLemmas IsomorphismDefinitions.
 Import IsoEq.
 From LeanImport Require Import Lean.
-#[local] Set Universe Polymorphism.
+#[local] Unset Universe Polymorphism.
 #[local] Set Implicit Arguments.
 From IsomorphismChecker Require Original Imported.
 (* Print Imported. *)
@@ -29,7 +29,7 @@ Proof.
   intros o. destruct o as [|a].
   - (* Imported.option_None *) simpl. exact IsomorphismDefinitions.eq_refl.
   - (* Imported.option_Some *) simpl. exact (IsoEq.f_equal (Imported.option_Some B) (fg a)).
-Defined.
+Qed.
 
 Lemma option_from_to {A B : Type} (f : A -> B) (g : B -> A)
   (gf : forall x, IsomorphismDefinitions.eq (g (f x)) x) :
@@ -38,7 +38,7 @@ Proof.
   intros o. destruct o as [a|].
   - (* Datatypes.Some *) simpl. exact (IsoEq.f_equal Datatypes.Some (gf a)).
   - (* Datatypes.None *) simpl. exact IsomorphismDefinitions.eq_refl.
-Defined.
+Qed.
 
 Instance option_iso : forall x1 x2 : Type, Iso x1 x2 -> Iso (option x1) (imported_option x2).
 Proof.

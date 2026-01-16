@@ -1,10 +1,10 @@
 From IsomorphismChecker Require Import AutomationDefinitions IsomorphismStatementAutomationDefinitions EqualityLemmas IsomorphismDefinitions.
 Import IsoEq.
 From LeanImport Require Import Lean.
-#[local] Set Universe Polymorphism.
+#[local] Unset Universe Polymorphism.
 #[local] Set Implicit Arguments.
 From IsomorphismChecker Require Original ImportedNames.
-(* Typeclasses Opaque rel_iso. *)
+
 
 Definition imported_Original_LF__DOT__Imp_LF_Imp_BreakImp_com : Type :=
   ImportedNames.imported_Original_LF__DOT__Imp_LF_Imp_BreakImp_com.

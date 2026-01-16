@@ -1,25 +1,31 @@
 From IsomorphismChecker Require Import AutomationDefinitions IsomorphismStatementAutomationDefinitions EqualityLemmas IsomorphismDefinitions.
 Import IsoEq.
 From LeanImport Require Import Lean.
-#[local] Unset Universe Polymorphism.
+#[local] Set Universe Polymorphism.
 #[local] Set Implicit Arguments.
 From IsomorphismChecker Require Original Imported.
 (* Print Imported. *)
-(* Typeclasses Opaque rel_iso. *) (* for speed *)
+(* (* Typeclasses Opaque rel_iso. *) *) (* for speed *)
 
-Definition imported_True : SProp := Imported.True_.
-Definition True_to_imported : Logic.True -> imported_True := fun _ => Imported.True__intro.
-Definition imported_to_True : imported_True -> Logic.True := fun _ => I.
 
-Instance True_iso : (Iso Logic.True imported_True).
+Definition imported_True : SProp := Imported.Exported_True.
+Instance True_iso : (Iso True imported_True).
 Proof.
-  apply Build_Iso with
-    (to := True_to_imported)
-    (from := imported_to_True).
-  - intro x. apply IsomorphismDefinitions.eq_refl.
-  - intro x. destruct x. apply IsomorphismDefinitions.eq_refl.
+  unshelve eapply Build_Iso.
+  - (* to: True -> Imported.Exported_True *)
+    intro H. exact Imported.Exported_True_intro.
+  - (* from: Imported.Exported_True -> True *)
+    intro H. exact Logic.I.
+  - (* to_from: SProp proof irrelevance is automatic *)
+    intro H. 
+    destruct H.
+    apply IsomorphismDefinitions.eq_refl.
+  - (* from_to *)
+    intro H. 
+    destruct H.
+    apply IsomorphismDefinitions.eq_refl.
 Defined.
-Instance: KnownConstant Logic.True := {}. (* only needed when rel_iso is typeclasses opaque *)
-Instance: KnownConstant Imported.True_ := {}. (* only needed when rel_iso is typeclasses opaque *)
-Instance: IsoStatementProofFor Logic.True True_iso := {}.
-Instance: IsoStatementProofBetween Logic.True Imported.True_ True_iso := {}.
+Instance: KnownConstant True := {}. (* only needed when rel_iso is typeclasses opaque *)
+Instance: KnownConstant Imported.Exported_True := {}. (* only needed when rel_iso is typeclasses opaque *)
+Instance: IsoStatementProofFor True True_iso := {}.
+Instance: IsoStatementProofBetween True Imported.Exported_True True_iso := {}.

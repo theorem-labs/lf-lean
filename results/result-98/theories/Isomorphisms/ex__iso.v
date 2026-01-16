@@ -1,7 +1,7 @@
 From IsomorphismChecker Require Import AutomationDefinitions IsomorphismStatementAutomationDefinitions EqualityLemmas IsomorphismDefinitions.
 Import IsoEq.
 From LeanImport Require Import Lean.
-#[local] Set Universe Polymorphism.
+#[local] Unset Universe Polymorphism.
 #[local] Set Implicit Arguments.
 From IsomorphismChecker Require Original Imported.
 (* Print Imported. *)
@@ -18,7 +18,7 @@ Proof.
   destruct Hex as [w Hw].
   apply sinhabits.
   exists (from hx w).
-  assert (Hrel : rel_iso hx (from hx w) w) by (unfold rel_iso; apply (to_from hx w)).
+  assert (Hrel : rel_iso hx (from hx w) w) by (constructor; simpl; apply (to_from hx w)).
   pose proof (H_pred_iso (from hx w) w Hrel) as Hiso_pred.
   exact (from Hiso_pred Hw).
 Defined.

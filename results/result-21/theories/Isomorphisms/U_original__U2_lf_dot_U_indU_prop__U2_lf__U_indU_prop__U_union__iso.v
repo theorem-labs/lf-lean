@@ -5,7 +5,7 @@ From LeanImport Require Import Lean.
 #[local] Set Implicit Arguments.
 From IsomorphismChecker Require Original Imported.
 (* Print Imported. *)
-(* Typeclasses Opaque rel_iso. *) (* for speed *)
+(* (* Typeclasses Opaque rel_iso. *) *) (* for speed *)
 
 
 From IsomorphismChecker Require Export Isomorphisms.U_original__U2_lf_dot_U_indU_prop__U2_lf__U_indU_prop__reg____exp__iso.
@@ -17,11 +17,10 @@ Instance Original_LF__DOT__IndProp_LF_IndProp_Union_iso : forall (x1 x2 : Type) 
   rel_iso (Original_LF__DOT__IndProp_LF_IndProp_reg__exp_iso hx) x5 x6 ->
   rel_iso (Original_LF__DOT__IndProp_LF_IndProp_reg__exp_iso hx) (Original.LF_DOT_IndProp.LF.IndProp.Union x3 x5) (imported_Original_LF__DOT__IndProp_LF_IndProp_Union x4 x6).
 Proof.
-  intros x1 x2 hx x3 x4 h34 x5 x6 h56.
-  simpl in *.
+  intros x1 x2 hx x3 x4 H34 x5 x6 H56.
+  constructor. simpl.
   unfold imported_Original_LF__DOT__IndProp_LF_IndProp_Union.
-  simpl.
-  apply IsoEq.f_equal2; assumption.
+  exact (IsoEq.f_equal2 (Imported.Original_LF__DOT__IndProp_LF_IndProp_reg__exp_Union x2) (proj_rel_iso H34) (proj_rel_iso H56)).
 Defined.
 Instance: KnownConstant (@Original.LF_DOT_IndProp.LF.IndProp.Union) := {}. (* only needed when rel_iso is typeclasses opaque *)
 Instance: KnownConstant (@Imported.Original_LF__DOT__IndProp_LF_IndProp_Union) := {}. (* only needed when rel_iso is typeclasses opaque *)

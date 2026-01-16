@@ -5,7 +5,7 @@ From LeanImport Require Import Lean.
 #[local] Set Implicit Arguments.
 From IsomorphismChecker Require Original Imported.
 (* Print Imported. *)
-(* Typeclasses Opaque rel_iso. *) (* for speed *)
+(* (* (* Typeclasses Opaque rel_iso. *) *) *) (* for speed *)
 
 From IsomorphismChecker Require Export Isomorphisms.U_string__string__iso Isomorphisms.nat__iso.
 
@@ -41,7 +41,7 @@ Proof.
   - apply (f_equal2 Imported.Original_LF__DOT__Imp_LF_Imp_aexp_APlus (IH a1) (IH a2)).
   - apply (f_equal2 Imported.Original_LF__DOT__Imp_LF_Imp_aexp_AMinus (IH a1) (IH a2)).
   - apply (f_equal2 Imported.Original_LF__DOT__Imp_LF_Imp_aexp_AMult (IH a1) (IH a2)).
-Qed.
+Defined.
 
 Lemma aexp_from_to : forall x : Original.LF_DOT_Imp.LF.Imp.aexp,
   IsomorphismDefinitions.eq (imported_to_aexp (aexp_to_imported x)) x.
@@ -52,7 +52,7 @@ Proof.
   - apply (f_equal2 Original.LF_DOT_Imp.LF.Imp.APlus (IH x1) (IH x2)).
   - apply (f_equal2 Original.LF_DOT_Imp.LF.Imp.AMinus (IH x1) (IH x2)).
   - apply (f_equal2 Original.LF_DOT_Imp.LF.Imp.AMult (IH x1) (IH x2)).
-Qed.
+Defined.
 
 Instance Original_LF__DOT__Imp_LF_Imp_aexp_iso : Iso Original.LF_DOT_Imp.LF.Imp.aexp imported_Original_LF__DOT__Imp_LF_Imp_aexp := {|
   to := aexp_to_imported;

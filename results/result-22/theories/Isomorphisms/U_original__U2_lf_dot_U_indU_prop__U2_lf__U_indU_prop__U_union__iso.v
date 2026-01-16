@@ -18,7 +18,7 @@ Instance Original_LF__DOT__IndProp_LF_IndProp_Union_iso : forall (x1 x2 : Type) 
   rel_iso (Original_LF__DOT__IndProp_LF_IndProp_reg__exp_iso hx) (Original.LF_DOT_IndProp.LF.IndProp.Union x3 x5) (imported_Original_LF__DOT__IndProp_LF_IndProp_Union x4 x6).
 Proof.
   intros x1 x2 hx x3 x4 h34 x5 x6 h56.
-  idtac.
+  simpl in *.
   unfold imported_Original_LF__DOT__IndProp_LF_IndProp_Union.
   simpl.
   apply IsoEq.f_equal2; assumption.

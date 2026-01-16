@@ -7,7 +7,7 @@ From IsomorphismChecker Require Original Imported.
 From Stdlib.Strings Require Import String.
 Open Scope string_scope.
 (* Print Imported. *)
-(* Typeclasses Opaque rel_iso. *) (* for speed *)
+
 
 
 From IsomorphismChecker Require Export Isomorphisms.U_string__string__iso Isomorphisms.bool__iso.
@@ -37,8 +37,8 @@ Proof.
   destruct (String.eqb "bar" x1) eqn:Ebar;
   destruct (String.eqb "foo" x1) eqn:Efoo;
   simpl bool_to_coqbool; simpl bool_to_coqbool in Hbar; simpl bool_to_coqbool in Hfoo;
-  try rewrite <- (eq_of_seq (proj_rel_iso Hbar));
-  try rewrite <- (eq_of_seq (proj_rel_iso Hfoo));
+  try rewrite <- (eq_of_seq Hbar);
+  try rewrite <- (eq_of_seq Hfoo);
   reflexivity.
 Qed.
 
@@ -47,8 +47,8 @@ Instance Original_LF__DOT__Maps_LF_Maps_examplemap'_iso : forall (x1 : String.st
   rel_iso String_string_iso x1 x2 -> rel_iso bool_iso (Original.LF_DOT_Maps.LF.Maps.examplemap' x1) (imported_Original_LF__DOT__Maps_LF_Maps_examplemap' x2).
 Proof.
   intros x1 x2 Hx.
-  idtac.
-  pose proof (eq_of_seq (proj_rel_iso Hx)) as Hx'. subst x2.
+  constructor. simpl in *.
+  pose proof (eq_of_seq Hx) as Hx'. subst x2.
   rewrite examplemap'_equiv.
   apply IsomorphismDefinitions.eq_refl.
 Defined.

@@ -36,7 +36,7 @@ Instance Original_LF__DOT__ImpParser_LF_ImpParser_list__of__string_iso : forall 
   rel_iso (list_iso Ascii_ascii_iso) (Original.LF_DOT_ImpParser.LF.ImpParser.list_of_string x1) (imported_Original_LF__DOT__ImpParser_LF_ImpParser_list__of__string x2).
 Proof.
   intros x1 x2 Hx.
-  constructor; simpl in Hx. simpl in Hx.
+  unfold rel_iso in Hx. simpl in Hx.
   apply (IsoEq.eq_srect (fun x2' => rel_iso (list_iso Ascii_ascii_iso) (Original.LF_DOT_ImpParser.LF.ImpParser.list_of_string x1) (imported_Original_LF__DOT__ImpParser_LF_ImpParser_list__of__string x2')) (list_of_string_compat x1) Hx).
 Defined.
 

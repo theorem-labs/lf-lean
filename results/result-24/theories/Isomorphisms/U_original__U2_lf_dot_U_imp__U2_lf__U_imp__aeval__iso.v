@@ -60,7 +60,7 @@ Proof.
 Qed.
 
 Lemma nat_add_i_eq : forall n m : imported_nat,
-  IsomorphismDefinitions.eq (nat_add_i n m) (Imported.Nat_add n m).
+  IsomorphismDefinitions.eq (nat_add_i n m) (Imported.nat_add n m).
 Proof.
   fix IH 1. intros n m. destruct n; simpl.
   - apply IsomorphismDefinitions.eq_refl.
@@ -68,7 +68,7 @@ Proof.
 Qed.
 
 Lemma nat_sub_i_eq : forall n m : imported_nat,
-  IsomorphismDefinitions.eq (nat_sub_i n m) (Imported.Nat_sub n m).
+  IsomorphismDefinitions.eq (nat_sub_i n m) (Imported.nat_sub n m).
 Proof.
   fix IH 1. intros n m. destruct n, m; simpl.
   - apply IsomorphismDefinitions.eq_refl.
@@ -78,12 +78,12 @@ Proof.
 Qed.
 
 Lemma nat_mul_i_eq : forall n m : imported_nat,
-  IsomorphismDefinitions.eq (nat_mul_i n m) (Imported.Nat_mul n m).
+  IsomorphismDefinitions.eq (nat_mul_i n m) (Imported.nat_mul n m).
 Proof.
   fix IH 1. intros n m. destruct n; simpl.
   - apply IsomorphismDefinitions.eq_refl.
   - apply (eq_trans (nat_add_i_eq m (nat_mul_i n m))).
-    apply (f_equal2 Imported.Nat_add IsomorphismDefinitions.eq_refl (IH n m)).
+    apply (f_equal2 Imported.nat_add IsomorphismDefinitions.eq_refl (IH n m)).
 Qed.
 
 (* Helper: our simpler aeval definition *)
@@ -107,11 +107,11 @@ Proof.
   - apply IsomorphismDefinitions.eq_refl.
   - apply IsomorphismDefinitions.eq_refl.
   - apply (eq_trans (nat_add_i_eq _ _)).
-    apply (f_equal2 Imported.Nat_add IH1 IH2).
+    apply (f_equal2 Imported.nat_add IH1 IH2).
   - apply (eq_trans (nat_sub_i_eq _ _)).
-    apply (f_equal2 Imported.Nat_sub IH1 IH2).
+    apply (f_equal2 Imported.nat_sub IH1 IH2).
   - apply (eq_trans (nat_mul_i_eq _ _)).
-    apply (f_equal2 Imported.Nat_mul IH1 IH2).
+    apply (f_equal2 Imported.nat_mul IH1 IH2).
 Qed.
 
 Lemma aeval_iso_core : forall (st : Original.LF_DOT_Imp.LF.Imp.state) (st' : imported_String_string -> imported_nat),
@@ -144,11 +144,11 @@ Instance Original_LF__DOT__Imp_LF_Imp_aeval_iso : forall (x1 : Original.LF_DOT_I
   rel_iso Original_LF__DOT__Imp_LF_Imp_aexp_iso x3 x4 -> rel_iso nat_iso (Original.LF_DOT_Imp.LF.Imp.aeval x1 x3) (imported_Original_LF__DOT__Imp_LF_Imp_aeval x2 x4).
 Proof.
   intros st st' Hst a a' Ha.
-  simpl in Ha; simpl in Ha.
-  simpl; simpl.
+  pose proof (proj_rel_iso Ha) as Ha'. simpl in Ha'.
+  constructor; simpl.
   apply (eq_trans (aeval_iso_core st st' Hst a)).
   apply (eq_trans (aeval_aux_eq st' (aexp_to_imported a))).
-  apply (f_equal (imported_Original_LF__DOT__Imp_LF_Imp_aeval st') Ha).
+  apply (f_equal (imported_Original_LF__DOT__Imp_LF_Imp_aeval st') Ha').
 Qed.
 
 Instance: KnownConstant Original.LF_DOT_Imp.LF.Imp.aeval := {}. (* only needed when rel_iso is typeclasses opaque *)

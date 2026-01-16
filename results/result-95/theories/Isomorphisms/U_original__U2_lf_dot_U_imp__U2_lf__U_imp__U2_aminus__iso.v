@@ -17,12 +17,12 @@ Instance Original_LF__DOT__Imp_LF_Imp_AMinus_iso : forall (x1 : Original.LF_DOT_
   rel_iso Original_LF__DOT__Imp_LF_Imp_aexp_iso x3 x4 -> rel_iso Original_LF__DOT__Imp_LF_Imp_aexp_iso (Original.LF_DOT_Imp.LF.Imp.AMinus x1 x3) (imported_Original_LF__DOT__Imp_LF_Imp_AMinus x2 x4).
 Proof.
   intros x1 x2 H1 x3 x4 H2.
-  pose proof (eq_of_seq (proj_rel_iso H1)) as E1.
-  pose proof (eq_of_seq (proj_rel_iso H2)) as E2.
-  constructor. simpl.
+  idtac.
+  unfold aexp_to_imported.
+  simpl.
   unfold imported_Original_LF__DOT__Imp_LF_Imp_AMinus.
   unfold Imported.Original_LF__DOT__Imp_LF_Imp_AMinus.
-  apply f_equal2; apply seq_of_eq; assumption.
+  apply f_equal2; assumption.
 Defined.
 
 Instance: KnownConstant Original.LF_DOT_Imp.LF.Imp.AMinus := {}. (* only needed when rel_iso is typeclasses opaque *)

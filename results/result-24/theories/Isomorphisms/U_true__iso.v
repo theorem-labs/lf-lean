@@ -7,20 +7,16 @@ From IsomorphismChecker Require Original Imported.
 (* Print Imported. *)
 (* Typeclasses Opaque rel_iso. *) (* for speed *)
 
-Definition imported_True : SProp := Imported.MyTrue.
 
-Definition True_to_imported : Logic.True -> imported_True := fun _ => Imported.MyTrue_intro.
-Definition imported_to_True : imported_True -> Logic.True := fun _ => I.
+Definition imported_True : SProp := Imported.TrueType.
 
 Instance True_iso : (Iso Logic.True imported_True).
 Proof.
-  apply Build_Iso with
-    (to := True_to_imported)
-    (from := imported_to_True).
-  - intro x. exact (Imported.MyTrue_indl (fun y => IsomorphismDefinitions.eq (True_to_imported (imported_to_True y)) y) IsomorphismDefinitions.eq_refl x).
+  exists (fun _ => Imported.TrueType_I) (fun _ => I).
+  - intro x. destruct x. apply IsomorphismDefinitions.eq_refl.
   - intro x. destruct x. apply IsomorphismDefinitions.eq_refl.
 Defined.
 Instance: KnownConstant Logic.True := {}. (* only needed when rel_iso is typeclasses opaque *)
-Instance: KnownConstant Imported.MyTrue := {}. (* only needed when rel_iso is typeclasses opaque *)
+Instance: KnownConstant Imported.TrueType := {}. (* only needed when rel_iso is typeclasses opaque *)
 Instance: IsoStatementProofFor Logic.True True_iso := {}.
-Instance: IsoStatementProofBetween Logic.True Imported.MyTrue True_iso := {}.
+Instance: IsoStatementProofBetween Logic.True Imported.TrueType True_iso := {}.

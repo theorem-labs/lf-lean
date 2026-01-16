@@ -1,7 +1,7 @@
 From IsomorphismChecker Require Import AutomationDefinitions IsomorphismStatementAutomationDefinitions EqualityLemmas IsomorphismDefinitions.
 Import IsoEq.
 From LeanImport Require Import Lean.
-#[local] Unset Universe Polymorphism.
+#[local] Set Universe Polymorphism.
 #[local] Set Implicit Arguments.
 From IsomorphismChecker Require Original Imported.
 (* Print Imported. *)
@@ -10,15 +10,18 @@ From IsomorphismChecker Require Original Imported.
 
 Definition imported_False : SProp := Imported.FalseType.
 
-Definition False_to_imported (f : False) : imported_False := False_sind _ f.
-Definition imported_to_False (f : imported_False) : False := Imported.FalseType_recl (fun _ => False) f.
+(* Build an Iso between False (Prop) and imported_False (SProp) *)
+Definition False_to_imported : Logic.False -> imported_False := fun f => match f return imported_False with end.
+Definition imported_to_False : imported_False -> Logic.False := fun f => Imported.FalseType_recl (fun _ => Logic.False) f.
 
-Instance False_iso : (Iso False imported_False).
+Instance False_iso : (Iso Logic.False imported_False).
 Proof.
-  exists False_to_imported imported_to_False.
-  - intro x. apply IsomorphismDefinitions.eq_refl.
+  refine {| to := False_to_imported;
+            from := imported_to_False |}.
+  - intro x. exact (Imported.FalseType_indl (fun y => IsomorphismDefinitions.eq (False_to_imported (imported_to_False y)) y) x).
   - intro x. destruct x.
 Defined.
+
 Instance: KnownConstant Logic.False := {}. (* only needed when rel_iso is typeclasses opaque *)
 Instance: KnownConstant Imported.FalseType := {}. (* only needed when rel_iso is typeclasses opaque *)
 Instance: IsoStatementProofFor Logic.False False_iso := {}.

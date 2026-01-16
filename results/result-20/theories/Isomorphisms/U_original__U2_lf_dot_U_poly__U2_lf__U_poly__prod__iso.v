@@ -1,11 +1,10 @@
 From IsomorphismChecker Require Import AutomationDefinitions IsomorphismStatementAutomationDefinitions EqualityLemmas IsomorphismDefinitions.
 Import IsoEq.
 From LeanImport Require Import Lean.
-#[local] Unset Universe Polymorphism.
+#[local] Set Universe Polymorphism.
 #[local] Set Implicit Arguments.
 From IsomorphismChecker Require Original Imported.
 (* Print Imported. *)
-(* (* (*  *) *) *) (* for speed *)
 
 
 Definition imported_Original_LF__DOT__Poly_LF_Poly_prod : Type -> Type -> Type := Imported.Original_LF__DOT__Poly_LF_Poly_prod.
@@ -16,7 +15,7 @@ Proof.
   - (* to: Original.prod x1 x3 -> Imported.prod x2 x4 *)
     intro p.
     destruct p as [a b].
-    exact (Imported.Original_LF__DOT__Poly_LF_Poly_prod_mk x2 x4 (to Hx a) (to Hy b)).
+    exact (Imported.Original_LF__DOT__Poly_LF_Poly_prod_pair x2 x4 (to Hx a) (to Hy b)).
   - (* from: Imported.prod x2 x4 -> Original.prod x1 x3 *)
     intro p.
     destruct p as [a b].
@@ -25,7 +24,7 @@ Proof.
     intro p.
     destruct p as [a b].
     simpl.
-    apply (IsoEq.f_equal2 (Imported.Original_LF__DOT__Poly_LF_Poly_prod_mk x2 x4) (to_from Hx a) (to_from Hy b)).
+    apply (IsoEq.f_equal2 (Imported.Original_LF__DOT__Poly_LF_Poly_prod_pair x2 x4) (to_from Hx a) (to_from Hy b)).
   - (* from_to *)
     intro p.
     destruct p as [a b].

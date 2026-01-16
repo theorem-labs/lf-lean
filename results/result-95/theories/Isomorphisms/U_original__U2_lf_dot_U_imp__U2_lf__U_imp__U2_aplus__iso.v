@@ -19,7 +19,7 @@ Proof.
   unfold imported_Original_LF__DOT__Imp_LF_Imp_APlus.
   simpl.
   apply f_equal2; assumption.
-Qed.
+Defined.
 
 Instance: KnownConstant Original.LF_DOT_Imp.LF.Imp.APlus := {}. (* only needed when rel_iso is typeclasses opaque *)
 Instance: KnownConstant Imported.Original_LF__DOT__Imp_LF_Imp_APlus := {}. (* only needed when rel_iso is typeclasses opaque *)

@@ -62,7 +62,7 @@ Lemma option_match_transport : forall (A B : Type) (f : A -> B) (default : B)
     (match o2 with Imported.option_Some _ x => f x | Imported.option_None _ => default end).
 Proof.
   intros. apply (f_equal (fun o => match o with Imported.option_Some _ x => f x | Imported.option_None _ => default end) H).
-Defined.
+Qed.
 
 (* Lemma option_state_match_eq : forall (o1 o2 : imported_option imported_Original_LF__DOT__Imp_LF_Imp_state)
     (f1 f2 : imported_Original_LF__DOT__Imp_LF_Imp_state -> imported_option imported_Original_LF__DOT__Imp_LF_Imp_state)
@@ -177,7 +177,7 @@ Proof.
         -- match goal with | [ st0 : imported_String_string -> imported_nat |- _ ] => rename st0 into st' end.
         apply IHi.
       * reflexivity.
-Defined.
+Qed.
 
 Lemma state_rel_to_eq : forall (st : Original.LF_DOT_Imp.LF.Imp.state) (st' : imported_String_string -> imported_nat),
   (forall (x3 : String.string) (x4 : imported_String_string), rel_iso String_string_iso x3 x4 -> rel_iso nat_iso (st x3) (st' x4)) ->
@@ -191,7 +191,7 @@ Proof.
   specialize (Hst Hrel).
   pose proof (proj_rel_iso Hst) as Hst'. simpl in Hst'.
   exact Hst'.
-Defined.
+Qed.
 
 Lemma state_ext : forall (st1 st2 : imported_String_string -> imported_nat),
   (forall x, IsomorphismDefinitions.eq (st1 x) (st2 x)) ->
@@ -199,7 +199,7 @@ Lemma state_ext : forall (st1 st2 : imported_String_string -> imported_nat),
 Proof.
   intros st1 st2 H.
   apply IsoEq.functional_extensionality_dep. exact H.
-Defined.
+Qed.
 
 Lemma state_to_imported_rel : forall (st : Original.LF_DOT_Imp.LF.Imp.state),
   forall (x : String.string) (x' : imported_String_string),
@@ -216,7 +216,7 @@ Proof.
   rewrite <- Hx'.
   apply eq_sym.
   exact Hft.
-Defined.
+Qed.
 
 (* Core isomorphism lemma - this relates the original ceval_step to ceval_step_aux
    via state_to_imported. The proof requires relating all the sub-operations
@@ -357,7 +357,7 @@ Proof.
           exact Hb. }
         rewrite Eb'.
         simpl. reflexivity.
-Defined.
+Qed.
 
 Instance Original_LF__DOT__ImpCEvalFun_LF_ImpCEvalFun_ceval__step_iso : forall (x1 : Original.LF_DOT_Imp.LF.Imp.state) (x2 : imported_String_string -> imported_nat),
   (forall (x3 : String.string) (x4 : imported_String_string), rel_iso String_string_iso x3 x4 -> rel_iso nat_iso (x1 x3) (x2 x4)) ->
@@ -375,7 +375,7 @@ Proof.
   apply (eq_trans (ceval_step_iso_core i st st' (state_rel_to_eq st st' Hst) c)).
   apply (eq_trans (f_equal2 (fun c0 i0 => ceval_step_aux st' c0 i0) Hc Hi)).
   apply (ceval_step_aux_eq i' st' c').
-Defined.
+Qed.
 
 Instance: KnownConstant Original.LF_DOT_ImpCEvalFun.LF.ImpCEvalFun.ceval_step := {}.
 Instance: KnownConstant Imported.Original_LF__DOT__ImpCEvalFun_LF_ImpCEvalFun_ceval__step := {}.

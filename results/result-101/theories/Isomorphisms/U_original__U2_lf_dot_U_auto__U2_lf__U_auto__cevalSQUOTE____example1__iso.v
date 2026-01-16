@@ -18,14 +18,14 @@ Definition imported_Original_LF__DOT__Auto_LF_Auto_ceval'__example1 : imported_O
              (imported_Original_LF__DOT__Imp_LF_Imp_ANum (imported_S imported_0)))
           (imported_Original_LF__DOT__Auto_LF_Auto_Repeat_CAsgn imported_Original_LF__DOT__Imp_LF_Imp_Y (imported_Original_LF__DOT__Imp_LF_Imp_ANum (imported_S (imported_S (imported_S imported_0)))))
           (imported_Original_LF__DOT__Auto_LF_Auto_Repeat_CAsgn imported_Original_LF__DOT__Imp_LF_Imp_Z
-             (imported_Original_LF__DOT__Imp_LF_Imp_ANum (imported_S (imported_S (imported_S (iterate1 imported_S (S O) imported_0))))))))
+             (imported_Original_LF__DOT__Imp_LF_Imp_ANum (imported_S (imported_S (imported_S (iterate1 imported_S 1 imported_0))))))))
     (fun x : imported_String_string => imported_Original_LF__DOT__Imp_LF_Imp_empty__st x)
     (fun x : imported_String_string =>
      imported_Original_LF__DOT__Maps_LF_Maps_t__update
        (fun x0 : imported_String_string =>
         imported_Original_LF__DOT__Maps_LF_Maps_t__update (fun x1 : imported_String_string => imported_Original_LF__DOT__Imp_LF_Imp_empty__st x1) imported_Original_LF__DOT__Imp_LF_Imp_X
           (imported_S (imported_S imported_0)) x0)
-       imported_Original_LF__DOT__Imp_LF_Imp_Z (imported_S (imported_S (imported_S (iterate1 imported_S (S O) imported_0)))) x) := Imported.Original_LF__DOT__Auto_LF_Auto_ceval'__example1.
+       imported_Original_LF__DOT__Imp_LF_Imp_Z (imported_S (imported_S (imported_S (iterate1 imported_S 1 imported_0)))) x) := Imported.Original_LF__DOT__Auto_LF_Auto_ceval'__example1.
 Instance Original_LF__DOT__Auto_LF_Auto_ceval'__example1_iso : rel_iso
     (Original_LF__DOT__Auto_LF_Auto_Repeat_ceval_iso
        (Original_LF__DOT__Auto_LF_Auto_Repeat_CSeq_iso
@@ -34,19 +34,19 @@ Instance Original_LF__DOT__Auto_LF_Auto_ceval'__example1_iso : rel_iso
              (Original_LF__DOT__Imp_LF_Imp_BLe_iso (Original_LF__DOT__Imp_LF_Imp_AId_iso Original_LF__DOT__Imp_LF_Imp_X_iso) (Original_LF__DOT__Imp_LF_Imp_ANum_iso (S_iso _0_iso)))
              (Original_LF__DOT__Auto_LF_Auto_Repeat_CAsgn_iso Original_LF__DOT__Imp_LF_Imp_Y_iso (Original_LF__DOT__Imp_LF_Imp_ANum_iso (S_iso (S_iso (S_iso _0_iso)))))
              (Original_LF__DOT__Auto_LF_Auto_Repeat_CAsgn_iso Original_LF__DOT__Imp_LF_Imp_Z_iso
-                (Original_LF__DOT__Imp_LF_Imp_ANum_iso (S_iso (S_iso (S_iso (iterate1D2 S imported_S S_iso 1 O imported_0 _0_iso))))))))
+                (Original_LF__DOT__Imp_LF_Imp_ANum_iso (S_iso (S_iso (S_iso (iterate1D2 S imported_S S_iso 1 0 imported_0 _0_iso))))))))
        Original.LF_DOT_Imp.LF.Imp.empty_st (fun x : imported_String_string => imported_Original_LF__DOT__Imp_LF_Imp_empty__st x)
        (fun (x1 : String.string) (x2 : imported_String_string) (hx : rel_iso String_string_iso x1 x2) => Original_LF__DOT__Imp_LF_Imp_empty__st_iso hx)
-       (Original.LF_DOT_Maps.LF.Maps.t_update (Original.LF_DOT_Maps.LF.Maps.t_update Original.LF_DOT_Imp.LF.Imp.empty_st Original.LF_DOT_Imp.LF.Imp.X (S (S O))) Original.LF_DOT_Imp.LF.Imp.Z (S (S (S (S O)))))
+       (Original.LF_DOT_Maps.LF.Maps.t_update (Original.LF_DOT_Maps.LF.Maps.t_update Original.LF_DOT_Imp.LF.Imp.empty_st Original.LF_DOT_Imp.LF.Imp.X 2) Original.LF_DOT_Imp.LF.Imp.Z 4)
        (fun x : imported_String_string =>
         imported_Original_LF__DOT__Maps_LF_Maps_t__update
           (fun x0 : imported_String_string =>
            imported_Original_LF__DOT__Maps_LF_Maps_t__update (fun x1 : imported_String_string => imported_Original_LF__DOT__Imp_LF_Imp_empty__st x1) imported_Original_LF__DOT__Imp_LF_Imp_X
              (imported_S (imported_S imported_0)) x0)
-          imported_Original_LF__DOT__Imp_LF_Imp_Z (imported_S (imported_S (imported_S (iterate1 imported_S (S O) imported_0)))) x)
+          imported_Original_LF__DOT__Imp_LF_Imp_Z (imported_S (imported_S (imported_S (iterate1 imported_S 1 imported_0)))) x)
        (fun (x1 : String.string) (x2 : imported_String_string) (hx : rel_iso String_string_iso x1 x2) =>
         unwrap_sprop
-          (Original_LF__DOT__Maps_LF_Maps_t__update_iso nat_iso (Original.LF_DOT_Maps.LF.Maps.t_update Original.LF_DOT_Imp.LF.Imp.empty_st Original.LF_DOT_Imp.LF.Imp.X (S (S O)))
+          (Original_LF__DOT__Maps_LF_Maps_t__update_iso nat_iso (Original.LF_DOT_Maps.LF.Maps.t_update Original.LF_DOT_Imp.LF.Imp.empty_st Original.LF_DOT_Imp.LF.Imp.X 2)
              (fun x : imported_String_string =>
               imported_Original_LF__DOT__Maps_LF_Maps_t__update (fun x0 : imported_String_string => imported_Original_LF__DOT__Imp_LF_Imp_empty__st x0) imported_Original_LF__DOT__Imp_LF_Imp_X
                 (imported_S (imported_S imported_0)) x)
@@ -56,10 +56,10 @@ Instance Original_LF__DOT__Auto_LF_Auto_ceval'__example1_iso : rel_iso
                   unwrap_sprop
                     (Original_LF__DOT__Maps_LF_Maps_t__update_iso nat_iso Original.LF_DOT_Imp.LF.Imp.empty_st (fun x : imported_String_string => imported_Original_LF__DOT__Imp_LF_Imp_empty__st x)
                        (fun (x5 : String.string) (x6 : imported_String_string) (hx1 : rel_iso String_string_iso x5 x6) => {| unwrap_sprop := Original_LF__DOT__Imp_LF_Imp_empty__st_iso hx1 |})
-                       Original_LF__DOT__Imp_LF_Imp_X_iso (S (S O)) (imported_S (imported_S imported_0)) {| unwrap_sprop := S_iso (S_iso _0_iso) |} hx0)
+                       Original_LF__DOT__Imp_LF_Imp_X_iso 2 (imported_S (imported_S imported_0)) {| unwrap_sprop := S_iso (S_iso _0_iso) |} hx0)
               |})
-             Original_LF__DOT__Imp_LF_Imp_Z_iso (S (S (S (S O)))) (imported_S (imported_S (imported_S (iterate1 imported_S (S O) imported_0))))
-             {| unwrap_sprop := S_iso (S_iso (S_iso (iterate1D2 S imported_S S_iso 1 O imported_0 _0_iso))) |} hx)))
+             Original_LF__DOT__Imp_LF_Imp_Z_iso 4 (imported_S (imported_S (imported_S (iterate1 imported_S 1 imported_0))))
+             {| unwrap_sprop := S_iso (S_iso (S_iso (iterate1D2 S imported_S S_iso 1 0 imported_0 _0_iso))) |} hx)))
     Original.LF_DOT_Auto.LF.Auto.ceval'_example1 imported_Original_LF__DOT__Auto_LF_Auto_ceval'__example1.
 Admitted.
 Instance: KnownConstant Original.LF_DOT_Auto.LF.Auto.ceval'_example1 := {}. (* only needed when rel_iso is typeclasses opaque *)

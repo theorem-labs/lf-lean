@@ -10,7 +10,7 @@ From IsomorphismChecker Require Original Imported.
 
 From IsomorphismChecker Require Export Isomorphisms.nat__iso.
 
-Definition imported_S : imported_nat -> imported_nat := Imported.nat_S.
+Definition imported_S : imported_nat -> imported_nat := Imported.S.
 Instance S_iso : forall (x1 : nat) (x2 : imported_nat), rel_iso nat_iso x1 x2 -> rel_iso nat_iso (S x1) (imported_S x2).
 Proof.
   intros x1 x2 Hrel.
@@ -20,6 +20,6 @@ Proof.
   exact (proj_rel_iso Hrel).
 Defined.
 Instance: KnownConstant S := {}. (* only needed when rel_iso is typeclasses opaque *)
-Instance: KnownConstant Imported.nat_S := {}. (* only needed when rel_iso is typeclasses opaque *)
+Instance: KnownConstant Imported.S := {}. (* only needed when rel_iso is typeclasses opaque *)
 Instance: IsoStatementProofFor S S_iso := {}.
-Instance: IsoStatementProofBetween S Imported.nat_S S_iso := {}.
+Instance: IsoStatementProofBetween S Imported.S S_iso := {}.

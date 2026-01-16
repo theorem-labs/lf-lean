@@ -1,8 +1,8 @@
 {
-  "_0": "nat_O",
-  "True": "MyTrue",
-  "PeanoNat_Nat_add": "PeanoNat_Nat_add",
-  "bool": "Stdlib_bool",
+  "bool": "mybool",
+  "true": "mybool_mytrue",
+  "false": "mybool_myfalse",
   "Ascii_Ascii": "Ascii_ascii_Ascii",
-  "False": "MyFalse"
+  "True": "TrueType",
+  "False": "FalseType"
 }

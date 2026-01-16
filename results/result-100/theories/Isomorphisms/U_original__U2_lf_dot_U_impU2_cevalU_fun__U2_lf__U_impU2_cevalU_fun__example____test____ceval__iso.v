@@ -13,11 +13,10 @@ From IsomorphismChecker Require Export Isomorphisms.U_corelib__U_init__U_logic__
 Definition imported_Original_LF__DOT__ImpCEvalFun_LF_ImpCEvalFun_example__test__ceval :=
   Imported.Original_LF__DOT__ImpCEvalFun_LF_ImpCEvalFun_example__test__ceval.
 
-(* The example_test_ceval is an Admitted theorem in Original.v, meaning we are 
-   translating an axiom. The isomorphism can be Admitted since 
-   Original_LF__DOT__ImpCEvalFun_LF_ImpCEvalFun_example__test__ceval_iso is in the allowed axioms list. *)
-
-(* Use the test_ceval_iso to construct the eq iso *)
+(* The example_test_ceval is an equality proof.
+   The isomorphism uses Corelib_Init_Logic_eq_iso which creates an Iso between 
+   two equality types (Prop -> SProp). We need rel_iso on this iso. *)
+   
 Definition the_eq_iso := 
   Corelib_Init_Logic_eq_iso
     (Original_LF__DOT__ImpCEvalFun_LF_ImpCEvalFun_test__ceval_iso 
@@ -48,7 +47,9 @@ Instance Original_LF__DOT__ImpCEvalFun_LF_ImpCEvalFun_example__test__ceval_iso :
 Proof.
   constructor.
   simpl.
-  (* Both are proofs of equalities in SProp, so any two inhabitants are equal. *)
+  (* to the_eq_iso (Original proof) should equal Imported proof *)
+  (* Both are proofs of equalities, and Imported.Corelib_Init_Logic_eq lives in SProp,
+     so any two inhabitants are equal. *)
   apply IsomorphismDefinitions.eq_refl.
 Qed.
 

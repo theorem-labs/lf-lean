@@ -30,7 +30,7 @@ Instance Original_LF__DOT__ImpParser_LF_ImpParser_classifyChar_iso : forall (x1 
   rel_iso Original_LF__DOT__ImpParser_LF_ImpParser_chartype_iso (Original.LF_DOT_ImpParser.LF.ImpParser.classifyChar x1) (imported_Original_LF__DOT__ImpParser_LF_ImpParser_classifyChar x2).
 Proof.
   intros x1 x2 Hx.
-  pose proof (eq_of_seq (proj_rel_iso Hx1)) as E1. pose proof (eq_of_seq (proj_rel_iso Hx3)) as E3. subst x2 x4.
+  constructor; simpl in Hx. simpl in Hx.
   apply (IsoEq.eq_srect (fun x2' => rel_iso Original_LF__DOT__ImpParser_LF_ImpParser_chartype_iso (Original.LF_DOT_ImpParser.LF.ImpParser.classifyChar x1) (imported_Original_LF__DOT__ImpParser_LF_ImpParser_classifyChar x2')) (classifyChar_compat x1) Hx).
 Defined.
 

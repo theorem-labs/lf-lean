@@ -5,7 +5,7 @@ From LeanImport Require Import Lean.
 #[local] Set Implicit Arguments.
 From IsomorphismChecker Require Original Imported.
 (* Print Imported. *)
-(*Typeclasses Opaque rel_iso.*) (* for speed *)
+(* Typeclasses Opaque rel_iso. *) (* for speed *)
 
 
 From IsomorphismChecker Require Export Isomorphisms.U_original__U2_lf_dot_U_poly__U2_lf__U_poly__list__iso Isomorphisms.U_original__U2_lf_dot_U_poly__U2_lf__U_poly__option__iso Isomorphisms.nat__iso.
@@ -40,19 +40,12 @@ Instance Original_LF__DOT__Poly_LF_Poly_nth__error_iso : forall (x1 x2 : Type) (
   rel_iso nat_iso x5 x6 -> rel_iso (Original_LF__DOT__Poly_LF_Poly_option_iso hx) (Original.LF_DOT_Poly.LF.Poly.nth_error x3 x5) (imported_Original_LF__DOT__Poly_LF_Poly_nth__error x4 x6).
 Proof.
   intros x1 x2 hx x3 x4 Hlist x5 x6 Hnat.
-  unfold rel_iso in *.
-  (* Use eq_srect to substitute using the SProp equalities *)
-  apply (@IsoEq.eq_srect _ (Original_LF__DOT__Poly_LF_Poly_list_iso hx x3) 
-    (fun x4' => IsomorphismDefinitions.eq 
-      (Original_LF__DOT__Poly_LF_Poly_option_iso hx (Original.LF_DOT_Poly.LF.Poly.nth_error x3 x5))
-      (Imported.Original_LF__DOT__Poly_LF_Poly_nth__error x2 x4' x6))).
-  apply (@IsoEq.eq_srect _ (nat_iso x5)
-    (fun x6' => IsomorphismDefinitions.eq 
-      (Original_LF__DOT__Poly_LF_Poly_option_iso hx (Original.LF_DOT_Poly.LF.Poly.nth_error x3 x5))
-      (Imported.Original_LF__DOT__Poly_LF_Poly_nth__error x2 (Original_LF__DOT__Poly_LF_Poly_list_iso hx x3) x6'))).
-  apply nth_error_iso_helper.
-  - exact Hnat.
-  - exact Hlist.
+  constructor. simpl.
+  destruct Hlist as [Hlist]. destruct Hnat as [Hnat]. simpl in *.
+  (* Hlist: iso x3 = x4, Hnat: nat_to_imported x5 = x6 *)
+  (* Goal: iso (nth_error x3 x5) = nth_error x4 x6 *)
+  apply (eq_trans (nth_error_iso_helper hx x3 x5)).
+  apply (f_equal2 (Imported.Original_LF__DOT__Poly_LF_Poly_nth__error x2) Hlist Hnat).
 Defined.
 Instance: KnownConstant (@Original.LF_DOT_Poly.LF.Poly.nth_error) := {}. (* only needed when rel_iso is typeclasses opaque *)
 Instance: KnownConstant (@Imported.Original_LF__DOT__Poly_LF_Poly_nth__error) := {}. (* only needed when rel_iso is typeclasses opaque *)

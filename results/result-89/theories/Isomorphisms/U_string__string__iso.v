@@ -1,53 +1,78 @@
 From IsomorphismChecker Require Import AutomationDefinitions IsomorphismStatementAutomationDefinitions EqualityLemmas IsomorphismDefinitions.
 Import IsoEq.
 From LeanImport Require Import Lean.
-#[local] Unset Universe Polymorphism.
+#[local] Set Universe Polymorphism.
 #[local] Set Implicit Arguments.
 From IsomorphismChecker Require Original Imported.
-From IsomorphismChecker Require Export Isomorphisms.U_ascii__ascii__iso.
 (* Print Imported. *)
-(* Typeclasses Opaque rel_iso. *) (* for speed *)
+(* (* Typeclasses Opaque rel_iso *). *) (* for speed *)
+
 
 Definition imported_String_string : Type := Imported.String_string.
 
-(* Convert between String.string and Imported.String_string *)
-Fixpoint string_to (s : String.string) : imported_String_string :=
-  match s with
-  | String.EmptyString => Imported.String_string_EmptyString
-  | String.String c rest => Imported.String_string_String (ascii_to c) (string_to rest)
+(* Bool isomorphism *)
+Definition mybool_to (b : bool) : Imported.mybool :=
+  match b with
+  | true => Imported.Original_LF__DOT__Basics_LF_Basics_bool_true
+  | false => Imported.Original_LF__DOT__Basics_LF_Basics_bool_false
   end.
 
-Fixpoint string_from (s : imported_String_string) : String.string :=
-  match s with
-  | Imported.String_string_EmptyString => String.EmptyString
-  | Imported.String_string_String c rest => String.String (ascii_from c) (string_from rest)
+Definition mybool_from (b : Imported.mybool) : bool :=
+  match b with
+  | Imported.Original_LF__DOT__Basics_LF_Basics_bool_true => true
+  | Imported.Original_LF__DOT__Basics_LF_Basics_bool_false => false
   end.
 
-Lemma string_to_from : forall s, IsomorphismDefinitions.eq (string_to (string_from s)) s.
+(* Ascii isomorphism *)
+Definition ascii_to (a : Ascii.ascii) : Imported.Ascii_ascii :=
+  match a with
+  | Ascii.Ascii b0 b1 b2 b3 b4 b5 b6 b7 =>
+    Imported.Ascii_ascii_Ascii (mybool_to b0) (mybool_to b1) (mybool_to b2) (mybool_to b3)
+                               (mybool_to b4) (mybool_to b5) (mybool_to b6) (mybool_to b7)
+  end.
+
+Definition ascii_from (a : Imported.Ascii_ascii) : Ascii.ascii :=
+  match a with
+  | Imported.Ascii_ascii_Ascii b0 b1 b2 b3 b4 b5 b6 b7 =>
+    Ascii.Ascii (mybool_from b0) (mybool_from b1) (mybool_from b2) (mybool_from b3)
+                (mybool_from b4) (mybool_from b5) (mybool_from b6) (mybool_from b7)
+  end.
+
+Instance String_string_iso : Iso String.string imported_String_string.
 Proof.
-  fix IH 1.
-  intros s. destruct s as [|c rest].
-  - simpl. exact IsomorphismDefinitions.eq_refl.
-  - simpl. destruct c as [b0 b1 b2 b3 b4 b5 b6 b7].
-    destruct b0; destruct b1; destruct b2; destruct b3;
-    destruct b4; destruct b5; destruct b6; destruct b7;
-    simpl; exact (IsoEq.f_equal (fun r => Imported.String_string_String _ r) (IH rest)).
-Qed.
-
-Lemma string_from_to : forall s, IsomorphismDefinitions.eq (string_from (string_to s)) s.
-Proof.
-  fix IH 1.
-  intros s. destruct s as [|c rest].
-  - simpl. exact IsomorphismDefinitions.eq_refl.
-  - simpl. destruct c as [b0 b1 b2 b3 b4 b5 b6 b7].
-    destruct b0; destruct b1; destruct b2; destruct b3;
-    destruct b4; destruct b5; destruct b6; destruct b7;
-    simpl; exact (IsoEq.f_equal (fun r => String.String _ r) (IH rest)).
-Qed.
-
-Instance String_string_iso : Iso String.string imported_String_string :=
-  Build_Iso string_to string_from string_to_from string_from_to.
-
+  exists (fix f (s : String.string) : imported_String_string :=
+            match s with
+            | String.EmptyString => Imported.String_string_EmptyString
+            | String.String c rest => Imported.String_string_String (ascii_to c) (f rest)
+            end)
+         (fix g (s : imported_String_string) : String.string :=
+            match s with
+            | Imported.String_string_EmptyString => String.EmptyString
+            | Imported.String_string_String c rest => String.String (ascii_from c) (g rest)
+            end).
+  - fix IH 1. intros s.
+    destruct s as [|c rest].
+    + apply IsomorphismDefinitions.eq_refl.
+    + simpl.
+      apply (IsoEq.f_equal2 Imported.String_string_String).
+      * destruct c as [b0 b1 b2 b3 b4 b5 b6 b7].
+        simpl. unfold ascii_to, ascii_from.
+        destruct b0; destruct b1; destruct b2; destruct b3;
+        destruct b4; destruct b5; destruct b6; destruct b7;
+        apply IsomorphismDefinitions.eq_refl.
+      * apply IH.
+  - fix IH 1. intros s.
+    destruct s as [|c rest].
+    + apply IsomorphismDefinitions.eq_refl.
+    + simpl.
+      apply (IsoEq.f_equal2 String.String).
+      * destruct c as [b0 b1 b2 b3 b4 b5 b6 b7].
+        simpl. unfold ascii_to, ascii_from.
+        destruct b0; destruct b1; destruct b2; destruct b3;
+        destruct b4; destruct b5; destruct b6; destruct b7;
+        apply IsomorphismDefinitions.eq_refl.
+      * apply IH.
+Defined.
 Instance: KnownConstant String.string := {}. (* only needed when rel_iso is typeclasses opaque *)
 Instance: KnownConstant Imported.String_string := {}. (* only needed when rel_iso is typeclasses opaque *)
 Instance: IsoStatementProofFor String.string String_string_iso := {}.

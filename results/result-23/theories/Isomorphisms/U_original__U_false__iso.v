@@ -5,21 +5,21 @@ From LeanImport Require Import Lean.
 #[local] Set Implicit Arguments.
 From IsomorphismChecker Require Original Imported.
 (* Print Imported. *)
-(* Typeclasses Opaque rel_iso. *) (* for speed *)
+(* Typeclasses Opaque rel_iso. *)
 
 
 Definition imported_Original_False : SProp := Imported.Original_False.
 Instance Original_False_iso : (Iso Original.False imported_Original_False).
 Proof.
   unshelve eapply Build_Iso.
-  - (* to: Original.False -> imported_Original_False *)
-    intro f. destruct f.
-  - (* from: imported_Original_False -> Original.False *)
-    intro f. destruct f.
+  - (* to: Original.False -> SProp False *)
+    intro x. destruct x.
+  - (* from: SProp False -> Original.False *)
+    intro x. destruct x.
   - (* to_from *)
-    intro f. destruct f.
+    intro x. destruct x.
   - (* from_to *)
-    intro f. destruct f.
+    intro x. destruct x.
 Defined.
 Instance: KnownConstant Original.False := {}. (* only needed when rel_iso is typeclasses opaque *)
 Instance: KnownConstant Imported.Original_False := {}. (* only needed when rel_iso is typeclasses opaque *)

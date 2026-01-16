@@ -8,29 +8,15 @@ From IsomorphismChecker Require Original Imported.
 (* Typeclasses Opaque rel_iso. *) (* for speed *)
 
 
-Definition imported_bool : Type := Imported.Stdlib_bool.
-
-Definition bool_to_imported (b : bool) : imported_bool :=
-  match b with
-  | true => Imported.Stdlib_bool_true
-  | false => Imported.Stdlib_bool_false
-  end.
-
-Definition imported_to_bool (b : imported_bool) : bool :=
-  match b with
-  | Imported.Stdlib_bool_true => true
-  | Imported.Stdlib_bool_false => false
-  end.
-
+Definition imported_bool : Type := Imported.mybool.
 Instance bool_iso : Iso bool imported_bool.
 Proof.
-  apply Build_Iso with
-    (to := fun b => match b with true => Imported.Stdlib_bool_true | false => Imported.Stdlib_bool_false end)
-    (from := fun b => match b with Imported.Stdlib_bool_true => true | Imported.Stdlib_bool_false => false end).
-  - intros x. destruct x; apply IsomorphismDefinitions.eq_refl.
-  - intros x. destruct x; apply IsomorphismDefinitions.eq_refl.
+  exists (fun b : bool => match b with true => Imported.mybool_mytrue | false => Imported.mybool_myfalse end)
+         (fun b : Imported.mybool => match b with Imported.mybool_mytrue => true | Imported.mybool_myfalse => false end).
+  - intros [|]; apply IsomorphismDefinitions.eq_refl.
+  - intros [|]; apply IsomorphismDefinitions.eq_refl.
 Defined.
 Instance: KnownConstant bool := {}. (* only needed when rel_iso is typeclasses opaque *)
-Instance: KnownConstant Imported.Stdlib_bool := {}. (* only needed when rel_iso is typeclasses opaque *)
+Instance: KnownConstant Imported.mybool := {}. (* only needed when rel_iso is typeclasses opaque *)
 Instance: IsoStatementProofFor bool bool_iso := {}.
-Instance: IsoStatementProofBetween bool Imported.Stdlib_bool bool_iso := {}.
+Instance: IsoStatementProofBetween bool Imported.mybool bool_iso := {}.

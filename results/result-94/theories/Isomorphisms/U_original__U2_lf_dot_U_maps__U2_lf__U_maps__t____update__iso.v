@@ -39,7 +39,7 @@ Proof.
       simpl.
       destruct b0, b1, b2, b3, b4, b5, b6, b7, c0, c1_, c2_, c3, c4, c5, c6, c7;
       simpl; try (exact (IH rest1 rest2)); try exact IsomorphismDefinitions.eq_refl.
-Qed.
+Defined.
 
 Lemma string_eqb_compat : forall (s1 s2 : String.string) (t1 t2 : imported_String_string),
   rel_iso String_string_iso s1 t1 ->
@@ -54,7 +54,7 @@ Proof.
   apply f_equal2.
   - exact H1'.
   - exact H2'.
-Qed.
+Defined.
 
 Instance Original_LF__DOT__Maps_LF_Maps_t__update_iso : forall (x1 x2 : Type) (hx : IsoOrSortRelaxed x1 x2) (x3 : Original.LF_DOT_Maps.LF.Maps.total_map x1) (x4 : imported_String_string -> x2),
   (forall (x5 : String.string) (x6 : imported_String_string), rel_iso String_string_iso x5 x6 -> rel_iso_sort hx (x3 x5) (x4 x6)) ->
@@ -79,7 +79,7 @@ Proof.
     { apply eq_of_seq. apply (eq_trans (eq_sym Heqb)). simpl. exact IsomorphismDefinitions.eq_refl. }
     rewrite E2. simpl.
     apply Hm. exact Hx.
-Qed.
+Defined.
 
 Instance: KnownConstant (@Original.LF_DOT_Maps.LF.Maps.t_update) := {}. (* only needed when rel_iso is typeclasses opaque *)
 Instance: KnownConstant (@Imported.Original_LF__DOT__Maps_LF_Maps_t__update) := {}. (* only needed when rel_iso is typeclasses opaque *)

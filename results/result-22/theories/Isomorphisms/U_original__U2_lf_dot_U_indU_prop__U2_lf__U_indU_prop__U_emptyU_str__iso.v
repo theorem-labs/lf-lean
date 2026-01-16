@@ -15,7 +15,7 @@ Instance Original_LF__DOT__IndProp_LF_IndProp_EmptyStr_iso : forall (x1 x2 : Typ
   rel_iso (Original_LF__DOT__IndProp_LF_IndProp_reg__exp_iso hx) Original.LF_DOT_IndProp.LF.IndProp.EmptyStr (imported_Original_LF__DOT__IndProp_LF_IndProp_EmptyStr x2).
 Proof.
   intros x1 x2 hx.
-  constructor; simpl.
+  simpl. simpl.
   unfold imported_Original_LF__DOT__IndProp_LF_IndProp_EmptyStr.
   unfold Imported.Original_LF__DOT__IndProp_LF_IndProp_EmptyStr.
   apply IsomorphismDefinitions.eq_refl.

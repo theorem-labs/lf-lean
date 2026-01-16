@@ -40,7 +40,10 @@ Instance Original_LF__DOT__Poly_LF_Poly_nth__error_iso : forall (x1 x2 : Type) (
   rel_iso nat_iso x5 x6 -> rel_iso (Original_LF__DOT__Poly_LF_Poly_option_iso hx) (Original.LF_DOT_Poly.LF.Poly.nth_error x3 x5) (imported_Original_LF__DOT__Poly_LF_Poly_nth__error x4 x6).
 Proof.
   intros x1 x2 hx x3 x4 Hlist x5 x6 Hnat.
-  idtac.
+  constructor. simpl.
+  pose proof (proj_rel_iso Hlist) as Hlist'. simpl in Hlist'.
+  pose proof (proj_rel_iso Hnat) as Hnat'. simpl in Hnat'.
+  unfold imported_Original_LF__DOT__Poly_LF_Poly_nth__error.
   (* Use eq_srect to substitute using the SProp equalities *)
   apply (@IsoEq.eq_srect _ (Original_LF__DOT__Poly_LF_Poly_list_iso hx x3) 
     (fun x4' => IsomorphismDefinitions.eq 
@@ -51,8 +54,8 @@ Proof.
       (Original_LF__DOT__Poly_LF_Poly_option_iso hx (Original.LF_DOT_Poly.LF.Poly.nth_error x3 x5))
       (Imported.Original_LF__DOT__Poly_LF_Poly_nth__error x2 (Original_LF__DOT__Poly_LF_Poly_list_iso hx x3) x6'))).
   apply nth_error_iso_helper.
-  - exact Hnat.
-  - exact Hlist.
+  - exact Hnat'.
+  - exact Hlist'.
 Defined.
 Instance: KnownConstant (@Original.LF_DOT_Poly.LF.Poly.nth_error) := {}. (* only needed when rel_iso is typeclasses opaque *)
 Instance: KnownConstant (@Imported.Original_LF__DOT__Poly_LF_Poly_nth__error) := {}. (* only needed when rel_iso is typeclasses opaque *)

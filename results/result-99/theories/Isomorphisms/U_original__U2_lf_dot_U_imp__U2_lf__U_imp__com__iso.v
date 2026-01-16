@@ -39,7 +39,7 @@ Proof.
   - apply (f_equal2 Imported.Original_LF__DOT__Imp_LF_Imp_com_CSeq (IH c1) (IH c2)).
   - apply (f_equal3 Imported.Original_LF__DOT__Imp_LF_Imp_com_CIf (bexp_to_from b) (IH c1) (IH c2)).
   - apply (f_equal2 Imported.Original_LF__DOT__Imp_LF_Imp_com_CWhile (bexp_to_from b) (IH c1)).
-Defined.
+Qed.
 
 Lemma com_from_to : forall c : Original.LF_DOT_Imp.LF.Imp.com,
   IsomorphismDefinitions.eq (imported_to_com (com_to_imported c)) c.
@@ -51,7 +51,7 @@ Proof.
   - apply (f_equal2 Original.LF_DOT_Imp.LF.Imp.CSeq (IH c1) (IH c2)).
   - apply (f_equal3 Original.LF_DOT_Imp.LF.Imp.CIf (bexp_from_to b) (IH c1) (IH c2)).
   - apply (f_equal2 Original.LF_DOT_Imp.LF.Imp.CWhile (bexp_from_to b) (IH c1)).
-Defined.
+Qed.
 
 Instance Original_LF__DOT__Imp_LF_Imp_com_iso : Iso Original.LF_DOT_Imp.LF.Imp.com imported_Original_LF__DOT__Imp_LF_Imp_com := {|
   to := com_to_imported;

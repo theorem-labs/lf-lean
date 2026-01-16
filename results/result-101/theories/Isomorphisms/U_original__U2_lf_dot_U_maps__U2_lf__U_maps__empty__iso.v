@@ -1,11 +1,11 @@
 From IsomorphismChecker Require Import AutomationDefinitions IsomorphismStatementAutomationDefinitions EqualityLemmas IsomorphismDefinitions.
 Import IsoEq.
 From LeanImport Require Import Lean.
-#[local] Set Universe Polymorphism.
+#[local] Unset Universe Polymorphism.
 #[local] Set Implicit Arguments.
 From IsomorphismChecker Require Original Imported.
 (* Print Imported. *)
-(* Typeclasses Opaque rel_iso. *) (* for speed *)
+
 
 
 From IsomorphismChecker Require Export Isomorphisms.U_original__U2_lf_dot_U_maps__U2_lf__U_maps__partial____map__iso.
@@ -20,7 +20,7 @@ Proof.
   (* empty = t_empty None, so we use the t_empty isomorphism *)
   unfold Original.LF_DOT_Maps.LF.Maps.empty, imported_Original_LF__DOT__Maps_LF_Maps_empty, Imported.Original_LF__DOT__Maps_LF_Maps_empty.
   (* Now both sides are t_empty applied to None *)
-  constructor; simpl.
+  constructor. simpl.
   (* The isomorphism between option values: None maps to option_None *)
   unfold option_to_imported.
   reflexivity.

@@ -1,11 +1,11 @@
 From IsomorphismChecker Require Import AutomationDefinitions IsomorphismStatementAutomationDefinitions EqualityLemmas IsomorphismDefinitions.
 Import IsoEq.
 From LeanImport Require Import Lean.
-#[local] Set Universe Polymorphism.
+#[local] Unset Universe Polymorphism.
 #[local] Set Implicit Arguments.
 From IsomorphismChecker Require Original Imported.
 (* Print Imported. *)
-(* Typeclasses Opaque rel_iso. *) (* for speed *)
+
 
 
 From IsomorphismChecker Require Export Isomorphisms.U_original__U2_lf_dot_U_maps__U2_lf__U_maps__partial____map__iso.
@@ -18,7 +18,7 @@ Lemma Some_iso : forall (x1 x2 : Type) (hx : Iso x1 x2) (v1 : x1) (v2 : x2),
   rel_iso hx v1 v2 -> rel_iso (option_iso hx) (Some v1) (Imported.option_Some x2 v2).
 Proof.
   intros x1 x2 hx v1 v2 Hv.
-  constructor; simpl.
+  constructor. simpl.
   unfold option_to_imported. simpl.
   exact (IsoEq.f_equal (Imported.option_Some x2) Hv).
 Qed.
@@ -36,7 +36,7 @@ Proof.
   unfold Original.LF_DOT_Maps.LF.Maps.update.
   unfold imported_Original_LF__DOT__Maps_LF_Maps_update, Imported.Original_LF__DOT__Maps_LF_Maps_update.
   (* update m x v = t_update m x (Some v) on both sides *)
-  constructor; simpl.
+  constructor. simpl.
   unfold option_to_imported.
   unfold Original.LF_DOT_Maps.LF.Maps.t_update.
   unfold Imported.Original_LF__DOT__Maps_LF_Maps_t__update.

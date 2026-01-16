@@ -1,10 +1,11 @@
 From IsomorphismChecker Require Import AutomationDefinitions IsomorphismStatementAutomationDefinitions EqualityLemmas IsomorphismDefinitions.
 Import IsoEq.
 From LeanImport Require Import Lean.
-#[local] Set Universe Polymorphism.
+#[local] Unset Universe Polymorphism.
 #[local] Set Implicit Arguments.
 From IsomorphismChecker Require Original Imported.
 (* Print Imported. *)
+
 
 
 Definition imported_Original_LF__DOT__Poly_LF_Poly_list : Type -> Type := Imported.Original_LF__DOT__Poly_LF_Poly_list.
@@ -12,14 +13,14 @@ Instance Original_LF__DOT__Poly_LF_Poly_list_iso : forall x1 x2 : Type, Iso x1 x
 Proof.
   intros x1 x2 Hx.
   unshelve eapply Build_Iso.
-  - (* to: Original.list x1 -> Imported.list x2 *)
+  - (* to: Original.list x1 -> Imported.mylist x2 *)
     exact (fix to_list (l : Original.LF_DOT_Poly.LF.Poly.list x1) : imported_Original_LF__DOT__Poly_LF_Poly_list x2 :=
       match l with
       | Original.LF_DOT_Poly.LF.Poly.nil => Imported.Original_LF__DOT__Poly_LF_Poly_list_nil x2
       | Original.LF_DOT_Poly.LF.Poly.cons h t => 
           Imported.Original_LF__DOT__Poly_LF_Poly_list_cons x2 (to Hx h) (to_list t)
       end).
-  - (* from: Imported.list x2 -> Original.list x1 *)
+  - (* from: Imported.mylist x2 -> Original.list x1 *)
     exact (fix from_list (l : imported_Original_LF__DOT__Poly_LF_Poly_list x2) : Original.LF_DOT_Poly.LF.Poly.list x1 :=
       match l with
       | Imported.Original_LF__DOT__Poly_LF_Poly_list_nil _ => Original.LF_DOT_Poly.LF.Poly.nil

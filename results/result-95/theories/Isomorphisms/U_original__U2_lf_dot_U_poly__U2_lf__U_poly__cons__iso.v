@@ -18,10 +18,10 @@ Instance Original_LF__DOT__Poly_LF_Poly_cons_iso : forall (x1 x2 : Type) (hx : I
   rel_iso (Original_LF__DOT__Poly_LF_Poly_list_iso hx) (Original.LF_DOT_Poly.LF.Poly.cons x3 x5) (imported_Original_LF__DOT__Poly_LF_Poly_cons x4 x6).
 Proof.
   intros x1 x2 hx x3 x4 H34 x5 x6 H56.
-  constructor.
+  idtac.
   unfold imported_Original_LF__DOT__Poly_LF_Poly_cons.
   simpl.
-  apply (IsoEq.f_equal2 (Imported.Original_LF__DOT__Poly_LF_Poly_list_cons x2) (proj_rel_iso H34) (proj_rel_iso H56)).
+  apply (IsoEq.f_equal2 (Imported.Original_LF__DOT__Poly_LF_Poly_list_cons x2) H34 H56).
 Defined.
 Instance: KnownConstant (@Original.LF_DOT_Poly.LF.Poly.cons) := {}. (* only needed when rel_iso is typeclasses opaque *)
 Instance: KnownConstant (@Imported.Original_LF__DOT__Poly_LF_Poly_cons) := {}. (* only needed when rel_iso is typeclasses opaque *)

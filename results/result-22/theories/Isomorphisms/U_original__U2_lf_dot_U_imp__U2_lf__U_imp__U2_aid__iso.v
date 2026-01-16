@@ -15,9 +15,9 @@ Instance Original_LF__DOT__Imp_LF_Imp_AId_iso : forall (x1 : String.string) (x2 
   rel_iso String_string_iso x1 x2 -> rel_iso Original_LF__DOT__Imp_LF_Imp_aexp_iso (Original.LF_DOT_Imp.LF.Imp.AId x1) (imported_Original_LF__DOT__Imp_LF_Imp_AId x2).
 Proof.
   intros x1 x2 H1.
+  simpl in *. simpl in *.
   unfold imported_Original_LF__DOT__Imp_LF_Imp_AId.
-  constructor. simpl.
-  apply (f_equal Imported.Original_LF__DOT__Imp_LF_Imp_aexp_AId (proj_rel_iso H1)).
+  apply (f_equal Imported.Original_LF__DOT__Imp_LF_Imp_aexp_AId H1).
 Defined.
 Instance: KnownConstant Original.LF_DOT_Imp.LF.Imp.AId := {}. (* only needed when rel_iso is typeclasses opaque *)
 Instance: KnownConstant Imported.Original_LF__DOT__Imp_LF_Imp_aexp_AId := {}. (* only needed when rel_iso is typeclasses opaque *)

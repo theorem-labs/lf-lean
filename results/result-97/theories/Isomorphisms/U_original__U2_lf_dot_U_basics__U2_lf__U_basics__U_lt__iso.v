@@ -15,7 +15,7 @@ Instance Original_LF__DOT__Basics_LF_Basics_Lt_iso : rel_iso Original_LF__DOT__B
 Proof.
   constructor. unfold imported_Original_LF__DOT__Basics_LF_Basics_Lt.
   simpl. apply IsomorphismDefinitions.eq_refl.
-Defined.
+Qed.
 
 Instance: KnownConstant Original.LF_DOT_Basics.LF.Basics.Lt := {}.
 Instance: KnownConstant Imported.Original_LF__DOT__Basics_LF_Basics_comparison_Lt := {}.

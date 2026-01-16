@@ -15,7 +15,7 @@ Proof.
   constructor.
   unfold imported_Original_LF__DOT__Basics_LF_Basics_F.
   simpl. apply IsomorphismDefinitions.eq_refl.
-Defined.
+Qed.
 Instance: KnownConstant Original.LF_DOT_Basics.LF.Basics.F := {}.
 Instance: KnownConstant Imported.Original_LF__DOT__Basics_LF_Basics_letter_F := {}.
 Instance: IsoStatementProofFor Original.LF_DOT_Basics.LF.Basics.F Original_LF__DOT__Basics_LF_Basics_F_iso := {}.

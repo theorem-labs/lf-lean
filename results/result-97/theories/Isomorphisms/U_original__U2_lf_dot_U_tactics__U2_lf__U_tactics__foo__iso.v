@@ -26,7 +26,7 @@ Proof.
   constructor. simpl.
   (* nat_to_imported 5 = Imported.five *)
   reflexivity.
-Defined.
+Qed.
 
 Instance Original_LF__DOT__Tactics_LF_Tactics_foo_iso : forall (x1 : nat) (x2 : imported_nat), rel_iso nat_iso x1 x2 -> rel_iso nat_iso (Original.LF_DOT_Tactics.LF.Tactics.foo x1) (imported_Original_LF__DOT__Tactics_LF_Tactics_foo x2).
 Proof.
@@ -37,7 +37,7 @@ Proof.
   unfold imported_Original_LF__DOT__Tactics_LF_Tactics_foo.
   unfold Imported.Original_LF__DOT__Tactics_LF_Tactics_foo.
   apply five_iso.
-Defined.
+Qed.
 
 Instance: KnownConstant Original.LF_DOT_Tactics.LF.Tactics.foo := {}. (* only needed when rel_iso is typeclasses opaque *)
 Instance: KnownConstant Imported.Original_LF__DOT__Tactics_LF_Tactics_foo := {}. (* only needed when rel_iso is typeclasses opaque *)

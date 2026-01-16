@@ -5,12 +5,18 @@ From LeanImport Require Import Lean.
 #[local] Set Implicit Arguments.
 From IsomorphismChecker Require Original Imported.
 (* Print Imported. *)
-(* Typeclasses Opaque rel_iso. *) (* for speed *)
 
 
 From IsomorphismChecker Require Export Isomorphisms.U_original__U2_lf_dot_U_poly__U2_lf__U_poly__list__iso Isomorphisms.nat__iso.
 
 Definition imported_Original_LF__DOT__Poly_LF_Poly_length : forall x : Type, imported_Original_LF__DOT__Poly_LF_Poly_list x -> imported_nat := (@Imported.Original_LF__DOT__Poly_LF_Poly_length).
+
+(* Helper: convert Original nat to Imported nat *)
+Fixpoint nat_to_imported (n : nat) : imported_nat :=
+  match n with
+  | O => Imported.nat_O
+  | S n' => Imported.nat_S (nat_to_imported n')
+  end.
 
 (* Helper: convert Original list to Imported list *)
 Fixpoint list_to_imported {x1 x2 : Type} (hx : Iso x1 x2) (l : Original.LF_DOT_Poly.LF.Poly.list x1) : imported_Original_LF__DOT__Poly_LF_Poly_list x2 :=
@@ -53,8 +59,7 @@ Instance Original_LF__DOT__Poly_LF_Poly_length_iso : forall (x1 x2 : Type) (hx :
   rel_iso (Original_LF__DOT__Poly_LF_Poly_list_iso hx) x3 x4 -> rel_iso nat_iso (Original.LF_DOT_Poly.LF.Poly.length x3) (imported_Original_LF__DOT__Poly_LF_Poly_length x4).
 Proof.
   intros A B hx l l' Hrel.
-  destruct Hrel as [Hrel]. simpl in *.
-  constructor. simpl.
+  destruct Hrel as [Hrel].
   (* Hrel : eq (to list_iso l) l' *)
   (* Goal: eq (to nat_iso (length l)) (length l') *)
   pose proof (@length_commutes A B hx l) as Hlen.

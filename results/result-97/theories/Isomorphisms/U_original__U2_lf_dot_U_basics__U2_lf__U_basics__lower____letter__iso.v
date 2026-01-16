@@ -20,7 +20,7 @@ Proof.
   unfold imported_Original_LF__DOT__Basics_LF_Basics_lower__letter.
   destruct H.
   destruct x1; simpl; apply IsomorphismDefinitions.eq_refl.
-Defined.
+Qed.
 Instance: KnownConstant Original.LF_DOT_Basics.LF.Basics.lower_letter := {}. (* only needed when rel_iso is typeclasses opaque *)
 Instance: KnownConstant Imported.Original_LF__DOT__Basics_LF_Basics_lower__letter := {}. (* only needed when rel_iso is typeclasses opaque *)
 Instance: IsoStatementProofFor Original.LF_DOT_Basics.LF.Basics.lower_letter Original_LF__DOT__Basics_LF_Basics_lower__letter_iso := {}.

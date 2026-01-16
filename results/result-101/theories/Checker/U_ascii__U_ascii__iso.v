@@ -10,7 +10,7 @@ Module Type Args <: Interface.U_ascii__U_ascii__iso.Args := Checker.U_ascii__asc
 #[global] Strategy -1 [ Isomorphisms.U_ascii__U_ascii__iso.imported_Ascii_Ascii Isomorphisms.U_ascii__U_ascii__iso.Ascii_Ascii_iso ].
 
 Module Checker (Import args : Args) <: Interface.U_ascii__U_ascii__iso.Interface args
-  with Definition imported_Ascii_Ascii := Imported.Ascii_ascii_Ascii.
+  with Definition imported_Ascii_Ascii := Imported.Ascii_Ascii.
 
 Definition imported_Ascii_Ascii := Isomorphisms.U_ascii__U_ascii__iso.imported_Ascii_Ascii.
 Definition Ascii_Ascii_iso := Isomorphisms.U_ascii__U_ascii__iso.Ascii_Ascii_iso.

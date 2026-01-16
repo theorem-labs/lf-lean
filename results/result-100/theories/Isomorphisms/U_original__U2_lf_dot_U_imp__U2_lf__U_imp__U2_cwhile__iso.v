@@ -6,23 +6,15 @@ From LeanImport Require Import Lean.
 From IsomorphismChecker Require Original Imported.
 (* Typeclasses Opaque rel_iso. *)
 
-From IsomorphismChecker Require Export Isomorphisms.U_original__U2_lf_dot_U_imp__U2_lf__U_imp__com__iso Isomorphisms.U_original__U2_lf_dot_U_imp__U2_lf__U_imp__bexp__iso.
+From IsomorphismChecker Require Export Isomorphisms.U_original__U2_lf_dot_U_imp__U2_lf__U_imp__bexp__iso Isomorphisms.U_original__U2_lf_dot_U_imp__U2_lf__U_imp__com__iso.
 
-Definition imported_Original_LF__DOT__Imp_LF_Imp_CWhile : imported_Original_LF__DOT__Imp_LF_Imp_bexp -> imported_Original_LF__DOT__Imp_LF_Imp_com -> imported_Original_LF__DOT__Imp_LF_Imp_com :=
-  Imported.Original_LF__DOT__Imp_LF_Imp_com_CWhile.
-
-Instance Original_LF__DOT__Imp_LF_Imp_CWhile_iso : forall (b : Original.LF_DOT_Imp.LF.Imp.bexp) (b' : imported_Original_LF__DOT__Imp_LF_Imp_bexp),
-  rel_iso Original_LF__DOT__Imp_LF_Imp_bexp_iso b b' ->
-  forall (c : Original.LF_DOT_Imp.LF.Imp.com) (c' : imported_Original_LF__DOT__Imp_LF_Imp_com),
-  rel_iso Original_LF__DOT__Imp_LF_Imp_com_iso c c' ->
-  rel_iso Original_LF__DOT__Imp_LF_Imp_com_iso (Original.LF_DOT_Imp.LF.Imp.CWhile b c) (imported_Original_LF__DOT__Imp_LF_Imp_CWhile b' c').
-Proof.
-  intros b b' Hb c c' Hc.
-  constructor; simpl in *; simpl in *.
-  apply (f_equal2 Imported.Original_LF__DOT__Imp_LF_Imp_com_CWhile Hb Hc).
-Defined.
-
+Definition imported_Original_LF__DOT__Imp_LF_Imp_CWhile : imported_Original_LF__DOT__Imp_LF_Imp_bexp -> imported_Original_LF__DOT__Imp_LF_Imp_com -> imported_Original_LF__DOT__Imp_LF_Imp_com := Imported.Original_LF__DOT__Imp_LF_Imp_CWhile.
+Instance Original_LF__DOT__Imp_LF_Imp_CWhile_iso : forall (x1 : Original.LF_DOT_Imp.LF.Imp.bexp) (x2 : imported_Original_LF__DOT__Imp_LF_Imp_bexp),
+  rel_iso Original_LF__DOT__Imp_LF_Imp_bexp_iso x1 x2 ->
+  forall (x3 : Original.LF_DOT_Imp.LF.Imp.com) (x4 : imported_Original_LF__DOT__Imp_LF_Imp_com),
+  rel_iso Original_LF__DOT__Imp_LF_Imp_com_iso x3 x4 -> rel_iso Original_LF__DOT__Imp_LF_Imp_com_iso (Original.LF_DOT_Imp.LF.Imp.CWhile x1 x3) (imported_Original_LF__DOT__Imp_LF_Imp_CWhile x2 x4).
+Proof. intros x1 x2 H1 x3 x4 H2. constructor; simpl. apply (f_equal2 Imported.Original_LF__DOT__Imp_LF_Imp_com_CWhile (proj_rel_iso H1) (proj_rel_iso H2)). Defined.
 Instance: KnownConstant Original.LF_DOT_Imp.LF.Imp.CWhile := {}.
-Instance: KnownConstant Imported.Original_LF__DOT__Imp_LF_Imp_com_CWhile := {}.
+Instance: KnownConstant Imported.Original_LF__DOT__Imp_LF_Imp_CWhile := {}.
 Instance: IsoStatementProofFor Original.LF_DOT_Imp.LF.Imp.CWhile Original_LF__DOT__Imp_LF_Imp_CWhile_iso := {}.
-Instance: IsoStatementProofBetween Original.LF_DOT_Imp.LF.Imp.CWhile Imported.Original_LF__DOT__Imp_LF_Imp_com_CWhile Original_LF__DOT__Imp_LF_Imp_CWhile_iso := {}.
+Instance: IsoStatementProofBetween Original.LF_DOT_Imp.LF.Imp.CWhile Imported.Original_LF__DOT__Imp_LF_Imp_CWhile Original_LF__DOT__Imp_LF_Imp_CWhile_iso := {}.

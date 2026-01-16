@@ -1,7 +1,7 @@
 From IsomorphismChecker Require Import AutomationDefinitions IsomorphismStatementAutomationDefinitions EqualityLemmas IsomorphismDefinitions.
 Import IsoEq.
 From LeanImport Require Import Lean.
-#[local] Unset Universe Polymorphism.
+#[local] Set Universe Polymorphism.
 #[local] Set Implicit Arguments.
 From IsomorphismChecker Require Original Imported.
 (* Print Imported. *)
@@ -21,11 +21,11 @@ Monomorphic Definition imported_Original_LF__DOT__Poly_LF_Poly_test__filter__eve
 Monomorphic Instance Original_LF__DOT__Poly_LF_Poly_test__filter__even__gt7__2_iso : rel_iso
     (Corelib_Init_Logic_eq_iso
        (Original_LF__DOT__Poly_LF_Poly_filter__even__gt7_iso
-          (Original_LF__DOT__Poly_LF_Poly_cons_iso (S_iso (S_iso (S_iso (iterate1D2 S imported_S S_iso 2 0 imported_0 _0_iso))))
+          (Original_LF__DOT__Poly_LF_Poly_cons_iso (S_iso (S_iso (S_iso (iterate1D2 S imported_S S_iso 2 Datatypes.O imported_0 _0_iso))))
              (Original_LF__DOT__Poly_LF_Poly_cons_iso (S_iso (S_iso _0_iso))
-                (Original_LF__DOT__Poly_LF_Poly_cons_iso (S_iso (S_iso (S_iso (iterate1D2 S imported_S S_iso 3 0 imported_0 _0_iso))))
-                   (Original_LF__DOT__Poly_LF_Poly_cons_iso (S_iso (S_iso (S_iso (iterate1D2 S imported_S S_iso 16 0 imported_0 _0_iso))))
-                      (Original_LF__DOT__Poly_LF_Poly_cons_iso (S_iso (S_iso (S_iso (iterate1D2 S imported_S S_iso 126 0 imported_0 _0_iso)))) (Original_LF__DOT__Poly_LF_Poly_nil_iso nat_iso)))))))
+                (Original_LF__DOT__Poly_LF_Poly_cons_iso (S_iso (S_iso (S_iso (iterate1D2 S imported_S S_iso 3 Datatypes.O imported_0 _0_iso))))
+                   (Original_LF__DOT__Poly_LF_Poly_cons_iso (S_iso (S_iso (S_iso (iterate1D2 S imported_S S_iso 16 Datatypes.O imported_0 _0_iso))))
+                      (Original_LF__DOT__Poly_LF_Poly_cons_iso (S_iso (S_iso (S_iso (iterate1D2 S imported_S S_iso 126 Datatypes.O imported_0 _0_iso)))) (Original_LF__DOT__Poly_LF_Poly_nil_iso nat_iso)))))))
        (Original_LF__DOT__Poly_LF_Poly_nil_iso nat_iso))
     Original.LF_DOT_Poly.LF.Poly.test_filter_even_gt7_2 imported_Original_LF__DOT__Poly_LF_Poly_test__filter__even__gt7__2.
 Admitted.

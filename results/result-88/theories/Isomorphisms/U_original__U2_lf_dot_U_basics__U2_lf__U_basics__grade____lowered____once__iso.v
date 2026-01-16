@@ -1,7 +1,7 @@
 From IsomorphismChecker Require Import AutomationDefinitions IsomorphismStatementAutomationDefinitions EqualityLemmas IsomorphismDefinitions.
 Import IsoEq.
 From LeanImport Require Import Lean.
-#[local] Unset Universe Polymorphism.
+#[local] Set Universe Polymorphism.
 #[local] Set Implicit Arguments.
 From IsomorphismChecker Require Original Imported.
 (* Print Imported. *)
@@ -21,18 +21,18 @@ Monomorphic Instance Original_LF__DOT__Basics_LF_Basics_grade__lowered__once_iso
     (x6 : imported_Corelib_Init_Logic_eq (imported_Original_LF__DOT__Basics_LF_Basics_ltb x2 (imported_S (imported_S (imported_S (iterate1 imported_S 6 imported_0)))))
             imported_Original_LF__DOT__Basics_LF_Basics_false),
   rel_iso
-    (Corelib_Init_Logic_eq_iso (Original_LF__DOT__Basics_LF_Basics_ltb_iso hx (S_iso (S_iso (S_iso (iterate1D2 S imported_S S_iso 6 0 imported_0 _0_iso)))))
+    (Corelib_Init_Logic_eq_iso (Original_LF__DOT__Basics_LF_Basics_ltb_iso hx (S_iso (S_iso (S_iso (iterate1D2 S imported_S S_iso 6 O imported_0 _0_iso)))))
        Original_LF__DOT__Basics_LF_Basics_false_iso)
     x5 x6 ->
   forall (x7 : Original.LF_DOT_Basics.LF.Basics.ltb x1 17 = Original.LF_DOT_Basics.LF.Basics.true)
     (x8 : imported_Corelib_Init_Logic_eq (imported_Original_LF__DOT__Basics_LF_Basics_ltb x2 (imported_S (imported_S (imported_S (iterate1 imported_S 14 imported_0)))))
             imported_Original_LF__DOT__Basics_LF_Basics_true),
   rel_iso
-    (Corelib_Init_Logic_eq_iso (Original_LF__DOT__Basics_LF_Basics_ltb_iso hx (S_iso (S_iso (S_iso (iterate1D2 S imported_S S_iso 14 0 imported_0 _0_iso)))))
+    (Corelib_Init_Logic_eq_iso (Original_LF__DOT__Basics_LF_Basics_ltb_iso hx (S_iso (S_iso (S_iso (iterate1D2 S imported_S S_iso 14 O imported_0 _0_iso)))))
        Original_LF__DOT__Basics_LF_Basics_true_iso)
     x7 x8 ->
   rel_iso (Corelib_Init_Logic_eq_iso (Original_LF__DOT__Basics_LF_Basics_apply__late__policy_iso hx hx0) (Original_LF__DOT__Basics_LF_Basics_lower__grade_iso hx0))
-    (Original.LF_DOT_Basics.LF.Basics.grade_lowered_once x1 x3 x5 x7) (imported_Original_LF__DOT__Basics_LF_Basics_grade__lowered__once x4 x6 x8).
+    (Original.LF_DOT_Basics.LF.Basics.grade_lowered_once x1 x3 x5 x7) (imported_Original_LF__DOT__Basics_LF_Basics_grade__lowered__once x2 x4 x6 x8).
 Admitted.
 Instance: KnownConstant Original.LF_DOT_Basics.LF.Basics.grade_lowered_once := {}. (* only needed when rel_iso is typeclasses opaque *)
 Instance: KnownConstant Imported.Original_LF__DOT__Basics_LF_Basics_grade__lowered__once := {}. (* only needed when rel_iso is typeclasses opaque *)

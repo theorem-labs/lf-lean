@@ -34,7 +34,7 @@ Proof.
   (* Goal is IsomorphismDefinitions.eq (to (Corelib_Init_Logic_eq_iso ...) (update_neq ...)) (imported_update_neq ...) *)
   (* Both sides are in SProp, so all inhabitants are equal *)
   exact IsomorphismDefinitions.eq_refl.
-Qed.
+Defined.
 Instance: KnownConstant Original.LF_DOT_Maps.LF.Maps.update_neq := {}. (* only needed when rel_iso is typeclasses opaque *)
 Instance: KnownConstant Imported.Original_LF__DOT__Maps_LF_Maps_update__neq := {}. (* only needed when rel_iso is typeclasses opaque *)
 Instance: IsoStatementProofFor Original.LF_DOT_Maps.LF.Maps.update_neq Original_LF__DOT__Maps_LF_Maps_update__neq_iso := {}.

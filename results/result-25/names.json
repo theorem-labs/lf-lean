@@ -1,5 +1,13 @@
 {
   "True": "MyTrue",
-  "S": "S_export",
+  "False": "MyFalse",
+  "bool": "Stdlib_bool",
+  "_0": "nat_O",
+  "Original_LF__DOT__IndProp_LF_IndProp_EmptyStr": "Original_LF__DOT__IndProp_LF_IndProp_reg__exp_EmptyStr",
+  "Original_LF__DOT__IndProp_LF_IndProp_EmptySet": "Original_LF__DOT__IndProp_LF_IndProp_reg__exp_EmptySet",
+  "Original_LF__DOT__IndProp_LF_IndProp_Char": "Original_LF__DOT__IndProp_LF_IndProp_reg__exp_Char",
+  "Original_LF__DOT__IndProp_LF_IndProp_App": "Original_LF__DOT__IndProp_LF_IndProp_reg__exp_App",
+  "Original_LF__DOT__IndProp_LF_IndProp_Union": "Original_LF__DOT__IndProp_LF_IndProp_reg__exp_Union",
+  "Original_LF__DOT__IndProp_LF_IndProp_Star": "Original_LF__DOT__IndProp_LF_IndProp_reg__exp_Star",
   "Original_LF__DOT__IndProp_LF_IndProp_EvPlayground_ev": "Original_LF__DOT__IndProp_LF_IndProp_ev__playground_ev"
 }

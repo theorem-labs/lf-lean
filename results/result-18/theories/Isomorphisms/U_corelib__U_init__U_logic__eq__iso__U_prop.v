@@ -5,11 +5,22 @@ Import IsoEq.
 From IsomorphismChecker Require Original.
 From IsomorphismChecker Require Imported.
 
+
 Definition imported_Corelib_Init_Logic_eq_Prop : forall x : SProp, x -> x -> SProp := @Imported.Corelib_Init_Logic_eq_Prop.
 
-(* For Prop-level equality, x1 : Type (with Prop as an instance), x2 : SProp *)
-Instance Corelib_Init_Logic_eq_iso_Prop : (forall (x1 : Type) (x2 : SProp) (hx : Iso x1 x2) (x3 : x1) (x4 : x2) (_ : @rel_iso x1 x2 hx x3 x4) (x5 : x1) (x6 : x2) (_ : @rel_iso x1 x2 hx x5 x6),
-   Iso (@Corelib.Init.Logic.eq x1 x3 x5) (@imported_Corelib_Init_Logic_eq_Prop x2 x4 x6)).
+(* Helper for transport in SProp *)
+Definition transport_imported_eq_Prop {x2 : SProp} {a b c : x2} 
+  (H1 : IsomorphismDefinitions.eq a b) (H2 : IsomorphismDefinitions.eq a c) 
+  : Imported.Corelib_Init_Logic_eq_Prop x2 b c.
+Proof.
+  exact (IsoEq.eq_srect (fun y => Imported.Corelib_Init_Logic_eq_Prop x2 y c)
+           (IsoEq.eq_srect (fun z => Imported.Corelib_Init_Logic_eq_Prop x2 a z)
+              (Imported.Corelib_Init_Logic_eq_Prop_refl x2 a)
+              H2)
+           H1).
+Defined.
+
+Instance Corelib_Init_Logic_eq_iso_Prop : forall (x1 : Type) (x2 : SProp) (hx : Iso x1 x2) (x3 : x1) (x4 : x2), rel_iso hx x3 x4 -> forall (x5 : x1) (x6 : x2), rel_iso hx x5 x6 -> Iso (x3 = x5) (imported_Corelib_Init_Logic_eq_Prop x4 x6).
 Proof.
   intros x1 x2 hx x3 x4 H34 x5 x6 H56.
   destruct H34 as [H34]. destruct H56 as [H56].
@@ -17,13 +28,8 @@ Proof.
   - (* to: eq in Prop -> imported eq in SProp *)
     intro Heq.
     destruct Heq.
-    (* We have H34 : to hx x3 = x4 and H56 : to hx x3 = x6, and we need to prove x4 = x6 *)
-    exact (IsoEq.eq_srect (fun y => Imported.Corelib_Init_Logic_eq_Prop x2 y x6)
-             (IsoEq.eq_srect (fun z => Imported.Corelib_Init_Logic_eq_Prop x2 (to hx x3) z)
-                (Imported.Corelib_Init_Logic_eq_Prop_refl x2 (to hx x3))
-                H56)
-             H34).
-  - (* from: imported eq in SProp -> eq in Prop *) 
+    exact (transport_imported_eq_Prop H34 H56).
+  - (* from: imported eq in SProp -> eq in Prop *)
     intro Heq.
     pose (Hfrom34 := from_to hx x3).
     pose (Hfrom56 := from_to hx x5).

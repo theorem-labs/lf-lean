@@ -1,10 +1,11 @@
 From IsomorphismChecker Require Import AutomationDefinitions IsomorphismStatementAutomationDefinitions EqualityLemmas IsomorphismDefinitions.
 Import IsoEq.
 From LeanImport Require Import Lean.
-#[local] Set Universe Polymorphism.
+#[local] Unset Universe Polymorphism.
 #[local] Set Implicit Arguments.
 From IsomorphismChecker Require Original Imported.
 (* Print Imported. *)
+
 From Stdlib Require Import Arith.
 
 From IsomorphismChecker Require Export Isomorphisms.U_original__U2_lf_dot_U_imp__U2_lf__U_imp__bexp__iso Isomorphisms.U_original__U2_lf_dot_U_imp__U2_lf__U_imp__state__iso Isomorphisms.bool__iso Isomorphisms.U_original__U2_lf_dot_U_imp__U2_lf__U_imp__aeval__iso.
@@ -14,29 +15,29 @@ Definition imported_Original_LF__DOT__Imp_LF_Imp_beval : (imported_String_string
 (* nat comparison compatibility *)
 Fixpoint nat_eqb_i (n m : imported_nat) : imported_bool :=
   match n, m with
-  | Imported.nat_O, Imported.nat_O => Imported.Stdlib_bool_true
-  | Imported.nat_O, Imported.nat_S _ => Imported.Stdlib_bool_false
-  | Imported.nat_S _, Imported.nat_O => Imported.Stdlib_bool_false
+  | Imported.nat_O, Imported.nat_O => Imported.mybool_mytrue
+  | Imported.nat_O, Imported.nat_S _ => Imported.mybool_myfalse
+  | Imported.nat_S _, Imported.nat_O => Imported.mybool_myfalse
   | Imported.nat_S n', Imported.nat_S m' => nat_eqb_i n' m'
   end.
 
 Fixpoint nat_leb_i (n m : imported_nat) : imported_bool :=
   match n, m with
-  | Imported.nat_O, _ => Imported.Stdlib_bool_true
-  | Imported.nat_S _, Imported.nat_O => Imported.Stdlib_bool_false
+  | Imported.nat_O, _ => Imported.mybool_mytrue
+  | Imported.nat_S _, Imported.nat_O => Imported.mybool_myfalse
   | Imported.nat_S n', Imported.nat_S m' => nat_leb_i n' m'
   end.
 
 Definition negb_i (b : imported_bool) : imported_bool :=
   match b with
-  | Imported.Stdlib_bool_true => Imported.Stdlib_bool_false
-  | Imported.Stdlib_bool_false => Imported.Stdlib_bool_true
+  | Imported.mybool_mytrue => Imported.mybool_myfalse
+  | Imported.mybool_myfalse => Imported.mybool_mytrue
   end.
 
 Definition andb_i (b1 b2 : imported_bool) : imported_bool :=
   match b1 with
-  | Imported.Stdlib_bool_true => b2
-  | Imported.Stdlib_bool_false => Imported.Stdlib_bool_false
+  | Imported.mybool_mytrue => b2
+  | Imported.mybool_myfalse => Imported.mybool_myfalse
   end.
 
 Lemma nat_to_imported_eqb : forall n m : Datatypes.nat,
@@ -72,7 +73,7 @@ Proof.
 Qed.
 
 Lemma nat_eqb_i_eq : forall n m : imported_nat,
-  IsomorphismDefinitions.eq (nat_eqb_i n m) (Imported.Nat_eqb n m).
+  IsomorphismDefinitions.eq (nat_eqb_i n m) (Imported.nat_eqb n m).
 Proof.
   fix IH 1. intros n m. destruct n, m; simpl.
   - apply IsomorphismDefinitions.eq_refl.
@@ -82,7 +83,7 @@ Proof.
 Qed.
 
 Lemma nat_leb_i_eq : forall n m : imported_nat,
-  IsomorphismDefinitions.eq (nat_leb_i n m) (Imported.Nat_leb n m).
+  IsomorphismDefinitions.eq (nat_leb_i n m) (Imported.nat_leb n m).
 Proof.
   fix IH 1. intros n m. destruct n, m; simpl.
   - apply IsomorphismDefinitions.eq_refl.
@@ -109,8 +110,8 @@ Fixpoint beval_aux
     (b : imported_Original_LF__DOT__Imp_LF_Imp_bexp)
   : imported_bool :=
   match b with
-  | Imported.Original_LF__DOT__Imp_LF_Imp_bexp_BTrue => Imported.Stdlib_bool_true
-  | Imported.Original_LF__DOT__Imp_LF_Imp_bexp_BFalse => Imported.Stdlib_bool_false
+  | Imported.Original_LF__DOT__Imp_LF_Imp_bexp_BTrue => Imported.mybool_mytrue
+  | Imported.Original_LF__DOT__Imp_LF_Imp_bexp_BFalse => Imported.mybool_myfalse
   | Imported.Original_LF__DOT__Imp_LF_Imp_bexp_BEq a1 a2 => nat_eqb_i (aeval_aux st a1) (aeval_aux st a2)
   | Imported.Original_LF__DOT__Imp_LF_Imp_bexp_BNeq a1 a2 => negb_i (nat_eqb_i (aeval_aux st a1) (aeval_aux st a2))
   | Imported.Original_LF__DOT__Imp_LF_Imp_bexp_BLe a1 a2 => nat_leb_i (aeval_aux st a1) (aeval_aux st a2)
@@ -128,20 +129,20 @@ Proof.
   - apply IsomorphismDefinitions.eq_refl.
   - (* BEq *)
     apply (eq_trans (nat_eqb_i_eq _ _)).
-    apply (f_equal2 Imported.Nat_eqb (aeval_aux_eq st a1) (aeval_aux_eq st a2)).
+    apply (f_equal2 Imported.nat_eqb (aeval_aux_eq st a1) (aeval_aux_eq st a2)).
   - (* BNeq *)
     apply (eq_trans (negb_i_eq _)).
     apply (f_equal Imported.negb).
     apply (eq_trans (nat_eqb_i_eq _ _)).
-    apply (f_equal2 Imported.Nat_eqb (aeval_aux_eq st a1) (aeval_aux_eq st a2)).
+    apply (f_equal2 Imported.nat_eqb (aeval_aux_eq st a1) (aeval_aux_eq st a2)).
   - (* BLe *)
     apply (eq_trans (nat_leb_i_eq _ _)).
-    apply (f_equal2 Imported.Nat_leb (aeval_aux_eq st a1) (aeval_aux_eq st a2)).
+    apply (f_equal2 Imported.nat_leb (aeval_aux_eq st a1) (aeval_aux_eq st a2)).
   - (* BGt *)
     apply (eq_trans (negb_i_eq _)).
     apply (f_equal Imported.negb).
     apply (eq_trans (nat_leb_i_eq _ _)).
-    apply (f_equal2 Imported.Nat_leb (aeval_aux_eq st a1) (aeval_aux_eq st a2)).
+    apply (f_equal2 Imported.nat_leb (aeval_aux_eq st a1) (aeval_aux_eq st a2)).
   - (* BNot *)
     apply (eq_trans (negb_i_eq _)).
     apply (f_equal Imported.negb IHb1).
@@ -193,8 +194,8 @@ Instance Original_LF__DOT__Imp_LF_Imp_beval_iso : forall (x1 : Original.LF_DOT_I
   rel_iso Original_LF__DOT__Imp_LF_Imp_bexp_iso x3 x4 -> rel_iso bool_iso (Original.LF_DOT_Imp.LF.Imp.beval x1 x3) (imported_Original_LF__DOT__Imp_LF_Imp_beval x2 x4).
 Proof.
   intros st st' Hst b b' Hb.
-  unfold rel_iso in Hb; simpl in Hb.
-  unfold rel_iso; simpl.
+  destruct Hb as [Hb]. simpl in Hb.
+  constructor. simpl.
   apply (eq_trans (beval_iso_core st st' Hst b)).
   apply (eq_trans (beval_aux_eq st' (bexp_to_imported b))).
   apply (f_equal (imported_Original_LF__DOT__Imp_LF_Imp_beval st') Hb).

@@ -44,7 +44,7 @@ Proof.
   assert (Hrel : rel_iso (list_iso Ascii_ascii_iso) l ((list_iso Ascii_ascii_iso).(to) l)).
   { constructor. apply IsomorphismDefinitions.eq_refl. }
   pose proof (@Original_LF__DOT__ImpParser_LF_ImpParser_string__of__list_iso l ((list_iso Ascii_ascii_iso).(to) l) Hrel) as H.
-  constructor; simpl in H. exact H.
+  unfold rel_iso in H. exact H.
 Qed.
 
 Instance Original_LF__DOT__ImpParser_LF_ImpParser_tokenize_iso : forall (x1 : String.string) (x2 : imported_String_string),
@@ -84,7 +84,7 @@ Proof.
                 (Original.LF_DOT_ImpParser.LF.ImpParser.list_of_string x1)
                 ((list_iso Ascii_ascii_iso).(to) (Original.LF_DOT_ImpParser.LF.ImpParser.list_of_string x1))
                 Hxs) as H.
-  constructor; simpl in H. simpl in H.
+  unfold rel_iso in H. simpl in H.
   
   eapply IsoEq.eq_trans.
   { exact H. }
@@ -93,7 +93,7 @@ Proof.
   - apply IsomorphismDefinitions.eq_refl.
   - apply IsomorphismDefinitions.eq_refl.
   - pose proof (@Original_LF__DOT__ImpParser_LF_ImpParser_list__of__string_iso x1 x2 Hs) as Hlist.
-    constructor; simpl in Hlist. exact Hlist.
+    unfold rel_iso in Hlist. exact Hlist.
 Defined.
 
 Instance: KnownConstant Original.LF_DOT_ImpParser.LF.ImpParser.tokenize := {}. (* only needed when rel_iso is typeclasses opaque *)

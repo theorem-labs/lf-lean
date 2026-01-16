@@ -1,16 +1,18 @@
 From IsomorphismChecker Require Import AutomationDefinitions IsomorphismStatementAutomationDefinitions EqualityLemmas IsomorphismDefinitions.
 Import IsoEq.
+From LeanImport Require Import Lean.
 #[local] Set Universe Polymorphism.
 #[local] Set Implicit Arguments.
-From IsomorphismChecker Require Original.
-From IsomorphismChecker Require Imported.
+From IsomorphismChecker Require Original Imported.
+(* Print Imported. *)
+(* Typeclasses Opaque rel_iso. *) (* for speed *)
 
 
 From IsomorphismChecker Require Export Isomorphisms.U_true__iso.
+From IsomorphismChecker Require Export Isomorphisms.U_corelib__U_init__U_logic__eq__iso__U_prop.
 
 (* The Imported.Corelib_Init_Logic_eq is now in SProp (since we defined it as Prop in Lean) *)
 Definition imported_Corelib_Init_Logic_eq : forall x : Type, x -> x -> SProp := @Imported.Corelib_Init_Logic_eq.
-Arguments imported_Corelib_Init_Logic_eq x%_type_scope _ _.
 
 (* Helper: transport along IsomorphismDefinitions.eq to construct Imported.Corelib_Init_Logic_eq *)
 Definition imported_eq_transport {A : Type} {x y z : A} 
@@ -32,14 +34,15 @@ Instance Corelib_Init_Logic_eq_iso : (forall (x1 x2 : Type) (hx : Iso x1 x2) (x3
    Iso (@Corelib.Init.Logic.eq x1 x3 x5) (@imported_Corelib_Init_Logic_eq x2 x4 x6)).
 Proof.
   intros x1 x2 hx x3 x4 H34 x5 x6 H56.
-  (* This is a cross-universe isomorphism between eq (Prop) and eq (SProp) *)
+  destruct H34 as [H34]. destruct H56 as [H56].
+  (* This is a cross-universe isomorphism: eq in Prop <-> Corelib_Init_Logic_eq in SProp *)
   unshelve eapply Build_Iso.
   - (* to: eq in Prop -> eq in SProp *)
     intro Heq.
     destruct Heq.
-    unfold imported_Corelib_Init_Logic_eq.
-    (* H34 : rel_iso hx x3 x4, i.e. IsomorphismDefinitions.eq (to hx x3) x4 
-       H56 : rel_iso hx x5 x6, i.e. IsomorphismDefinitions.eq (to hx x5) x6
+    (* We now have x3 = x5 (after destruct), so we need Imported.Corelib_Init_Logic_eq x4 x6 *)
+    (* H34 : IsomorphismDefinitions.eq (to hx x3) x4 
+       H56 : IsomorphismDefinitions.eq (to hx x5) x6
        But x3 = x5 now after destruct, so we need Imported.Corelib_Init_Logic_eq x4 x6 *)
     exact (imported_eq_transport H34 H56).
   - (* from: eq in SProp -> eq in Prop *)
@@ -72,10 +75,7 @@ Proof.
     apply IsomorphismDefinitions.eq_refl.
 Defined.
 
-Instance: KnownConstant (@Corelib.Init.Logic.eq) := {}.
-Instance: KnownConstant (@Imported.Corelib_Init_Logic_eq) := {}.
+Instance: KnownConstant (@Corelib.Init.Logic.eq) := {}. (* only needed when rel_iso is typeclasses opaque *)
+Instance: KnownConstant (@Imported.Corelib_Init_Logic_eq) := {}. (* only needed when rel_iso is typeclasses opaque *)
 Instance: IsoStatementProofFor (@Corelib.Init.Logic.eq) Corelib_Init_Logic_eq_iso := {}.
 Instance: IsoStatementProofBetween (@Corelib.Init.Logic.eq) (@Imported.Corelib_Init_Logic_eq) Corelib_Init_Logic_eq_iso := {}.
-
-(* The Prop version is in a separate file, but we need it loaded for checker *)
-From IsomorphismChecker Require Export Isomorphisms.U_corelib__U_init__U_logic__eq__iso__U_prop.

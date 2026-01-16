@@ -14,7 +14,7 @@ Definition imported_Original_LF__DOT__Poly_LF_Poly_None : forall x : Type, impor
 Instance Original_LF__DOT__Poly_LF_Poly_None_iso : forall (x1 x2 : Type) (hx : Iso x1 x2), rel_iso (Original_LF__DOT__Poly_LF_Poly_option_iso hx) Original.LF_DOT_Poly.LF.Poly.None (imported_Original_LF__DOT__Poly_LF_Poly_None x2).
 Proof.
   intros x1 x2 hx.
-  simpl.
+  constructor.
   unfold imported_Original_LF__DOT__Poly_LF_Poly_None.
   simpl.
   apply IsomorphismDefinitions.eq_refl.

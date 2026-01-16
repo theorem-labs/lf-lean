@@ -14,7 +14,7 @@ Definition imported_Original_LF__DOT__ImpParser_LF_ImpParser_bignumber : importe
 
 (* Prove the isomorphism by showing that both sides map to the same value *)
 Instance Original_LF__DOT__ImpParser_LF_ImpParser_bignumber_iso : rel_iso nat_iso Original.LF_DOT_ImpParser.LF.ImpParser.bignumber imported_Original_LF__DOT__ImpParser_LF_ImpParser_bignumber.
-Proof. reflexivity. Qed.
+Proof. reflexivity. Defined.
 Instance: KnownConstant Original.LF_DOT_ImpParser.LF.ImpParser.bignumber := {}. (* only needed when rel_iso is typeclasses opaque *)
 Instance: KnownConstant Imported.Original_LF__DOT__ImpParser_LF_ImpParser_bignumber := {}. (* only needed when rel_iso is typeclasses opaque *)
 Instance: IsoStatementProofFor Original.LF_DOT_ImpParser.LF.ImpParser.bignumber Original_LF__DOT__ImpParser_LF_ImpParser_bignumber_iso := {}.

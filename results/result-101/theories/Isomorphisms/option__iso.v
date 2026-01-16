@@ -1,11 +1,10 @@
 From IsomorphismChecker Require Import AutomationDefinitions IsomorphismStatementAutomationDefinitions EqualityLemmas IsomorphismDefinitions.
 Import IsoEq.
 From LeanImport Require Import Lean.
-#[local] Set Universe Polymorphism.
+#[local] Unset Universe Polymorphism.
 #[local] Set Implicit Arguments.
 From IsomorphismChecker Require Original Imported.
 (* Print Imported. *)
-(* Typeclasses Opaque rel_iso. *) (* for speed *)
 
 
 Definition imported_option : Type -> Type := Imported.option.
@@ -21,6 +20,20 @@ Definition imported_to_option {A B : Type} (f : A -> B) (o : Imported.option A) 
   | Imported.option_None _ => None
   | Imported.option_Some _ a => Some (f a)
   end.
+
+(* For Iso x1 x2: to : x1 -> x2, from : x2 -> x1
+   to_from : forall x, eq (to (from x)) x
+   from_to : forall x, eq (from (to x)) x
+   
+   So for option_iso we need:
+   - to : option x1 -> Imported.option x2  (= option_to_imported (Iso.to h))
+   - from : Imported.option x2 -> option x1 (= imported_to_option (Iso.from h))
+   - to_from proves: option_to_imported to (imported_to_option from o) = o
+   - from_to proves: imported_to_option from (option_to_imported to o) = o
+*)
+
+(* Imported.option: None first, then Some
+   Datatypes.option: Some first, then None *)
 
 Lemma option_to_from {A B : Type} (f : A -> B) (g : B -> A) 
   (fg : forall x, IsomorphismDefinitions.eq (f (g x)) x) :

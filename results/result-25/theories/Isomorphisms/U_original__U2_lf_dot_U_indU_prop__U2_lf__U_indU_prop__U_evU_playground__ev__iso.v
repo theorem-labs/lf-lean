@@ -1,11 +1,11 @@
 From IsomorphismChecker Require Import AutomationDefinitions IsomorphismStatementAutomationDefinitions EqualityLemmas IsomorphismDefinitions.
 Import IsoEq.
 From LeanImport Require Import Lean.
-#[local] Unset Universe Polymorphism.
+#[local] Set Universe Polymorphism.
 #[local] Set Implicit Arguments.
 From IsomorphismChecker Require Original Imported.
 (* Print Imported. *)
-(* Typeclasses Opaque rel_iso. *) (* for speed *)
+(* (* (* Typeclasses Opaque rel_iso. *) *) *) (* for speed *)
 
 
 From IsomorphismChecker Require Export Isomorphisms.nat__iso.
@@ -147,7 +147,7 @@ Definition prop_proof_irrel_to_seq : forall (P : Prop) (p1 p2 : P), IsomorphismD
 Instance Original_LF__DOT__IndProp_LF_IndProp_EvPlayground_ev_iso : (forall (x1 : nat) (x2 : imported_nat) (_ : @rel_iso nat imported_nat nat_iso x1 x2),
    Iso (Original.LF_DOT_IndProp.LF.IndProp.EvPlayground.ev x1) (imported_Original_LF__DOT__IndProp_LF_IndProp_EvPlayground_ev x2)).
 Proof.
-  intros x1 x2 [Hx].
+  intros x1 x2 Hx.
   simpl in Hx.
   unfold imported_Original_LF__DOT__IndProp_LF_IndProp_EvPlayground_ev.
   refine {|

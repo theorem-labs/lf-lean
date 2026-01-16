@@ -9,7 +9,7 @@ Module Type Args <: Interface.nat__iso.Args. End Args.
 #[global] Strategy -1 [ Isomorphisms.nat__iso.imported_nat Isomorphisms.nat__iso.nat_iso ].
 
 Module Checker (Import args : Args) <: Interface.nat__iso.Interface args
-  with Definition imported_nat := Imported.nat.
+  with Definition imported_nat := Imported.mynat.
 
 Definition imported_nat := Isomorphisms.nat__iso.imported_nat.
 Definition nat_iso := Isomorphisms.nat__iso.nat_iso.

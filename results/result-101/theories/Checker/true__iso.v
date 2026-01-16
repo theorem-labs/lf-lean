@@ -10,7 +10,7 @@ Module Type Args <: Interface.true__iso.Args := Checker.bool__iso.Args <+ Checke
 #[global] Strategy -1 [ Isomorphisms.true__iso.imported_true Isomorphisms.true__iso.true_iso ].
 
 Module Checker (Import args : Args) <: Interface.true__iso.Interface args
-  with Definition imported_true := Imported.mybool_mytrue.
+  with Definition imported_true := Imported.Coqbool_Coqtrue.
 
 Definition imported_true := Isomorphisms.true__iso.imported_true.
 Definition true_iso := Isomorphisms.true__iso.true_iso.

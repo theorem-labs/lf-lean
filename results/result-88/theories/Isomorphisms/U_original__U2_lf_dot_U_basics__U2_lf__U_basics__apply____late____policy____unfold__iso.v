@@ -1,7 +1,7 @@
 From IsomorphismChecker Require Import AutomationDefinitions IsomorphismStatementAutomationDefinitions EqualityLemmas IsomorphismDefinitions.
 Import IsoEq.
 From LeanImport Require Import Lean.
-#[local] Unset Universe Polymorphism.
+#[local] Set Universe Polymorphism.
 #[local] Set Implicit Arguments.
 From IsomorphismChecker Require Original Imported.
 (* Print Imported. *)
@@ -78,9 +78,9 @@ Monomorphic Instance Original_LF__DOT__Basics_LF_Basics_apply__late__policy__unf
                                {|
                                  unwrap_sprop :=
                                    Original_LF__DOT__Basics_LF_Basics_lower__grade_iso (Original_LF__DOT__Basics_LF_Basics_lower__grade_iso (Original_LF__DOT__Basics_LF_Basics_lower__grade_iso hx0))
-                               |} (Original_LF__DOT__Basics_LF_Basics_ltb_iso hx (S_iso (S_iso (S_iso (iterate1D2 S imported_S S_iso 18 0 imported_0 _0_iso))))))
-                      |} (Original_LF__DOT__Basics_LF_Basics_ltb_iso hx (S_iso (S_iso (S_iso (iterate1D2 S imported_S S_iso 14 0 imported_0 _0_iso))))))
-             |} (Original_LF__DOT__Basics_LF_Basics_ltb_iso hx (S_iso (S_iso (S_iso (iterate1D2 S imported_S S_iso 6 0 imported_0 _0_iso))))))))
+                               |} (Original_LF__DOT__Basics_LF_Basics_ltb_iso hx (S_iso (S_iso (S_iso (iterate1D2 S imported_S S_iso 18 O imported_0 _0_iso))))))
+                      |} (Original_LF__DOT__Basics_LF_Basics_ltb_iso hx (S_iso (S_iso (S_iso (iterate1D2 S imported_S S_iso 14 O imported_0 _0_iso))))))
+             |} (Original_LF__DOT__Basics_LF_Basics_ltb_iso hx (S_iso (S_iso (S_iso (iterate1D2 S imported_S S_iso 6 O imported_0 _0_iso))))))))
     (Original.LF_DOT_Basics.LF.Basics.apply_late_policy_unfold x1 x3) (imported_Original_LF__DOT__Basics_LF_Basics_apply__late__policy__unfold x2 x4).
 Admitted.
 Instance: KnownConstant Original.LF_DOT_Basics.LF.Basics.apply_late_policy_unfold := {}. (* only needed when rel_iso is typeclasses opaque *)

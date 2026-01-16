@@ -9,7 +9,7 @@ Module Type Args <: Interface.U_true__iso.Args. End Args.
 #[global] Strategy -1 [ Isomorphisms.U_true__iso.imported_True Isomorphisms.U_true__iso.True_iso ].
 
 Module Checker (Import args : Args) <: Interface.U_true__iso.Interface args
-  with Definition imported_True := Imported.True_.
+  with Definition imported_True := Imported.Exported_True.
 
 Definition imported_True := Isomorphisms.U_true__iso.imported_True.
 Definition True_iso := Isomorphisms.U_true__iso.True_iso.

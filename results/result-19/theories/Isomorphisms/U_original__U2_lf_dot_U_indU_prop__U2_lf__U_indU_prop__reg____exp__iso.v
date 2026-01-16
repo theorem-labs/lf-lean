@@ -5,7 +5,6 @@ From LeanImport Require Import Lean.
 #[local] Set Implicit Arguments.
 From IsomorphismChecker Require Original Imported.
 (* Print Imported. *)
-(* Typeclasses Opaque rel_iso. *) (* for speed *)
 
 
 Definition imported_Original_LF__DOT__IndProp_LF_IndProp_reg__exp : Type -> Type := Imported.Original_LF__DOT__IndProp_LF_IndProp_reg__exp.

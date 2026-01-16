@@ -34,7 +34,8 @@ Instance Original_LF__DOT__Poly_LF_Poly_app_iso : forall (x1 x2 : Type) (hx : Is
   rel_iso (Original_LF__DOT__Poly_LF_Poly_list_iso hx) (Original.LF_DOT_Poly.LF.Poly.app x3 x5) (imported_Original_LF__DOT__Poly_LF_Poly_app x4 x6).
 Proof.
   intros x1 x2 hx x3 x4 H34 x5 x6 H56.
-  constructor; simpl.
+  destruct H34 as [H34]. destruct H56 as [H56]. simpl in *.
+  constructor. simpl.
   unfold imported_Original_LF__DOT__Poly_LF_Poly_app.
   eapply eq_trans.
   - apply list_to_app_compat.

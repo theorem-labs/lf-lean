@@ -35,10 +35,11 @@ Instance Original_LF__DOT__Poly_LF_Poly_app_iso : forall (x1 x2 : Type) (hx : Is
 Proof.
   intros x1 x2 hx x3 x4 H34 x5 x6 H56.
   constructor. simpl.
+  destruct H34 as [H34]. destruct H56 as [H56]. simpl in H34, H56.
   unfold imported_Original_LF__DOT__Poly_LF_Poly_app.
   eapply eq_trans.
-  - apply list_to_app_compat.
-  - apply f_equal2; [exact (proj_rel_iso H34) | exact (proj_rel_iso H56)].
+  2: { apply f_equal2; [exact H34 | exact H56]. }
+  apply list_to_app_compat.
 Defined.
 Instance: KnownConstant (@Original.LF_DOT_Poly.LF.Poly.app) := {}. (* only needed when rel_iso is typeclasses opaque *)
 Instance: KnownConstant Imported.Original_LF__DOT__Poly_LF_Poly_app := {}. (* only needed when rel_iso is typeclasses opaque *)

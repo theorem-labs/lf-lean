@@ -32,7 +32,7 @@ Proof.
   (* The result types are both in SProp (after relaxation), so all proofs are equal *)
   constructor. simpl.
   apply IsomorphismDefinitions.eq_refl.
-Defined.
+Qed.
 
 Instance: KnownConstant Original.LF_DOT_Basics.LF.Basics.lower_letter_lowers := {}. (* only needed when rel_iso is typeclasses opaque *)
 Instance: KnownConstant Imported.Original_LF__DOT__Basics_LF_Basics_lower__letter__lowers := {}. (* only needed when rel_iso is typeclasses opaque *)

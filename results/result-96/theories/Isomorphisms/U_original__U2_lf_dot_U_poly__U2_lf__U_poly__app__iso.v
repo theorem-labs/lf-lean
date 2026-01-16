@@ -25,7 +25,7 @@ Proof.
   - simpl. apply (IsoEq.f_equal2 (Imported.Original_LF__DOT__Poly_LF_Poly_list_cons x2)).
     + apply IsomorphismDefinitions.eq_refl.
     + exact IH.
-Qed.
+Defined.
 
 Instance Original_LF__DOT__Poly_LF_Poly_app_iso : forall (x1 x2 : Type) (hx : Iso x1 x2) (x3 : Original.LF_DOT_Poly.LF.Poly.list x1) (x4 : imported_Original_LF__DOT__Poly_LF_Poly_list x2),
   rel_iso (Original_LF__DOT__Poly_LF_Poly_list_iso hx) x3 x4 ->
@@ -34,12 +34,12 @@ Instance Original_LF__DOT__Poly_LF_Poly_app_iso : forall (x1 x2 : Type) (hx : Is
   rel_iso (Original_LF__DOT__Poly_LF_Poly_list_iso hx) (Original.LF_DOT_Poly.LF.Poly.app x3 x5) (imported_Original_LF__DOT__Poly_LF_Poly_app x4 x6).
 Proof.
   intros x1 x2 hx x3 x4 H34 x5 x6 H56.
-  destruct H34 as [H34]. destruct H56 as [H56]. simpl in *.
   constructor. simpl.
+  destruct H34 as [H34]. destruct H56 as [H56]. simpl in H34, H56.
   unfold imported_Original_LF__DOT__Poly_LF_Poly_app.
   eapply eq_trans.
-  - apply list_to_app_compat.
-  - apply f_equal2; assumption.
+  2: { apply f_equal2; [exact H34 | exact H56]. }
+  apply list_to_app_compat.
 Defined.
 Instance: KnownConstant (@Original.LF_DOT_Poly.LF.Poly.app) := {}. (* only needed when rel_iso is typeclasses opaque *)
 Instance: KnownConstant Imported.Original_LF__DOT__Poly_LF_Poly_app := {}. (* only needed when rel_iso is typeclasses opaque *)

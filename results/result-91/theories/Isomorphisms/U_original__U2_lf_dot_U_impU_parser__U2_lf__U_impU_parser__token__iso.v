@@ -5,7 +5,7 @@ From LeanImport Require Import Lean.
 #[local] Set Implicit Arguments.
 From IsomorphismChecker Require Original Imported.
 (* Print Imported. *)
-(* (* Typeclasses Opaque rel_iso *). *) (* for speed *)
+
 
 From IsomorphismChecker Require Export Isomorphisms.U_string__string__iso.
 
@@ -16,7 +16,7 @@ Instance Original_LF__DOT__ImpParser_LF_ImpParser_token_iso : Iso Original.LF_DO
 Proof.
   unfold Original.LF_DOT_ImpParser.LF.ImpParser.token.
   unfold imported_Original_LF__DOT__ImpParser_LF_ImpParser_token.
-  unfold Imported.Original_LF__DOT__ImpParser_LF_ImpParser_token.
+  simpl.
   exact String_string_iso.
 Defined.
 Instance: KnownConstant Original.LF_DOT_ImpParser.LF.ImpParser.token := {}. (* only needed when rel_iso is typeclasses opaque *)

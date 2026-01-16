@@ -84,7 +84,7 @@ Proof.
                 (Original.LF_DOT_ImpParser.LF.ImpParser.list_of_string x1)
                 ((list_iso Ascii_ascii_iso).(to) (Original.LF_DOT_ImpParser.LF.ImpParser.list_of_string x1))
                 Hxs) as H.
-  pose proof (eq_of_seq (proj_rel_iso Hx1)) as E1. pose proof (eq_of_seq (proj_rel_iso Hx3)) as E3. subst x2 x4.
+  unfold rel_iso in H. simpl in H.
   
   eapply IsoEq.eq_trans.
   { exact H. }

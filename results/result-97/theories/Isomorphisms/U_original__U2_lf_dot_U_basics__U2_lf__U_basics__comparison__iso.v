@@ -27,12 +27,12 @@ Definition comparison_from (c : imported_Original_LF__DOT__Basics_LF_Basics_comp
 Lemma comparison_to_from : forall x, IsomorphismDefinitions.eq (comparison_to (comparison_from x)) x.
 Proof.
   intro x; destruct x; apply IsomorphismDefinitions.eq_refl.
-Defined.
+Qed.
 
 Lemma comparison_from_to : forall x, IsomorphismDefinitions.eq (comparison_from (comparison_to x)) x.
 Proof.
   intro x; destruct x; apply IsomorphismDefinitions.eq_refl.
-Defined.
+Qed.
 
 Instance Original_LF__DOT__Basics_LF_Basics_comparison_iso : Iso Original.LF_DOT_Basics.LF.Basics.comparison imported_Original_LF__DOT__Basics_LF_Basics_comparison :=
   Build_Iso comparison_to comparison_from comparison_to_from comparison_from_to.

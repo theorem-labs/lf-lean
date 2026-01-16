@@ -27,7 +27,7 @@ Definition imported_to_ascii (a : imported_Ascii_ascii) : Ascii.ascii :=
       (from bool_iso b4) (from bool_iso b5) (from bool_iso b6) (from bool_iso b7)
   end.
 
-Lemma mybool_to_from : forall b : Imported.mybool,
+Lemma mybool_to_from : forall b : Imported.Stdlib_bool,
   IsomorphismDefinitions.eq (to bool_iso (from bool_iso b)) b.
 Proof.
   intro b. destruct b; apply IsomorphismDefinitions.eq_refl.

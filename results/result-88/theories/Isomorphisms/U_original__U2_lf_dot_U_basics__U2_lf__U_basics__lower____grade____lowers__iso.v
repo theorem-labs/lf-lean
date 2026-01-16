@@ -1,7 +1,7 @@
 From IsomorphismChecker Require Import AutomationDefinitions IsomorphismStatementAutomationDefinitions EqualityLemmas IsomorphismDefinitions.
 Import IsoEq.
 From LeanImport Require Import Lean.
-#[local] Unset Universe Polymorphism.
+#[local] Set Universe Polymorphism.
 #[local] Set Implicit Arguments.
 From IsomorphismChecker Require Original Imported.
 (* Print Imported. *)
@@ -31,7 +31,7 @@ Monomorphic Instance Original_LF__DOT__Basics_LF_Basics_lower__grade__lowers_iso
        Original_LF__DOT__Basics_LF_Basics_Lt_iso)
     x3 x4 ->
   rel_iso (Corelib_Init_Logic_eq_iso (Original_LF__DOT__Basics_LF_Basics_grade__comparison_iso (Original_LF__DOT__Basics_LF_Basics_lower__grade_iso hx) hx) Original_LF__DOT__Basics_LF_Basics_Lt_iso)
-    (Original.LF_DOT_Basics.LF.Basics.lower_grade_lowers x1 x3) (imported_Original_LF__DOT__Basics_LF_Basics_lower__grade__lowers x4).
+    (Original.LF_DOT_Basics.LF.Basics.lower_grade_lowers x1 x3) (imported_Original_LF__DOT__Basics_LF_Basics_lower__grade__lowers x2 x4).
 Admitted.
 Instance: KnownConstant Original.LF_DOT_Basics.LF.Basics.lower_grade_lowers := {}. (* only needed when rel_iso is typeclasses opaque *)
 Instance: KnownConstant Imported.Original_LF__DOT__Basics_LF_Basics_lower__grade__lowers := {}. (* only needed when rel_iso is typeclasses opaque *)

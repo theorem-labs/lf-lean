@@ -5,12 +5,9 @@ From LeanImport Require Import Lean.
 #[local] Set Implicit Arguments.
 From IsomorphismChecker Require Original Imported.
 (* Print Imported. *)
-(* Typeclasses Opaque rel_iso. *) (* for speed *)
 
 
-(* Now Imported.Original_False is SProp (since we used Prop in Lean) *)
 Definition imported_Original_False : SProp := Imported.Original_False.
-
 Instance Original_False_iso : (Iso Original.False imported_Original_False).
 Proof.
   unshelve eapply Build_Iso.

@@ -14,9 +14,8 @@ Definition imported_Original_LF__DOT__Poly_LF_Poly_nil : forall x : Type, import
 Instance Original_LF__DOT__Poly_LF_Poly_nil_iso : forall (x1 x2 : Type) (hx : Iso x1 x2), rel_iso (Original_LF__DOT__Poly_LF_Poly_list_iso hx) Original.LF_DOT_Poly.LF.Poly.nil (imported_Original_LF__DOT__Poly_LF_Poly_nil x2).
 Proof.
   intros x1 x2 hx.
-  constructor.
+  constructor. simpl.
   unfold imported_Original_LF__DOT__Poly_LF_Poly_nil.
-  simpl.
   apply IsomorphismDefinitions.eq_refl.
 Defined.
 Instance: KnownConstant (@Original.LF_DOT_Poly.LF.Poly.nil) := {}. (* only needed when rel_iso is typeclasses opaque *)

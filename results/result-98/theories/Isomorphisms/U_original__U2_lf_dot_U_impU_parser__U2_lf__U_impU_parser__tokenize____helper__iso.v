@@ -3,7 +3,7 @@ Import IsoEq.
 From LeanImport Require Import Lean.
 From Stdlib Require Import List.
 Import ListNotations.
-#[local] Set Universe Polymorphism.
+#[local] Unset Universe Polymorphism.
 #[local] Set Implicit Arguments.
 From IsomorphismChecker Require Original Imported.
 (* Typeclasses Opaque rel_iso. *) (* for speed *)
@@ -36,7 +36,7 @@ Proof.
     specialize (IH (h :: l2)).
     unfold list_ascii_to_imported in IH. simpl in IH.
     exact IH.
-Defined.
+Qed.
 
 Lemma rev_iso : forall (l : list Ascii.ascii),
   IsomorphismDefinitions.eq 
@@ -48,7 +48,7 @@ Proof.
   rewrite rev_alt.
   unfold Imported.rev.
   apply rev_append_iso.
-Defined.
+Qed.
 
 (* More specific version for the cons case *)
 Lemma rev_cons_iso : forall (h : Ascii.ascii) (t : list Ascii.ascii),
@@ -58,7 +58,7 @@ Lemma rev_cons_iso : forall (h : Ascii.ascii) (t : list Ascii.ascii),
 Proof.
   intros h t.
   apply rev_iso.
-Defined.
+Qed.
 
 (* Key lemma: app preserves the isomorphism for list (list ascii) *)
 Lemma app_list_list_iso : forall (l1 l2 : list (list Ascii.ascii)),
@@ -71,7 +71,7 @@ Proof.
   - apply (IsoEq.f_equal2 (Imported.list_cons _)).
     + apply IsomorphismDefinitions.eq_refl.
     + specialize (IH l2). unfold list_list_ascii_to_imported in IH. exact IH.
-Defined.
+Qed.
 
 (* The main isomorphism theorem *)
 (* We prove by showing: to (tokenize_helper cls acc xs) = tokenize_helper_imp (to cls) (to acc) (to xs) *)
@@ -120,7 +120,7 @@ Proof.
           apply IH]);
     try apply IsomorphismDefinitions.eq_refl;
     try apply IH. }
-Defined.
+Qed.
 
 Instance Original_LF__DOT__ImpParser_LF_ImpParser_tokenize__helper_iso : forall (x1 : Original.LF_DOT_ImpParser.LF.ImpParser.chartype) (x2 : imported_Original_LF__DOT__ImpParser_LF_ImpParser_chartype),
   rel_iso Original_LF__DOT__ImpParser_LF_ImpParser_chartype_iso x1 x2 ->
@@ -142,7 +142,7 @@ Proof.
   - exact Hcls.
   - exact Hacc.
   - exact Hxs.
-Defined.
+Qed.
 
 Instance: KnownConstant Original.LF_DOT_ImpParser.LF.ImpParser.tokenize_helper := {}. 
 Instance: KnownConstant Imported.Original_LF__DOT__ImpParser_LF_ImpParser_tokenize__helper := {}. 

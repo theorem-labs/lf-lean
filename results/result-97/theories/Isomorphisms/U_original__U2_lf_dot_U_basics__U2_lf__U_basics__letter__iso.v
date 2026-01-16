@@ -31,12 +31,12 @@ Definition letter_from (l : imported_Original_LF__DOT__Basics_LF_Basics_letter) 
 Lemma letter_to_from : forall x, IsomorphismDefinitions.eq (letter_to (letter_from x)) x.
 Proof.
   intro x; destruct x; apply IsomorphismDefinitions.eq_refl.
-Defined.
+Qed.
 
 Lemma letter_from_to : forall x, IsomorphismDefinitions.eq (letter_from (letter_to x)) x.
 Proof.
   intro x; destruct x; apply IsomorphismDefinitions.eq_refl.
-Defined.
+Qed.
 
 Instance Original_LF__DOT__Basics_LF_Basics_letter_iso : Iso Original.LF_DOT_Basics.LF.Basics.letter imported_Original_LF__DOT__Basics_LF_Basics_letter :=
   Build_Iso letter_to letter_from letter_to_from letter_from_to.

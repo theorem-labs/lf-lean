@@ -12,7 +12,7 @@ From IsomorphismChecker Require Export Isomorphisms.U_original__U2_lf_dot_U_imp_
 
 Definition imported_Original_LF__DOT__Imp_LF_Imp_CSkip : imported_Original_LF__DOT__Imp_LF_Imp_com := Imported.Original_LF__DOT__Imp_LF_Imp_CSkip.
 Instance Original_LF__DOT__Imp_LF_Imp_CSkip_iso : rel_iso Original_LF__DOT__Imp_LF_Imp_com_iso Original.LF_DOT_Imp.LF.Imp.CSkip imported_Original_LF__DOT__Imp_LF_Imp_CSkip.
-Proof. simpl. simpl. apply IsomorphismDefinitions.eq_refl. Defined.
+Proof. constructor; simpl. apply IsomorphismDefinitions.eq_refl. Defined.
 Instance: KnownConstant Original.LF_DOT_Imp.LF.Imp.CSkip := {}. (* only needed when rel_iso is typeclasses opaque *)
 Instance: KnownConstant Imported.Original_LF__DOT__Imp_LF_Imp_CSkip := {}. (* only needed when rel_iso is typeclasses opaque *)
 Instance: IsoStatementProofFor Original.LF_DOT_Imp.LF.Imp.CSkip Original_LF__DOT__Imp_LF_Imp_CSkip_iso := {}.

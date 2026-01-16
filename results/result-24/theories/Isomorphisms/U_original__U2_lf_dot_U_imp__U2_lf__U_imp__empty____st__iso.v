@@ -15,7 +15,8 @@ Instance Original_LF__DOT__Imp_LF_Imp_empty__st_iso : forall (x1 : String.string
   rel_iso String_string_iso x1 x2 -> rel_iso nat_iso (Original.LF_DOT_Imp.LF.Imp.empty_st x1) (imported_Original_LF__DOT__Imp_LF_Imp_empty__st x2).
 Proof.
   intros x1 x2 Hrel.
-  simpl; imported_Original_LF__DOT__Imp_LF_Imp_empty__st.
+  unfold imported_Original_LF__DOT__Imp_LF_Imp_empty__st.
+  constructor.
   (* empty_st is t_empty 0 = fun _ => 0 *)
   (* Original.LF_DOT_Imp.LF.Imp.empty_st x1 = 0 *)
   (* Imported.Original_LF__DOT__Imp_LF_Imp_empty__st x2 = Imported.nat_O *)

@@ -5,7 +5,7 @@ From LeanImport Require Import Lean.
 #[local] Set Implicit Arguments.
 From IsomorphismChecker Require Original Imported.
 (* Print Imported. *)
-(* Typeclasses Opaque rel_iso. *) (* for speed *)
+(* (* (* Typeclasses Opaque rel_iso. *) *) *) (* for speed *)
 
 
 From IsomorphismChecker Require Export Isomorphisms.U_original__U2_lf_dot_U_imp__U2_lf__U_imp__aexp__iso Isomorphisms.U_string__string__iso.
@@ -15,7 +15,7 @@ Instance Original_LF__DOT__Imp_LF_Imp_AId_iso : forall (x1 : String.string) (x2 
   rel_iso String_string_iso x1 x2 -> rel_iso Original_LF__DOT__Imp_LF_Imp_aexp_iso (Original.LF_DOT_Imp.LF.Imp.AId x1) (imported_Original_LF__DOT__Imp_LF_Imp_AId x2).
 Proof.
   intros x1 x2 H1.
-  simpl in *. simpl in *.
+  cbn. simpl in *.
   unfold imported_Original_LF__DOT__Imp_LF_Imp_AId.
   apply (f_equal Imported.Original_LF__DOT__Imp_LF_Imp_aexp_AId H1).
 Defined.

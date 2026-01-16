@@ -1,7 +1,7 @@
 From IsomorphismChecker Require Import AutomationDefinitions IsomorphismStatementAutomationDefinitions EqualityLemmas IsomorphismDefinitions.
 Import IsoEq.
 From LeanImport Require Import Lean.
-#[local] Set Universe Polymorphism.
+#[local] Unset Universe Polymorphism.
 #[local] Set Implicit Arguments.
 From IsomorphismChecker Require Original Imported.
 (* Print Imported. *)
@@ -21,7 +21,7 @@ Proof.
   idtac.
   unfold imported_Original_LF__DOT__IndProp_LF_IndProp_App.
   exact (IsoEq.f_equal2 (Imported.Original_LF__DOT__IndProp_LF_IndProp_reg__exp_App x2) H34 H56).
-Defined.
+Qed.
 Instance: KnownConstant (@Original.LF_DOT_IndProp.LF.IndProp.App) := {}. (* only needed when rel_iso is typeclasses opaque *)
 Instance: KnownConstant (@Imported.Original_LF__DOT__IndProp_LF_IndProp_App) := {}. (* only needed when rel_iso is typeclasses opaque *)
 Instance: IsoStatementProofFor (@Original.LF_DOT_IndProp.LF.IndProp.App) Original_LF__DOT__IndProp_LF_IndProp_App_iso := {}.

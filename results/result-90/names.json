@@ -1,4 +1,11 @@
 {
-  "True": "Exported_True",
-  "False": "Exported_False"
+  "bool": "mybool",
+  "true": "mybool_mytrue",
+  "false": "mybool_myfalse",
+  "True": "TrueType",
+  "False": "FalseType",
+  "Ascii_Ascii": "Ascii_ascii_Ascii",
+  "Ascii_ascii": "Ascii_ascii",
+  "_0": "nat_O",
+  "S": "nat_S"
 }

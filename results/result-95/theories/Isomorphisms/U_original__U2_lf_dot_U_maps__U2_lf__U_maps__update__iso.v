@@ -21,7 +21,7 @@ Proof.
   constructor; simpl.
   unfold option_to_imported. simpl.
   exact (IsoEq.f_equal (Imported.option_Some x2) Hv).
-Qed.
+Defined.
 
 Instance Original_LF__DOT__Maps_LF_Maps_update_iso : forall (x1 x2 : Type) (hx : Iso x1 x2) (x3 : Original.LF_DOT_Maps.LF.Maps.partial_map x1) (x4 : imported_String_string -> imported_option x2),
   (forall (x5 : String.string) (x6 : imported_String_string), rel_iso String_string_iso x5 x6 -> rel_iso (option_iso hx) (x3 x5) (x4 x6)) ->
@@ -55,7 +55,7 @@ Proof.
     simpl.
     (* Need: eq (option_Some x2 (to hx x7)) (option_Some x2 x8) *)
     (* H78 : rel_iso hx x7 x8, i.e., eq (to hx x7) x8 *)
-    pose proof (eq_of_seq (proj_rel_iso Hx1)) as E1. pose proof (eq_of_seq (proj_rel_iso Hx3)) as E3. subst x2 x4.
+    constructor; simpl in H78. simpl in H78.
     exact (IsoEq.f_equal (Imported.option_Some x2) H78).
     exact Heqb.
   - (* x5 =? x9 = false *)
@@ -69,10 +69,10 @@ Proof.
     (* Need: eq (option_to_imported (to hx) (x3 x9)) (x4 x10) *)
     (* This follows from Hmap x9 x10 H910 *)
     pose proof (Hmap x9 x10 H910) as Hmap910.
-    pose proof (eq_of_seq (proj_rel_iso Hx1)) as E1. pose proof (eq_of_seq (proj_rel_iso Hx3)) as E3. subst x2 x4.
+    constructor; simpl in Hmap910. simpl in Hmap910.
     exact Hmap910.
     exact Heqb.
-Qed.
+Defined.
 Instance: KnownConstant (@Original.LF_DOT_Maps.LF.Maps.update) := {}. (* only needed when rel_iso is typeclasses opaque *)
 Instance: KnownConstant (@Imported.Original_LF__DOT__Maps_LF_Maps_update) := {}. (* only needed when rel_iso is typeclasses opaque *)
 Instance: IsoStatementProofFor (@Original.LF_DOT_Maps.LF.Maps.update) Original_LF__DOT__Maps_LF_Maps_update_iso := {}.

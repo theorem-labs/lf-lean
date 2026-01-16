@@ -15,6 +15,7 @@ Instance Original_LF__DOT__Poly_LF_Poly_nil_iso : forall (x1 x2 : Type) (hx : Is
 Proof.
   intros x1 x2 hx.
   constructor.
+  simpl.
   unfold imported_Original_LF__DOT__Poly_LF_Poly_nil.
   simpl.
   apply IsomorphismDefinitions.eq_refl.

@@ -1,34 +1,35 @@
 From IsomorphismChecker Require Import AutomationDefinitions IsomorphismStatementAutomationDefinitions EqualityLemmas IsomorphismDefinitions.
 Import IsoEq.
 From LeanImport Require Import Lean.
-#[local] Set Universe Polymorphism.
+#[local] Unset Universe Polymorphism.
 #[local] Set Implicit Arguments.
 From IsomorphismChecker Require Original Imported.
 (* Print Imported. *)
+
 
 From Stdlib Require Import ProofIrrelevance.
 
 Definition imported_iff : SProp -> SProp -> SProp := Imported.iff.
 
 (* Build an Iso between (x1 <-> x3) and (imported_iff x2 x4) *)
-(* where imported_iff is the Lean-exported iff record *)
+(* imported_iff x2 x4 = PandType (x2 -> x4) (x4 -> x2) *)
 Instance iff_iso : forall (x1 : Prop) (x2 : SProp), Iso x1 x2 -> forall (x3 : Prop) (x4 : SProp), Iso x3 x4 -> Iso (x1 <-> x3) (imported_iff x2 x4).
 Proof.
   intros x1 x2 hx x3 x4 hx0.
-  (* x1 <-> x3 is (x1 -> x3) /\ (x3 -> x1) *)
-  (* imported_iff x2 x4 is a record with mp : x2 -> x4 and mpr : x4 -> x2 *)
+  unfold imported_iff, Imported.iff.
   unshelve econstructor.
-  - (* to : (x1 <-> x3) -> imported_iff x2 x4 *)
+  - (* to : (x1 <-> x3) -> PandType (x2 -> x4) (x4 -> x2) *)
     intros [H1 H2].
-    exact (Imported.iff_mk x2 x4 (fun a => hx0.(to) (H1 (hx.(from) a))) (fun b => hx.(to) (H2 (hx0.(from) b)))).
-  - (* from : imported_iff x2 x4 -> (x1 <-> x3) *)
+    exact (Imported.PandType_conj _ _ (fun a => hx0.(to) (H1 (hx.(from) a))) (fun b => hx.(to) (H2 (hx0.(from) b)))).
+  - (* from : PandType (x2 -> x4) (x4 -> x2) -> (x1 <-> x3) *)
     intros H.
+    destruct H as [mp mpr].
     split.
-    + intros a. exact (hx0.(from) (Imported.mp _ _ H (hx.(to) a))).
-    + intros b. exact (hx.(from) (Imported.mpr _ _ H (hx0.(to) b))).
+    + intros a. exact (hx0.(from) (mp (hx.(to) a))).
+    + intros b. exact (hx.(from) (mpr (hx0.(to) b))).
   - (* to_from *)
     intros x.
-    (* Since imported_iff is in SProp, this is trivial by proof irrelevance *)
+    (* Since PandType is in SProp, this is trivial by proof irrelevance *)
     apply IsomorphismDefinitions.eq_refl.
   - (* from_to *)
     intros x.

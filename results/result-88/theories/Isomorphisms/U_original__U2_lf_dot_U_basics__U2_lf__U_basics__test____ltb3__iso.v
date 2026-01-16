@@ -10,10 +10,21 @@ From IsomorphismChecker Require Original Imported.
 
 From IsomorphismChecker Require Export Isomorphisms.U_corelib__U_init__U_logic__eq__iso Isomorphisms.__0__iso Isomorphisms.U_original__U2_lf_dot_U_basics__U2_lf__U_basics__false__iso Isomorphisms.U_original__U2_lf_dot_U_basics__U2_lf__U_basics__ltb__iso Isomorphisms.U_s__iso.
 
-Monomorphic Definition imported_Original_LF__DOT__Basics_LF_Basics_test__ltb3 : imported_Corelib_Init_Logic_eq (imported_Original_LF__DOT__Basics_LF_Basics_ltb (imported_S (imported_S (imported_S (iterate1 imported_S 1 imported_0)))) (imported_S (imported_S imported_0)))
+Definition imported_Original_LF__DOT__Basics_LF_Basics_test__ltb3 : imported_Corelib_Init_Logic_eq (imported_Original_LF__DOT__Basics_LF_Basics_ltb (imported_S (imported_S (imported_S (iterate1 imported_S 1 imported_0)))) (imported_S (imported_S imported_0)))
     imported_Original_LF__DOT__Basics_LF_Basics_false := Imported.Original_LF__DOT__Basics_LF_Basics_test__ltb3.
-Monomorphic Instance Original_LF__DOT__Basics_LF_Basics_test__ltb3_iso : rel_iso
-    (Corelib_Init_Logic_eq_iso (Original_LF__DOT__Basics_LF_Basics_ltb_iso (S_iso (S_iso (S_iso (iterate1D2 S imported_S S_iso 1 0 imported_0 _0_iso)))) (S_iso (S_iso _0_iso)))
+(* Helper: S_iso applied 4 times starting from 0 *)
+Definition four_iso : rel_iso nat_iso (S (S (S (S O)))) (imported_S (imported_S (imported_S (imported_S imported_0)))).
+Proof.
+  constructor. simpl. unfold imported_S, imported_0, Imported.S, Imported._0. reflexivity.
+Defined.
+
+Definition two_iso : rel_iso nat_iso (S (S O)) (imported_S (imported_S imported_0)).
+Proof.
+  constructor. simpl. unfold imported_S, imported_0, Imported.S, Imported._0. reflexivity.
+Defined.
+
+Instance Original_LF__DOT__Basics_LF_Basics_test__ltb3_iso : rel_iso
+    (Corelib_Init_Logic_eq_iso (Original_LF__DOT__Basics_LF_Basics_ltb_iso four_iso two_iso)
        Original_LF__DOT__Basics_LF_Basics_false_iso)
     Original.LF_DOT_Basics.LF.Basics.test_ltb3 imported_Original_LF__DOT__Basics_LF_Basics_test__ltb3.
 Admitted.

@@ -55,7 +55,7 @@ Proof.
     simpl.
     (* Need: eq (option_Some x2 (to hx x7)) (option_Some x2 x8) *)
     (* H78 : rel_iso hx x7 x8, i.e., eq (to hx x7) x8 *)
-    constructor; simpl in H78. simpl in H78.
+    unfold rel_iso in H78. simpl in H78.
     exact (IsoEq.f_equal (Imported.option_Some x2) H78).
     exact Heqb.
   - (* x5 =? x9 = false *)
@@ -69,7 +69,7 @@ Proof.
     (* Need: eq (option_to_imported (to hx) (x3 x9)) (x4 x10) *)
     (* This follows from Hmap x9 x10 H910 *)
     pose proof (Hmap x9 x10 H910) as Hmap910.
-    constructor; simpl in Hmap910. simpl in Hmap910.
+    unfold rel_iso in Hmap910. simpl in Hmap910.
     exact Hmap910.
     exact Heqb.
 Qed.

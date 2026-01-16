@@ -40,7 +40,7 @@ Instance Original_LF__DOT__Poly_LF_Poly_nth__error_iso : forall (x1 x2 : Type) (
   rel_iso nat_iso x5 x6 -> rel_iso (Original_LF__DOT__Poly_LF_Poly_option_iso hx) (Original.LF_DOT_Poly.LF.Poly.nth_error x3 x5) (imported_Original_LF__DOT__Poly_LF_Poly_nth__error x4 x6).
 Proof.
   intros x1 x2 hx x3 x4 Hlist x5 x6 Hnat.
-  simpl in *.
+  idtac.
   (* Use eq_srect to substitute using the SProp equalities *)
   apply (@IsoEq.eq_srect _ (Original_LF__DOT__Poly_LF_Poly_list_iso hx x3) 
     (fun x4' => IsomorphismDefinitions.eq 

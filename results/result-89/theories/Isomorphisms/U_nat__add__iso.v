@@ -5,7 +5,7 @@ From LeanImport Require Import Lean.
 #[local] Set Implicit Arguments.
 From IsomorphismChecker Require Original Imported.
 (* Print Imported. *)
-(*Typeclasses Opaque rel_iso.*) (* for speed *)
+(* (* Typeclasses Opaque rel_iso *). *) (* for speed *)
 
 
 From IsomorphismChecker Require Export Isomorphisms.nat__iso.
@@ -25,12 +25,14 @@ Fixpoint nat_to_imported_add_compat (n m : nat) :
 
 Instance Nat_add_iso : forall (x1 : nat) (x2 : imported_nat), rel_iso nat_iso x1 x2 -> forall (x3 : nat) (x4 : imported_nat), rel_iso nat_iso x3 x4 -> rel_iso nat_iso (x1 + x3) (imported_Nat_add x2 x4).
 Proof.
-  intros x1 x2 H12 x3 x4 H34.
-  destruct H12 as [H12]. destruct H34 as [H34].
+  intros n1 n2 H12 n3 n4 H34.
+  (* H12 : rel_iso nat_iso n1 n2, i.e., eq (to nat_iso n1) n2 *)
+  (* H34 : rel_iso nat_iso n3 n4, i.e., eq (to nat_iso n3) n4 *)
+  (* Goal : rel_iso nat_iso (n1 + n3) (imported_Nat_add n2 n4) *)
+  (* i.e., eq (to nat_iso (n1 + n3)) (imported_Nat_add n2 n4) *)
   constructor.
-  (* H12 : eq (nat_to_imported x1) x2 *)
-  (* H34 : eq (nat_to_imported x3) x4 *)
-  (* Goal : eq (nat_to_imported (x1 + x3)) (Imported.Nat_add x2 x4) *)
+  destruct H12 as [H12]. destruct H34 as [H34].
+  simpl in *.
   eapply eq_trans.
   - apply seq_of_eq. apply nat_to_imported_add_compat.
   - apply f_equal2; assumption.

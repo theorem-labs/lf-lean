@@ -40,7 +40,7 @@ Proof.
   try rewrite <- (eq_of_seq (proj_rel_iso Hbar));
   try rewrite <- (eq_of_seq (proj_rel_iso Hfoo));
   reflexivity.
-Qed.
+Defined.
 
 (* The proof follows from the isomorphisms for t_update and t_empty *)
 Instance Original_LF__DOT__Maps_LF_Maps_examplemap'_iso : forall (x1 : String.string) (x2 : imported_String_string),

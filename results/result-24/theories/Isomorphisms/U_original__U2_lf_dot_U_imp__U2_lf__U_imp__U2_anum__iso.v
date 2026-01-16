@@ -14,9 +14,10 @@ Definition imported_Original_LF__DOT__Imp_LF_Imp_ANum : imported_nat -> imported
 Instance Original_LF__DOT__Imp_LF_Imp_ANum_iso : forall (x1 : nat) (x2 : imported_nat), rel_iso nat_iso x1 x2 -> rel_iso Original_LF__DOT__Imp_LF_Imp_aexp_iso (Original.LF_DOT_Imp.LF.Imp.ANum x1) (imported_Original_LF__DOT__Imp_LF_Imp_ANum x2).
 Proof.
   intros x1 x2 H1.
-  simpl in *. simpl in *.
+  idtac.
   unfold imported_Original_LF__DOT__Imp_LF_Imp_ANum.
-  apply (f_equal Imported.Original_LF__DOT__Imp_LF_Imp_aexp_ANum H1).
+  constructor. simpl.
+  apply (f_equal Imported.Original_LF__DOT__Imp_LF_Imp_aexp_ANum (proj_rel_iso H1)).
 Defined.
 Instance: KnownConstant Original.LF_DOT_Imp.LF.Imp.ANum := {}. (* only needed when rel_iso is typeclasses opaque *)
 Instance: KnownConstant Imported.Original_LF__DOT__Imp_LF_Imp_aexp_ANum := {}. (* only needed when rel_iso is typeclasses opaque *)

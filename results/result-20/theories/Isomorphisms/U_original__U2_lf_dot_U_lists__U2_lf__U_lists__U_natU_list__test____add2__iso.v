@@ -17,13 +17,12 @@ Monomorphic Definition imported_Original_LF__DOT__Lists_LF_Lists_NatList_test__a
              (imported_Original_LF__DOT__Lists_LF_Lists_NatList_cons (imported_S (imported_S (imported_S (iterate1 imported_S 1 imported_0))))
                 (imported_Original_LF__DOT__Lists_LF_Lists_NatList_cons (imported_S imported_0) imported_Original_LF__DOT__Lists_LF_Lists_NatList_nil)))))
     imported_0 := Imported.Original_LF__DOT__Lists_LF_Lists_NatList_test__add2.
-(* test_add2 is Admitted in Original.v, so we Admit this isomorphism *)
 Monomorphic Instance Original_LF__DOT__Lists_LF_Lists_NatList_test__add2_iso : rel_iso
     (Corelib_Init_Logic_eq_iso
-       (Original_LF__DOT__Lists_LF_Lists_NatList_count_iso (S_iso (S_iso (S_iso (iterate1D2 S imported_S S_iso (Datatypes.S (Datatypes.S Datatypes.O)) Datatypes.O imported_0 _0_iso))))
+       (Original_LF__DOT__Lists_LF_Lists_NatList_count_iso (S_iso (S_iso (S_iso (iterate1D2 S imported_S S_iso (S (S O)) O imported_0 _0_iso))))
           (Original_LF__DOT__Lists_LF_Lists_NatList_add_iso (S_iso _0_iso)
              (Original_LF__DOT__Lists_LF_Lists_NatList_cons_iso (S_iso _0_iso)
-                (Original_LF__DOT__Lists_LF_Lists_NatList_cons_iso (S_iso (S_iso (S_iso (iterate1D2 S imported_S S_iso (Datatypes.S Datatypes.O) Datatypes.O imported_0 _0_iso))))
+                (Original_LF__DOT__Lists_LF_Lists_NatList_cons_iso (S_iso (S_iso (S_iso (iterate1D2 S imported_S S_iso (S O) O imported_0 _0_iso))))
                    (Original_LF__DOT__Lists_LF_Lists_NatList_cons_iso (S_iso _0_iso) Original_LF__DOT__Lists_LF_Lists_NatList_nil_iso)))))
        _0_iso)
     Original.LF_DOT_Lists.LF.Lists.NatList.test_add2 imported_Original_LF__DOT__Lists_LF_Lists_NatList_test__add2.

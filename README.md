@@ -11,10 +11,16 @@ sf-bench-part1/
 ├── theories/                    # Core Rocq verification infrastructure
 │   ├── Original.v               # Original Software Foundations definitions
 │   ├── Imported.v               # Imports Lean definitions into Rocq
+│   ├── ImportedNames.v          # Name mappings for imported definitions
 │   ├── IsomorphismDefinitions.v # Core isomorphism type definitions
 │   ├── EqualityLemmas.v         # Helper lemmas for isomorphism proofs
 │   ├── Checker.v                # Main checker module
 │   ├── Ltac2Utils.v             # Ltac2 automation utilities
+│   ├── AutomationDefinitions.v  # Automation support definitions
+│   ├── IsomorphismStatementAutomationDefinitions.v
+│   ├── CaseSchemeDefinitions.v  # Case scheme definitions
+│   ├── Hiding.v                 # Hiding utilities
+│   ├── PermittedAxiomPrinting.v # Axiom printing utilities
 │   ├── Interface.v              # Interface definitions for all isomorphisms
 │   ├── Interface/               # Individual interface files
 │   ├── Isomorphisms.v           # Base isomorphism proof file
@@ -111,8 +117,8 @@ Step 1: Checking Lean compilation...
 
 Step 2: Checking Rocq Checker compilation...
   Copied lean.out as Imported.out
-  Copied 26 Isomorphisms files
-  Copied 26 Checker files
+  Copied 236 Isomorphisms files
+  Copied 30 Checker files
   Regenerating Makefile.coq...
   Compiling Imported.v...
   Compiling Isomorphisms...
@@ -180,35 +186,42 @@ diff /host/results/result-1/lean.out /tmp/new.out
 
 ### solution.lean
 
-Each `solution.lean` file contains a Lean 4 translation. For example (from `result-15`):
+Each `solution.lean` file contains a Lean 4 translation. For example (excerpt from `result-45`):
 
 ```lean
--- Lean 4 translation of Rocq nat and ev
-
--- Define nat as an inductive type to match Rocq's nat
+-- Natural numbers
 inductive nat : Type where
   | O : nat
-  | S : nat -> nat
+  | S : nat → nat
 
--- Define ev: the evenness predicate on nat
--- Corresponds to:
--- Inductive ev : nat -> Prop :=
---   | ev_0                       : ev 0
---   | ev_SS (n : nat) (H : ev n) : ev (S (S n)).
-inductive Original_LF__DOT__IndProp_LF_IndProp_ev : nat -> Prop where
-  | ev_0 : Original_LF__DOT__IndProp_LF_IndProp_ev nat.O
-  | ev_SS : (n : nat) -> Original_LF__DOT__IndProp_LF_IndProp_ev n
-            -> Original_LF__DOT__IndProp_LF_IndProp_ev (nat.S (nat.S n))
+-- Double function
+def Original_LF__DOT__Induction_LF_Induction_double : nat → nat
+  | nat.O => nat.O
+  | nat.S n' => nat.S (nat.S (Original_LF__DOT__Induction_LF_Induction_double n'))
+
+-- EvPlayground.ev inductive (evenness predicate)
+inductive Original_LF__DOT__IndProp_LF_IndProp_EvPlayground_ev : nat → Prop where
+  | ev_0 : Original_LF__DOT__IndProp_LF_IndProp_EvPlayground_ev nat.O
+  | ev_SS : (n : nat) → Original_LF__DOT__IndProp_LF_IndProp_EvPlayground_ev n
+            → Original_LF__DOT__IndProp_LF_IndProp_EvPlayground_ev (nat.S (nat.S n))
+
+-- Logic.Even: exists n, x = double n
+def Original_LF__DOT__Logic_LF_Logic_Even (x : nat) : Prop :=
+  ex (fun n => Corelib_Init_Logic_eq x (Original_LF__DOT__Induction_LF_Induction_double n))
 ```
+
+Definition names follow the pattern `Original_<Module>_<Definition>` to match the original Rocq module structure.
 
 ### scores.json
 
-Contains evaluation scores for the isomorphism proofs. For example (from `result-15`):
+Contains evaluation scores for the isomorphism proofs. For example (excerpt from `result-45`):
 
 ```json
 {
   "nat__iso": 1.0,
-  "U_original__U2_lf_dot_U_indU_prop__U2_lf__U_indU_prop__ev__iso": 1.0
+  "U_original__U2_lf_dot_U_indU_prop__U2_lf__U_indU_prop__U_evU_playground__ev__iso": 1.0,
+  "U_original__U2_lf_dot_U_induction__U2_lf__U_induction__double__iso": 1.0,
+  "U_original__U2_lf_dot_U_logic__U2_lf__U_logic__U_even__iso": 1.0
 }
 ```
 

@@ -5,7 +5,7 @@ From LeanImport Require Import Lean.
 #[local] Set Implicit Arguments.
 From IsomorphismChecker Require Original Imported.
 (* Print Imported. *)
-(* Typeclasses Opaque rel_iso. *) (* for speed *)
+
 
 
 From IsomorphismChecker Require Export Isomorphisms.U_original__U2_lf_dot_U_lists__U2_lf__U_lists__U_natU_list__natlist__iso.
@@ -13,9 +13,10 @@ From IsomorphismChecker Require Export Isomorphisms.U_original__U2_lf_dot_U_list
 Definition imported_Original_LF__DOT__Lists_LF_Lists_NatList_nil : imported_Original_LF__DOT__Lists_LF_Lists_NatList_natlist := Imported.Original_LF__DOT__Lists_LF_Lists_NatList_nil.
 Instance Original_LF__DOT__Lists_LF_Lists_NatList_nil_iso : rel_iso Original_LF__DOT__Lists_LF_Lists_NatList_natlist_iso Original.LF_DOT_Lists.LF.Lists.NatList.nil imported_Original_LF__DOT__Lists_LF_Lists_NatList_nil.
 Proof.
-  constructor. simpl.
+  constructor. simpl. simpl.
+  unfold imported_Original_LF__DOT__Lists_LF_Lists_NatList_nil.
   apply IsomorphismDefinitions.eq_refl.
-Defined.
+Qed.
 Instance: KnownConstant Original.LF_DOT_Lists.LF.Lists.NatList.nil := {}. (* only needed when rel_iso is typeclasses opaque *)
 Instance: KnownConstant Imported.Original_LF__DOT__Lists_LF_Lists_NatList_nil := {}. (* only needed when rel_iso is typeclasses opaque *)
 Instance: IsoStatementProofFor Original.LF_DOT_Lists.LF.Lists.NatList.nil Original_LF__DOT__Lists_LF_Lists_NatList_nil_iso := {}.

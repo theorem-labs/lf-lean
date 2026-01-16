@@ -18,7 +18,7 @@ Lemma Some_iso : forall (x1 x2 : Type) (hx : Iso x1 x2) (v1 : x1) (v2 : x2),
   rel_iso hx v1 v2 -> rel_iso (option_iso hx) (Some v1) (Imported.option_Some x2 v2).
 Proof.
   intros x1 x2 hx v1 v2 Hv.
-  constructor; simpl.
+  simpl. simpl.
   unfold option_to_imported. simpl.
   exact (IsoEq.f_equal (Imported.option_Some x2) Hv).
 Qed.
@@ -36,7 +36,7 @@ Proof.
   unfold Original.LF_DOT_Maps.LF.Maps.update.
   unfold imported_Original_LF__DOT__Maps_LF_Maps_update, Imported.Original_LF__DOT__Maps_LF_Maps_update.
   (* update m x v = t_update m x (Some v) on both sides *)
-  constructor; simpl.
+  simpl. simpl.
   unfold option_to_imported.
   unfold Original.LF_DOT_Maps.LF.Maps.t_update.
   unfold Imported.Original_LF__DOT__Maps_LF_Maps_t__update.

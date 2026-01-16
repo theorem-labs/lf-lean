@@ -5,17 +5,22 @@ From LeanImport Require Import Lean.
 #[local] Set Implicit Arguments.
 From IsomorphismChecker Require Original Imported.
 (* Print Imported. *)
-(* (* Typeclasses Opaque rel_iso *). *) (* for speed *)
 
 
-Definition imported_False : SProp := Imported.FalseType.
 
-(* FalseType is an empty SProp type - the isomorphism is vacuously true *)
-(* We cannot eliminate an SProp to produce a Prop in general, 
-   but for empty types the functions are vacuously total *)
+Definition imported_False : SProp := Imported.MyFalse.
+
+Definition False_to_imported : Logic.False -> imported_False := fun f => match f return imported_False with end.
+Definition imported_to_False : imported_False -> Logic.False := fun f => Imported.MyFalse_recl (fun _ => Logic.False) f.
+
 Instance False_iso : (Iso Logic.False imported_False).
-Admitted.
+Proof.
+  refine {| to := False_to_imported;
+            from := imported_to_False |}.
+  - intro x. exact (Imported.MyFalse_indl (fun y => IsomorphismDefinitions.eq (False_to_imported (imported_to_False y)) y) x).
+  - intro x. destruct x.
+Defined.
 Instance: KnownConstant Logic.False := {}. (* only needed when rel_iso is typeclasses opaque *)
-Instance: KnownConstant Imported.FalseType := {}. (* only needed when rel_iso is typeclasses opaque *)
+Instance: KnownConstant Imported.MyFalse := {}. (* only needed when rel_iso is typeclasses opaque *)
 Instance: IsoStatementProofFor Logic.False False_iso := {}.
-Instance: IsoStatementProofBetween Logic.False Imported.FalseType False_iso := {}.
+Instance: IsoStatementProofBetween Logic.False Imported.MyFalse False_iso := {}.

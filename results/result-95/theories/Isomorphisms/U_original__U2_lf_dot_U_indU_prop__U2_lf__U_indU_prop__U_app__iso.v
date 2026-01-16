@@ -21,7 +21,7 @@ Proof.
   idtac.
   unfold imported_Original_LF__DOT__IndProp_LF_IndProp_App.
   exact (IsoEq.f_equal2 (Imported.Original_LF__DOT__IndProp_LF_IndProp_reg__exp_App x2) H34 H56).
-Qed.
+Defined.
 Instance: KnownConstant (@Original.LF_DOT_IndProp.LF.IndProp.App) := {}. (* only needed when rel_iso is typeclasses opaque *)
 Instance: KnownConstant (@Imported.Original_LF__DOT__IndProp_LF_IndProp_App) := {}. (* only needed when rel_iso is typeclasses opaque *)
 Instance: IsoStatementProofFor (@Original.LF_DOT_IndProp.LF.IndProp.App) Original_LF__DOT__IndProp_LF_IndProp_App_iso := {}.

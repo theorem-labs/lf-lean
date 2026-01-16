@@ -23,7 +23,7 @@ Proof.
   unfold imported_Original_LF__DOT__Basics_LF_Basics_letter__comparison.
   destruct H1, H2.
   destruct x1, x3; simpl; apply IsomorphismDefinitions.eq_refl.
-Defined.
+Qed.
 
 Instance: KnownConstant Original.LF_DOT_Basics.LF.Basics.letter_comparison := {}. (* only needed when rel_iso is typeclasses opaque *)
 Instance: KnownConstant Imported.Original_LF__DOT__Basics_LF_Basics_letter__comparison := {}. (* only needed when rel_iso is typeclasses opaque *)

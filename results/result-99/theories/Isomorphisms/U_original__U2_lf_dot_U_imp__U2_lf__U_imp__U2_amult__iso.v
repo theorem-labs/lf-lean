@@ -21,7 +21,7 @@ Proof.
   unfold aexp_to_imported.
   simpl.
   apply f_equal2; assumption.
-Defined.
+Qed.
 Instance: KnownConstant Original.LF_DOT_Imp.LF.Imp.AMult := {}. (* only needed when rel_iso is typeclasses opaque *)
 Instance: KnownConstant imported_Original_LF__DOT__Imp_LF_Imp_AMult := {}. (* only needed when rel_iso is typeclasses opaque *)
 Instance: IsoStatementProofFor Original.LF_DOT_Imp.LF.Imp.AMult Original_LF__DOT__Imp_LF_Imp_AMult_iso := {}.

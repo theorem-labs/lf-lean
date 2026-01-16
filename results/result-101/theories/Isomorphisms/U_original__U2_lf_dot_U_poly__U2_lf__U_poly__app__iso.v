@@ -1,11 +1,11 @@
 From IsomorphismChecker Require Import AutomationDefinitions IsomorphismStatementAutomationDefinitions EqualityLemmas IsomorphismDefinitions.
 Import IsoEq.
 From LeanImport Require Import Lean.
-#[local] Set Universe Polymorphism.
+#[local] Unset Universe Polymorphism.
 #[local] Set Implicit Arguments.
 From IsomorphismChecker Require Original Imported.
 (* Print Imported. *)
-(* Typeclasses Opaque rel_iso. *) (* for speed *)
+
 
 
 From IsomorphismChecker Require Export Isomorphisms.U_original__U2_lf_dot_U_poly__U2_lf__U_poly__list__iso.
@@ -35,11 +35,10 @@ Instance Original_LF__DOT__Poly_LF_Poly_app_iso : forall (x1 x2 : Type) (hx : Is
 Proof.
   intros x1 x2 hx x3 x4 H34 x5 x6 H56.
   constructor. simpl.
-  destruct H34 as [H34]. destruct H56 as [H56]. simpl in H34, H56.
   unfold imported_Original_LF__DOT__Poly_LF_Poly_app.
   eapply eq_trans.
-  2: { apply f_equal2; [exact H34 | exact H56]. }
-  apply list_to_app_compat.
+  - apply list_to_app_compat.
+  - apply f_equal2; assumption.
 Defined.
 Instance: KnownConstant (@Original.LF_DOT_Poly.LF.Poly.app) := {}. (* only needed when rel_iso is typeclasses opaque *)
 Instance: KnownConstant Imported.Original_LF__DOT__Poly_LF_Poly_app := {}. (* only needed when rel_iso is typeclasses opaque *)

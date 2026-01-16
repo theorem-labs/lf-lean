@@ -1,32 +1,28 @@
 From IsomorphismChecker Require Import AutomationDefinitions IsomorphismStatementAutomationDefinitions EqualityLemmas IsomorphismDefinitions.
 Import IsoEq.
 From LeanImport Require Import Lean.
-#[local] Unset Universe Polymorphism.
+#[local] Set Universe Polymorphism.
 #[local] Set Implicit Arguments.
 From IsomorphismChecker Require Original Imported.
 (* Print Imported. *)
+(* (* Typeclasses Opaque rel_iso. *) *) (* for speed *)
 
-Definition imported_False : SProp := Imported.False_.
 
-(* Build Iso between empty types *)
-Definition False_to_imported : Logic.False -> imported_False := fun H => match H with end.
-
-(* For the imported -> Logic.False direction, we need to use sinhabitant *)
-Lemma imported_False_to_SInhabited : imported_False -> SInhabited Logic.False.
+(* Use Imported.Exported_False directly *)
+Definition imported_False : SProp := Imported.Exported_False.
+Instance False_iso : (Iso False imported_False).
 Proof.
-  intro H. exact (Imported.False__indl (fun _ => SInhabited Logic.False) H).
+  unshelve eapply Build_Iso.
+  - (* to: False -> imported_False *)
+    intro f. destruct f.
+  - (* from: imported_False -> False *)
+    intro f. destruct f.
+  - (* to_from *)
+    intro f. destruct f.
+  - (* from_to *)
+    intro f. destruct f.
 Defined.
-
-Definition imported_to_False : imported_False -> Logic.False := fun H => sinhabitant (imported_False_to_SInhabited H).
-
-Instance False_iso : Iso Logic.False imported_False :=
-  {| to := False_to_imported;
-     from := imported_to_False;
-     to_from := fun H => Imported.False__indl (fun y => IsomorphismDefinitions.eq (False_to_imported (imported_to_False y)) y) H;
-     from_to := fun H => match H with end
-  |}.
-
-Instance: KnownConstant Logic.False := {}. (* only needed when rel_iso is typeclasses opaque *)
-Instance: KnownConstant Imported.False_ := {}. (* only needed when rel_iso is typeclasses opaque *)
-Instance: IsoStatementProofFor Logic.False False_iso := {}.
-Instance: IsoStatementProofBetween Logic.False Imported.False_ False_iso := {}.
+Instance: KnownConstant False := {}. (* only needed when rel_iso is typeclasses opaque *)
+Instance: KnownConstant Imported.Exported_False := {}. (* only needed when rel_iso is typeclasses opaque *)
+Instance: IsoStatementProofFor False False_iso := {}.
+Instance: IsoStatementProofBetween False Imported.Exported_False False_iso := {}.

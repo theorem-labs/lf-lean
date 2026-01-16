@@ -1,9 +1,11 @@
 {
-  "bool": "Stdlib_bool",
-  "true": "Stdlib_bool_true",
-  "false": "Stdlib_bool_false",
-  "False": "MyFalse",
-  "True": "MyTrue",
+  "bool": "mybool",
+  "true": "mybool_mytrue",
+  "false": "mybool_myfalse",
+  "Ascii_Ascii": "Ascii_ascii_Ascii",
+  "Ascii_ascii": "Ascii_ascii",
+  "True": "TrueType",
+  "False": "FalseType",
   "_0": "nat_O",
   "S": "nat_S"
 }

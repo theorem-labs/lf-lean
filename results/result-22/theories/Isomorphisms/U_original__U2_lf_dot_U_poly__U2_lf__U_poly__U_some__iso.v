@@ -15,7 +15,8 @@ Instance Original_LF__DOT__Poly_LF_Poly_Some_iso : forall (x1 x2 : Type) (hx : I
   rel_iso hx x3 x4 -> rel_iso (Original_LF__DOT__Poly_LF_Poly_option_iso hx) (Original.LF_DOT_Poly.LF.Poly.Some x3) (imported_Original_LF__DOT__Poly_LF_Poly_Some x4).
 Proof.
   intros x1 x2 hx x3 x4 H.
-  idtac.
+  destruct H as [H].
+  constructor.
   unfold imported_Original_LF__DOT__Poly_LF_Poly_Some.
   simpl.
   apply (IsoEq.f_equal (Imported.Original_LF__DOT__Poly_LF_Poly_option_Some x2) H).

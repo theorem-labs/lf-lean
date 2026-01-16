@@ -13,8 +13,9 @@ From IsomorphismChecker Require Export Isomorphisms.U_original__U2_lf_dot_U_imp_
 Definition imported_Original_LF__DOT__Imp_LF_Imp_SPlus : imported_Original_LF__DOT__Imp_LF_Imp_sinstr := Imported.Original_LF__DOT__Imp_LF_Imp_SPlus.
 Instance Original_LF__DOT__Imp_LF_Imp_SPlus_iso : rel_iso Original_LF__DOT__Imp_LF_Imp_sinstr_iso Original.LF_DOT_Imp.LF.Imp.SPlus imported_Original_LF__DOT__Imp_LF_Imp_SPlus.
 Proof.
-  constructor. simpl.
   unfold imported_Original_LF__DOT__Imp_LF_Imp_SPlus.
+  constructor.
+  simpl.
   apply IsomorphismDefinitions.eq_refl.
 Defined.
 Instance: KnownConstant Original.LF_DOT_Imp.LF.Imp.SPlus := {}. (* only needed when rel_iso is typeclasses opaque *)

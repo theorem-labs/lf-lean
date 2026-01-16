@@ -1,11 +1,11 @@
 From IsomorphismChecker Require Import AutomationDefinitions IsomorphismStatementAutomationDefinitions EqualityLemmas IsomorphismDefinitions.
 Import IsoEq.
 From LeanImport Require Import Lean.
-#[local] Set Universe Polymorphism.
+#[local] Unset Universe Polymorphism.
 #[local] Set Implicit Arguments.
 From IsomorphismChecker Require Original Imported.
 (* Print Imported. *)
-(* Typeclasses Opaque rel_iso. *) (* for speed *)
+
 
 
 From IsomorphismChecker Require Export Isomorphisms.U_corelib__U_init__U_logic__eq__iso Isomorphisms.U_original__U2_lf_dot_U_maps__U2_lf__U_maps__update__iso Isomorphisms.U_logic__not__iso.
@@ -30,7 +30,7 @@ Proof.
      The Corelib_Init_Logic_eq_iso is between (eq : Prop) and (imported_eq : SProp).
      rel_iso for such an isomorphism should follow from the fact that
      both sides are proofs of equivalent propositions. *)
-  constructor; simpl.
+  constructor. simpl.
   (* Goal is IsomorphismDefinitions.eq (to (Corelib_Init_Logic_eq_iso ...) (update_neq ...)) (imported_update_neq ...) *)
   (* Both sides are in SProp, so all inhabitants are equal *)
   exact IsomorphismDefinitions.eq_refl.

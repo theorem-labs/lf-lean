@@ -5,7 +5,7 @@ From LeanImport Require Import Lean.
 #[local] Set Implicit Arguments.
 From IsomorphismChecker Require Original Imported.
 (* Print Imported. *)
-(* Typeclasses Opaque rel_iso. *) (* for speed *)
+(* (* (* Typeclasses Opaque rel_iso. *) *) *) (* for speed *)
 
 
 Definition imported_ex : forall x : Type, (x -> SProp) -> SProp := Imported.ex.
@@ -18,7 +18,7 @@ Proof.
   destruct Hex as [w Hw].
   apply sinhabits.
   exists (from hx w).
-  assert (Hrel : rel_iso hx (from hx w) w) by (unfold rel_iso; apply (to_from hx w)).
+  assert (Hrel : rel_iso hx (from hx w) w) by (simpl; apply (to_from hx w)).
   pose proof (H_pred_iso (from hx w) w Hrel) as Hiso_pred.
   exact (from Hiso_pred Hw).
 Defined.

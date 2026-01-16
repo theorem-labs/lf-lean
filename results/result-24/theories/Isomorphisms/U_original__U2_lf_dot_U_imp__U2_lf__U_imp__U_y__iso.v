@@ -13,7 +13,8 @@ From IsomorphismChecker Require Export Isomorphisms.U_string__string__iso.
 Definition imported_Original_LF__DOT__Imp_LF_Imp_Y : imported_String_string := Imported.Original_LF__DOT__Imp_LF_Imp_Y.
 Instance Original_LF__DOT__Imp_LF_Imp_Y_iso : rel_iso String_string_iso Original.LF_DOT_Imp.LF.Imp.Y imported_Original_LF__DOT__Imp_LF_Imp_Y.
 Proof.
-  simpl; imported_Original_LF__DOT__Imp_LF_Imp_Y.
+  unfold imported_Original_LF__DOT__Imp_LF_Imp_Y.
+  constructor.
   simpl.
   apply IsomorphismDefinitions.eq_refl.
 Defined.

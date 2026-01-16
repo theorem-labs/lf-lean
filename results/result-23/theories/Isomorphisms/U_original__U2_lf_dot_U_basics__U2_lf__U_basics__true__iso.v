@@ -13,7 +13,8 @@ From IsomorphismChecker Require Export Isomorphisms.U_original__U2_lf_dot_U_basi
 Definition imported_Original_LF__DOT__Basics_LF_Basics_true : imported_Original_LF__DOT__Basics_LF_Basics_bool := Imported.Original_LF__DOT__Basics_LF_Basics_true.
 Instance Original_LF__DOT__Basics_LF_Basics_true_iso : rel_iso Original_LF__DOT__Basics_LF_Basics_bool_iso Original.LF_DOT_Basics.LF.Basics.true imported_Original_LF__DOT__Basics_LF_Basics_true.
 Proof.
-  unfold rel_iso, imported_Original_LF__DOT__Basics_LF_Basics_true.
+  unfold imported_Original_LF__DOT__Basics_LF_Basics_true.
+  constructor.
   simpl.
   apply IsomorphismDefinitions.eq_refl.
 Defined.
