@@ -1,52 +1,8 @@
 # SF-Bench Part 1: Rocq to Lean Translation Verification
 
-This repository contains verified translations of statements from the **Logical Foundations** volume of [Software Foundations](https://softwarefoundations.cis.upenn.edu/) from Rocq to Lean 4.
+This repository contains the verified translations of every single statement from the **Logical Foundations** volume of [Software Foundations](https://softwarefoundations.cis.upenn.edu/) from Rocq to Lean 4.
 
-The repository includes 100 translation results, each with a formally verified proof that the Lean translation is semantically equivalent to the original Rocq definition.
-
-## Repository Structure
-
-```
-sf-bench-part1/
-├── theories/                    # Core Rocq verification infrastructure
-│   ├── Original.v               # Original Software Foundations definitions
-│   ├── Imported.v               # Imports Lean definitions into Rocq
-│   ├── ImportedNames.v          # Name mappings for imported definitions
-│   ├── IsomorphismDefinitions.v # Core isomorphism type definitions
-│   ├── EqualityLemmas.v         # Helper lemmas for isomorphism proofs
-│   ├── Checker.v                # Main checker module
-│   ├── Ltac2Utils.v             # Ltac2 automation utilities
-│   ├── AutomationDefinitions.v  # Automation support definitions
-│   ├── IsomorphismStatementAutomationDefinitions.v
-│   ├── CaseSchemeDefinitions.v  # Case scheme definitions
-│   ├── Hiding.v                 # Hiding utilities
-│   ├── PermittedAxiomPrinting.v # Axiom printing utilities
-│   ├── Interface.v              # Interface definitions for all isomorphisms
-│   ├── Interface/               # Individual interface files
-│   ├── Isomorphisms.v           # Base isomorphism proof file
-│   └── Isomorphisms/            # Individual isomorphism proof files
-├── results/                     # 100 individual translation results
-│   └── result-N/
-│       ├── solution.lean        # Lean translation of a theorem/definition
-│       ├── lean.out             # lean4export output for Rocq import
-│       ├── scores.json          # Evaluation scores for the translation
-│       ├── export_definitions.txt  # List of exported Lean definitions
-│       ├── names.json           # Mapping of definition names
-│       └── theories/
-│           ├── Checker/         # Verification checker (compile to verify)
-│           └── Isomorphisms/    # Result-specific isomorphism proofs
-├── Dockerfile                   # Docker environment for verification
-├── scripts/
-│   ├── verify.sh                # Verification script (single or --all)
-│   ├── verify-all.sh            # Parallel verification script (faster)
-│   ├── test-build.sh            # Build test script
-│   └── count-lines.sh           # Count lines in solution.lean and Isomorphisms files
-├── problem-deps.json            # Dependencies between isomorphism problems
-├── problem-results.json         # Mapping of isomorphisms to result folders
-├── dependencies.dot             # Dependency graph (DOT format)
-├── dependencies.svg             # Dependency graph (SVG)
-└── dependencies.png             # Dependency graph (PNG)
-```
+The repository includes 100 translation results, each with a formally verified proof that the Lean translation is semantically equivalent to the original Rocq definition, which will cover all 1276 distinct statements in **Logical Foundations**.
 
 ## How Verification Works
 
@@ -116,37 +72,29 @@ Example output for a successful verification:
 Step 1: Checking Lean compilation...
   ✓ Lean compiles successfully
 
-Step 2: Checking Rocq Checker compilation...
-  Copied lean.out as Imported.out
+Step 2: Copying lean.out as Imported.out...
+  ✓ Copied lean.out as Imported.out
+
+Step 3: Copying and compiling Isomorphisms files...
   Copied 236 Isomorphisms files
   Copied 30 Checker files
   Regenerating Makefile.coq...
   Compiling Imported.v...
   Compiling Isomorphisms...
-  Compiling Checker...
-  ✓ Rocq Checker compiles successfully
+  ✓ Isomorphisms compiled successfully
+
+Step 4: Compiling Checker files...
+  ✓ Checker compiled successfully
 
 === result-1 verified successfully ===
 ```
 
 ### Step 3: Verify All Results
 
-To verify all results in parallel (faster), use the parallel script which runs multiple Docker containers concurrently:
-
-```bash
-./scripts/verify-all.sh
-```
-
-This runs 16 parallel workers by default. Adjust with `--jobs`:
+To verify all results in parallel, use the verify-all script which runs multiple Docker containers concurrently. It will use 16 parallel workers by default.
 
 ```bash
 ./scripts/verify-all.sh --jobs 64
-```
-
-Alternatively, verify all results sequentially (slower, but shows full output):
-
-```bash
-./scripts/verify.sh --all
 ```
 
 Example parallel output:
@@ -158,6 +106,13 @@ result-5 success
 result-3 success
 result-2 success
 ...
+```
+
+
+Alternatively, verify all results sequentially (slower, but shows full output):
+
+```bash
+./scripts/verify.sh --all
 
 ==========================================
 SUMMARY: 100 passed, 0 failed (out of 100)
@@ -183,7 +138,75 @@ lean4export /host/results/result-1/solution.lean > /tmp/new.out
 diff /host/results/result-1/lean.out /tmp/new.out
 ```
 
-## Understanding the Results
+## Problem Information
+
+**Difficulty distribution across 1,276 problems:**
+
+We separated problems into 4 levels of difficulty. Easy was problems that were solved by the LLM in <3 attempts, medium from 3-9 attempts, and hard was anything that required double digit or more attempts. Extreme was reserved for the problems that required manual human effort to write out the Isomorphism proof. The 1276 problems from **Logical Foundations** were broken down as follows:
+
+| Difficulty | Count |
+|------------|-------|
+| Easy | 1,075 |
+| Medium | 170 |
+| Hard | 25 |
+| Extreme | 6 |
+
+The `problem-deps.json` file contains metadata for all 1276 isomorphism problems:
+
+```json
+{
+  "U_nat__add__iso": {
+    "short_name": "Nat.add",
+    "logical_path": "Init.Nat",
+    "anchor": "add",
+    "difficulty": "easy",
+    "dep_count": 1,
+    "all_deps": ["nat__iso"],
+    "direct_deps": ["nat__iso"],
+    "reduced_deps": ["nat__iso"]
+  }
+}
+```
+
+**Fields:**
+- `short_name`: Human-readable name of the definition
+- `logical_path`: Module path in the Rocq/Lean standard library
+- `difficulty`: Classification of proof complexity
+- `all_deps`: All transitive dependencies
+- `direct_deps`: Immediate dependencies only
+- `reduced_deps`: Minimal dependency set after transitive reduction
+
+The `problem-results.json` file maps each isomorphism to the result folders that verify it.
+
+## Statistics
+
+**Generated Code Statistics:**
+
+Run `./scripts/count-lines.sh` to count lines in the generated files:
+
+| File Type | Files | Lines | Lines (no ws) | Spec | Proof | Comments |
+|-----------|-------|-------|-----------------|------|-------|----------|
+| `solution.lean` | 100 | 59,868 | 48,614 | — | — | — |
+| `theories/Isomorphisms/*.v` | 18,850 | 727,111 | 695,172 | 102,750 | 505,596 | 86,826 |
+| **Total** | **18,950** | **786,979** | **743,786** | | | |
+
+Spec/Proof/Comments breakdown is from `coqwc`.
+
+**Theory File Sizes:**
+
+| File | Lines | Description |
+|------|-------|-------------|
+| `Original.v` | 6,879 | Original Software Foundations definitions |
+| `Interface.v` | 19,225 | Aggregated interface specifications |
+| `Ltac2Utils.v` | 2,248 | Ltac2 automation utilities |
+| `EqualityLemmas.v` | 1,859 | Helper lemmas for equality proofs |
+| `Isomorphisms.v` | 1,292 | Aggregated isomorphism proofs |
+| `IsomorphismDefinitions.v` | 143 | Core `Iso` record type |
+
+**Software Foundations Chapters Covered:**
+- Basics, Induction, Lists, Poly, Tactics, Logic, IndProp, Maps, Imp, ImpCevalFun, ImpParser
+
+## Result Files
 
 ### solution.lean
 
@@ -234,60 +257,21 @@ The `.v` files in `theories/Isomorphisms/` contain Rocq proofs that establish a 
 
 ## Naming Conventions
 
-The isomorphism file names use an encoding scheme to represent Rocq module paths:
+The isomorphism file names use an encoding scheme to represent Rocq identifiers to avoid file system issues:
 
 | Pattern | Meaning |
 |---------|---------|
-| `U_` | Prefix indicating a module/namespace component |
-| `__` | Double underscore separates path components |
-| `U2_lf_dot_` | Represents `/` (directory separator) in module paths |
-| `U2_lf__` | Module boundary separator |
-| `SQUOTE` | Single quote character `'` in identifiers |
-| `____` | Four underscores represent a single underscore `_` in the original name |
-| `__iso.v` | Suffix indicating an isomorphism proof file |
+| `U_` | Next 1 letter is capitalized |
+| `Ux_` | Next x letters are capitalized |
+| `__` | Underscore `_` |
+| `_dot_` | Period `.` |
+| `SQUOTE` | Single quote `'` |
 
 **Example decoding:**
 
 `U_original__U2_lf_dot_U_basics__U2_lf__U_basics__plus__iso.v`
 
-Decodes to: `Original.LF.Basics.plus` isomorphism - the `plus` function from the Software Foundations Basics chapter.
-
-## Problem Dependencies
-
-The `problem-deps.json` file contains metadata for all 1,276 isomorphism problems:
-
-```json
-{
-  "U_nat__add__iso": {
-    "short_name": "Nat.add",
-    "logical_path": "Init.Nat",
-    "anchor": "add",
-    "difficulty": "easy",
-    "dep_count": 1,
-    "all_deps": ["nat__iso"],
-    "direct_deps": ["nat__iso"],
-    "reduced_deps": ["nat__iso"]
-  }
-}
-```
-
-**Fields:**
-- `short_name`: Human-readable name of the definition
-- `logical_path`: Module path in the Rocq/Lean standard library
-- `difficulty`: Classification of proof complexity
-- `all_deps`: All transitive dependencies
-- `direct_deps`: Immediate dependencies only
-- `reduced_deps`: Minimal dependency set after transitive reduction
-
-**Difficulty distribution across 1,276 problems:**
-| Difficulty | Count |
-|------------|-------|
-| Easy | 1,075 |
-| Medium | 170 |
-| Hard | 25 |
-| Extreme | 6 |
-
-The `problem-results.json` file maps each isomorphism to the result folders that verify it.
+Decodes to: `Original_LF.Basics_LF_Basics_plus` → the `plus` function from the Software Foundations Basics chapter.
 
 ## Tool Versions
 
@@ -296,45 +280,53 @@ The Docker image uses these specific versions:
 | Tool | Version | Notes |
 |------|---------|-------|
 | Rocq/Coq | 9.1.0 | From [JasonGross/coq#v9.1+recursive-assumptions](https://github.com/JasonGross/coq.git) |
-| Lean | (from lean4export) | Version determined by lean4export's lean-toolchain |
+| Lean | 4.26.0 | Version determined by lean4export's lean-toolchain |
 | lean4export | c9f8373 | [leanprover/lean4export](https://github.com/leanprover/lean4export) |
 | rocq-lean-import | latest | [rocq-community/rocq-lean-import](https://github.com/rocq-community/rocq-lean-import) |
 
-## Statistics
+## Repository Structure
 
-**Repository Overview:**
-
-| Metric | Value |
-|--------|-------|
-| Translation results | 100 |
-| Total isomorphism problems | 1,276 |
-| Interface files | 1,276 |
-| Isomorphism proof files | 1,276 |
-
-**Theory File Sizes:**
-
-| File | Lines | Description |
-|------|-------|-------------|
-| `Original.v` | 6,879 | Original Software Foundations definitions |
-| `Interface.v` | 19,225 | Aggregated interface specifications |
-| `Ltac2Utils.v` | 2,248 | Ltac2 automation utilities |
-| `EqualityLemmas.v` | 1,859 | Helper lemmas for equality proofs |
-| `Isomorphisms.v` | 1,292 | Aggregated isomorphism proofs |
-| `IsomorphismDefinitions.v` | 143 | Core `Iso` record type |
-
-**Generated Code Statistics:**
-
-Run `./scripts/count-lines.sh` to count lines in the generated files:
-
-| File Type | Files | Lines (wc -l) | Spec | Proof | Comments |
-|-----------|-------|---------------|------|-------|----------|
-| `solution.lean` | 100 | 59,868 | — | — | — |
-| `theories/Isomorphisms/*.v` | 18,850 | 727,111 | 102,750 | 505,596 | 86,826 |
-
-The Rocq line breakdown uses `coqwc`, which categorizes lines as specification (definitions, lemma statements), proof (tactics inside `Proof...Qed`), or comments. Note: `coqwc` counts logical lines rather than physical lines—it excludes blank lines but may count mixed-content lines in multiple categories.
-
-**Software Foundations Chapters Covered:**
-- Basics, Induction, Lists, Poly, Tactics, Logic, IndProp, Maps, Imp, ImpCevalFun, ImpParser
+```
+sf-bench-part1/
+├── theories/                    # Core Rocq verification infrastructure
+│   ├── Original.v               # Original Software Foundations definitions
+│   ├── Imported.v               # Imports Lean definitions into Rocq
+│   ├── ImportedNames.v          # Name mappings for imported definitions
+│   ├── IsomorphismDefinitions.v # Core isomorphism type definitions
+│   ├── EqualityLemmas.v         # Helper lemmas for isomorphism proofs
+│   ├── Checker.v                # Main checker module
+│   ├── Ltac2Utils.v             # Ltac2 automation utilities
+│   ├── AutomationDefinitions.v  # Automation support definitions
+│   ├── IsomorphismStatementAutomationDefinitions.v
+│   ├── CaseSchemeDefinitions.v  # Case scheme definitions
+│   ├── Hiding.v                 # Hiding utilities
+│   ├── PermittedAxiomPrinting.v # Axiom printing utilities
+│   ├── Interface.v              # Interface definitions for all isomorphisms
+│   ├── Interface/               # Individual interface files
+│   ├── Isomorphisms.v           # Base isomorphism proof file
+│   └── Isomorphisms/            # Individual isomorphism proof files
+├── results/                     # 100 individual translation results
+│   └── result-N/
+│       ├── solution.lean        # Lean translation of a theorem/definition
+│       ├── lean.out             # lean4export output for Rocq import
+│       ├── scores.json          # Evaluation scores for the translation
+│       ├── export_definitions.txt  # List of exported Lean definitions
+│       ├── names.json           # Mapping of definition names
+│       └── theories/
+│           ├── Checker/         # Verification checker (compile to verify)
+│           └── Isomorphisms/    # Result-specific isomorphism proofs
+├── Dockerfile                   # Docker environment for verification
+├── scripts/
+│   ├── verify.sh                # Verification script (single or --all)
+│   ├── verify-all.sh            # Parallel verification script (faster)
+│   ├── test-build.sh            # Build test script
+│   └── count-lines.sh           # Count lines in solution.lean and Isomorphisms files
+├── problem-deps.json            # Dependencies between isomorphism problems
+├── problem-results.json         # Mapping of isomorphisms to result folders
+├── dependencies.dot             # Dependency graph (DOT format)
+├── dependencies.svg             # Dependency graph (SVG)
+└── dependencies.png             # Dependency graph (PNG)
+```
 
 ## License
 

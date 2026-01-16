@@ -93,12 +93,14 @@ verify_single() {
     fi
     echo ""
 
-    # Step 2: Verify Rocq Checker compiles
-    echo "Step 2: Checking Rocq Checker compilation..."
-
-    # Copy lean.out as Imported.out (in /workdir, where Imported.v expects it)
+    # Step 2: Copy lean.out as Imported.out
+    echo "Step 2: Copying lean.out as Imported.out..."
     cp "$RESULT_DIR/lean.out" "/workdir/Imported.out"
-    echo "  Copied lean.out as Imported.out"
+    echo "  ✓ Copied lean.out as Imported.out"
+    echo ""
+
+    # Step 3: Copy and compile Isomorphisms files
+    echo "Step 3: Copying and compiling Isomorphisms files..."
 
     # Copy ALL Isomorphisms files (some are dependencies not in scores.json)
     # Strip "Typeclasses Opaque rel_iso" which fails because rel_iso is a Record, not a Definition
@@ -161,9 +163,11 @@ verify_single() {
             fi
         fi
     done
+    echo "  ✓ Isomorphisms compiled successfully"
+    echo ""
 
-    # Compile only the Checker files listed in scores.json
-    echo "  Compiling Checker..."
+    # Step 4: Compile Checker files
+    echo "Step 4: Compiling Checker files..."
     for iso_name in $iso_names; do
         local vo_file="theories/Checker/${iso_name}.vo"
         local v_file="theories/Checker/${iso_name}.v"
@@ -180,7 +184,7 @@ verify_single() {
 
     # Verify at least one .vo file was created
     if ls theories/Checker/*.vo 1>/dev/null 2>&1; then
-        echo "  ✓ Rocq Checker compiles successfully"
+        echo "  ✓ Checker compiled successfully"
     else
         echo "  ✗ Checker .vo files not created"
         return 1
