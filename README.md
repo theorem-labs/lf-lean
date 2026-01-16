@@ -94,7 +94,7 @@ Step 4: Compiling Checker files...
 To verify all results in parallel, use the verify-all script which runs multiple Docker containers concurrently. It will use 16 parallel workers by default.
 
 ```bash
-./scripts/verify-all.sh --jobs 64
+./scripts/verify-all.sh --jobs 100
 ```
 
 Example parallel output:
@@ -106,6 +106,10 @@ result-5 success
 result-3 success
 result-2 success
 ...
+
+==========================================
+SUMMARY: 100 passed, 0 failed (out of 100)
+==========================================
 ```
 
 
@@ -114,9 +118,6 @@ Alternatively, verify all results sequentially (slower, but shows full output):
 ```bash
 ./scripts/verify.sh --all
 
-==========================================
-SUMMARY: 100 passed, 0 failed (out of 100)
-==========================================
 ```
 
 ### Interactive Mode

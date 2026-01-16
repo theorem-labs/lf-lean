@@ -203,6 +203,12 @@ verify_all() {
 
     # Find all result directories, sorted numerically
     local results=$(find "$RESULTS_DIR" -maxdepth 1 -type d -name 'result-*' | sort -V)
+
+    if [ -z "$results" ]; then
+        echo "No results found in $RESULTS_DIR"
+        return 0
+    fi
+
     local total=$(echo "$results" | wc -l)
 
     echo "=== Verifying all $total results ==="
