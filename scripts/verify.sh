@@ -163,7 +163,6 @@ verify_single() {
     echo "Step 3: Copying and compiling Isomorphisms files..."
 
     # Copy ALL Isomorphisms files (some are dependencies not in scores.json)
-    # Strip "Typeclasses Opaque rel_iso" which fails because rel_iso is a Record, not a Definition
     local iso_count=0
     if [ -d "$RESULT_DIR/theories/Isomorphisms" ]; then
         for f in "$RESULT_DIR/theories/Isomorphisms"/*.v; do
