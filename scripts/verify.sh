@@ -15,20 +15,21 @@ if [ ! -f "/.dockerenv" ] && [ ! -d "/workdir/theories" ]; then
     SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
     PROJECT_DIR="$(dirname "$SCRIPT_DIR")"
 
-    # Check for --rebuild flag (must be parsed before Docker invocation)
-    REBUILD=false
+    # Check for --no-rebuild flag (must be parsed before Docker invocation)
+    # Default: rebuild the image every time
+    REBUILD=true
     ARGS=()
     for arg in "$@"; do
-        if [ "$arg" == "--rebuild" ]; then
-            REBUILD=true
+        if [ "$arg" == "--no-rebuild" ]; then
+            REBUILD=false
         else
             ARGS+=("$arg")
         fi
     done
 
-    # Build the Docker image if it doesn't exist or --rebuild is set
+    # Build the Docker image (default) or skip with --no-rebuild
     if [ "$REBUILD" = true ]; then
-        echo "Rebuilding Docker image 'sf-bench-part1'..."
+        echo "Building Docker image 'sf-bench-part1'..."
         docker build -t sf-bench-part1 "$PROJECT_DIR"
     elif ! docker image inspect sf-bench-part1 >/dev/null 2>&1; then
         echo "Docker image 'sf-bench-part1' not found. Building..."
@@ -61,7 +62,7 @@ usage() {
     echo "Verifies translation results."
     echo ""
     echo "Options:"
-    echo "  --rebuild                Rebuild the Docker image before running"
+    echo "  --no-rebuild             Skip rebuilding the Docker image (default: rebuild)"
     echo "  --error-on-export-diff   Treat export differences as errors (default: warning)"
     echo "  --use-reference-out      Use reference lean.out instead of generated export"
     echo ""

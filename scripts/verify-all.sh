@@ -19,28 +19,29 @@ fi
 
 
 # Parse arguments
-REBUILD=false
+# Default: rebuild the image every time
+REBUILD=true
 while [[ $# -gt 0 ]]; do
     case $1 in
         --jobs|-j)
             JOBS="$2"
             shift 2
             ;;
-        --rebuild)
-            REBUILD=true
+        --no-rebuild)
+            REBUILD=false
             shift
             ;;
         *)
             echo "Unknown option: $1"
-            echo "Usage: $0 [--jobs N] [--rebuild]"
+            echo "Usage: $0 [--jobs N] [--no-rebuild]"
             exit 1
             ;;
     esac
 done
 
-# Build the Docker image if it doesn't exist or --rebuild is set
+# Build the Docker image (default) or skip with --no-rebuild
 if [ "$REBUILD" = true ]; then
-    echo "Rebuilding Docker image 'sf-bench-part1'..."
+    echo "Building Docker image 'sf-bench-part1'..."
     docker build -t sf-bench-part1 "$PROJECT_DIR"
 elif ! docker image inspect sf-bench-part1 >/dev/null 2>&1; then
     echo "Docker image 'sf-bench-part1' not found. Building..."
