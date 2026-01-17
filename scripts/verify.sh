@@ -15,13 +15,27 @@ if [ ! -f "/.dockerenv" ] && [ ! -d "/workdir/theories" ]; then
     SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
     PROJECT_DIR="$(dirname "$SCRIPT_DIR")"
 
-    # Build the Docker image if it doesn't exist
-    if ! docker image inspect sf-bench-part1 >/dev/null 2>&1; then
+    # Check for --rebuild flag (must be parsed before Docker invocation)
+    REBUILD=false
+    ARGS=()
+    for arg in "$@"; do
+        if [ "$arg" == "--rebuild" ]; then
+            REBUILD=true
+        else
+            ARGS+=("$arg")
+        fi
+    done
+
+    # Build the Docker image if it doesn't exist or --rebuild is set
+    if [ "$REBUILD" = true ]; then
+        echo "Rebuilding Docker image 'sf-bench-part1'..."
+        docker build -t sf-bench-part1 "$PROJECT_DIR"
+    elif ! docker image inspect sf-bench-part1 >/dev/null 2>&1; then
         echo "Docker image 'sf-bench-part1' not found. Building..."
         docker build -t sf-bench-part1 "$PROJECT_DIR"
     fi
 
-    exec docker run --rm -v "$PROJECT_DIR:/host" sf-bench-part1 verify "$@"
+    exec docker run --rm -v "$PROJECT_DIR:/host" sf-bench-part1 verify "${ARGS[@]}"
 fi
 
 # Container's pre-compiled theories (never shadow this with a mount!)
@@ -47,6 +61,7 @@ usage() {
     echo "Verifies translation results."
     echo ""
     echo "Options:"
+    echo "  --rebuild                Rebuild the Docker image before running"
     echo "  --error-on-export-diff   Treat export differences as errors (default: warning)"
     echo "  --use-reference-out      Use reference lean.out instead of generated export"
     echo ""
