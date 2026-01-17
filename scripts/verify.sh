@@ -111,15 +111,35 @@ verify_single() {
 
     # Step 1: Verify Lean compilation
     echo "Step 1: Checking Lean compilation..."
-    if [ -f "$RESULT_DIR/solution.lean" ]; then
-        if lean "$RESULT_DIR/solution.lean" 2>&1; then
-            echo "  ✓ Lean compiles successfully"
-        else
-            echo "  ✗ Lean compilation failed"
-            return 1
-        fi
-    else
+    if [ ! -f "$RESULT_DIR/solution.lean" ]; then
         echo "  ✗ solution.lean not found"
+        return 1
+    fi
+
+    # Copy solution.lean to /workdir for lake
+    cp "$RESULT_DIR/solution.lean" /workdir/solution.lean
+
+    # Work from /workdir for lake commands
+    pushd /workdir > /dev/null
+
+    # Create lakefile.toml if it doesn't exist
+    if [ ! -f "lakefile.toml" ]; then
+        cat > lakefile.toml << 'EOF'
+name = "solution"
+version = "0.1.0"
+defaultTargets = ["solution"]
+
+[[lean_lib]]
+name = "solution"
+EOF
+        lake update 2>&1 || true
+    fi
+
+    if lake build 2>&1; then
+        echo "  ✓ Lean compiles successfully"
+    else
+        echo "  ✗ Lean compilation failed"
+        popd > /dev/null
         return 1
     fi
     echo ""
@@ -130,13 +150,13 @@ verify_single() {
     # Check for export_definitions.txt
     if [ ! -f "$RESULT_DIR/export_definitions.txt" ]; then
         echo "  ✗ export_definitions.txt not found"
+        popd > /dev/null
         return 1
     fi
 
-    # Generate export output
+    # Generate export output (still in /workdir)
     local generated_out="/tmp/generated_export_$$.out"
-    pushd "$RESULT_DIR" > /dev/null
-    if lake env lean4export solution -- $(cat export_definitions.txt | tr ' ' '\0' | xargs -0 printf '%q ') > "$generated_out" 2>&1; then
+    if lake env lean4export solution -- $(cat "$RESULT_DIR/export_definitions.txt" | tr ' ' '\0' | xargs -0 printf '%q ') > "$generated_out" 2>&1; then
         echo "  ✓ lean4export completed"
     else
         echo "  ✗ lean4export failed:"
