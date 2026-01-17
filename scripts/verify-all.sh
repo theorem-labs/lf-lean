@@ -10,6 +10,14 @@ PROJECT_DIR="$(dirname "$SCRIPT_DIR")"
 RESULTS_DIR="$PROJECT_DIR/results"
 JOBS=16
 
+# Use gfind if available (macOS with GNU findutils), otherwise use find
+if command -v gfind &> /dev/null; then
+    FIND=gfind
+else
+    FIND=find
+fi
+
+
 # Parse arguments
 while [[ $# -gt 0 ]]; do
     case $1 in
@@ -26,7 +34,7 @@ while [[ $# -gt 0 ]]; do
 done
 
 # Find all result directories
-RESULTS=$(find "$RESULTS_DIR" -maxdepth 1 -type d -name 'result-*' -printf '%f\n' | sort -V)
+RESULTS=$($FIND "$RESULTS_DIR" -maxdepth 1 -type d -name 'result-*' -printf '%f\n' | sort -V)
 TOTAL=$(echo "$RESULTS" | wc -l)
 
 echo "Verifying $TOTAL results with $JOBS parallel workers..."
