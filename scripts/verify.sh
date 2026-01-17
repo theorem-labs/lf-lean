@@ -121,7 +121,7 @@ verify_single() {
     # Generate export output
     local generated_out="/tmp/generated_export_$$.out"
     pushd "$RESULT_DIR" > /dev/null
-    if lake env lean4export solution -- $(cat export_definitions.txt | xargs -n1 printf '%q ') > "$generated_out" 2>&1; then
+    if lake env lean4export solution -- $(cat export_definitions.txt | tr ' ' '\0' | xargs -0 printf '%q ') > "$generated_out" 2>&1; then
         echo "  ✓ lean4export completed"
     else
         echo "  ✗ lean4export failed:"
