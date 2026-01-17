@@ -14,6 +14,13 @@ if [ ! -f "/.dockerenv" ] && [ ! -d "/workdir/theories" ]; then
     # Running on host - re-invoke via Docker
     SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
     PROJECT_DIR="$(dirname "$SCRIPT_DIR")"
+
+    # Build the Docker image if it doesn't exist
+    if ! docker image inspect sf-bench-part1 >/dev/null 2>&1; then
+        echo "Docker image 'sf-bench-part1' not found. Building..."
+        docker build -t sf-bench-part1 "$PROJECT_DIR"
+    fi
+
     exec docker run --rm -v "$PROJECT_DIR:/host" sf-bench-part1 verify "$@"
 fi
 

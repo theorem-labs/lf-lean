@@ -33,6 +33,12 @@ while [[ $# -gt 0 ]]; do
     esac
 done
 
+# Build the Docker image if it doesn't exist
+if ! docker image inspect sf-bench-part1 >/dev/null 2>&1; then
+    echo "Docker image 'sf-bench-part1' not found. Building..."
+    docker build -t sf-bench-part1 "$PROJECT_DIR"
+fi
+
 # Find all result directories
 RESULTS=$($FIND "$RESULTS_DIR" -maxdepth 1 -type d -name 'result-*' -printf '%f\n' | sort -V)
 TOTAL=$(echo "$RESULTS" | wc -l)
