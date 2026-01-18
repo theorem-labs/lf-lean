@@ -60,11 +60,12 @@ OUTPUT_FILE=$(mktemp)
 trap "rm -f $OUTPUT_FILE" EXIT
 
 # Run verifications in parallel
+# Always pass --no-rebuild since we already built the image above
 echo "$RESULTS" | xargs -P "$JOBS" -I {} bash -c '
     result_name="$1"
     script_dir="$2"
     output_file="$3"
-    if "$script_dir/verify.sh" "$result_name" >/dev/null 2>&1; then
+    if "$script_dir/verify.sh" --no-rebuild "$result_name" >/dev/null 2>&1; then
         echo "$result_name success" | tee -a "$output_file"
     else
         echo "$result_name FAILED" | tee -a "$output_file"
@@ -72,8 +73,8 @@ echo "$RESULTS" | xargs -P "$JOBS" -I {} bash -c '
 ' _ {} "$SCRIPT_DIR" "$OUTPUT_FILE"
 
 # Count results
-PASSED=$(grep -c "success$" "$OUTPUT_FILE" 2>/dev/null || echo 0)
-FAILED=$(grep -c "FAILED$" "$OUTPUT_FILE" 2>/dev/null || echo 0)
+PASSED=$(grep -c "success$" "$OUTPUT_FILE" 2>/dev/null) || PASSED=0
+FAILED=$(grep -c "FAILED$" "$OUTPUT_FILE" 2>/dev/null) || FAILED=0
 
 echo ""
 echo "=========================================="
