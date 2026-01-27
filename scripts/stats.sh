@@ -136,7 +136,13 @@ jq -r 'keys[]' problem-results.json | while read -r iso_name; do
             # Only add if we got a valid number
             if [[ "$proof_lines" =~ ^[0-9]+$ ]]; then
                 echo "$proof_lines" >> "$proof_lines_file"
+            else
+                # If coqwc failed or returned invalid data, count as 0
+                echo "0" >> "$proof_lines_file"
             fi
+        else
+            # File doesn't exist in Isomorphisms folder, count as 0 proof lines
+            echo "0" >> "$proof_lines_file"
         fi
     done
 
