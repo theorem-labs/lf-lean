@@ -1,5 +1,5 @@
 #!/bin/bash
-# Verification script for sf-bench-part1 translations
+# Verification script for lf-lean translations
 # Usage: ./scripts/verify.sh result-N    - Verify a single result
 #        ./scripts/verify.sh --all       - Verify all results
 #
@@ -77,11 +77,11 @@ fi
 
 # Build Docker image if needed
 if [ "$REBUILD" = true ]; then
-    echo "Building Docker image 'sf-bench-part1'..."
-    docker build -t sf-bench-part1 "$PROJECT_DIR"
-elif ! docker image inspect sf-bench-part1 >/dev/null 2>&1; then
-    echo "Docker image 'sf-bench-part1' not found. Building..."
-    docker build -t sf-bench-part1 "$PROJECT_DIR"
+    echo "Building Docker image 'lf-lean'..."
+    docker build -t lf-lean "$PROJECT_DIR"
+elif ! docker image inspect lf-lean >/dev/null 2>&1; then
+    echo "Docker image 'lf-lean' not found. Building..."
+    docker build -t lf-lean "$PROJECT_DIR"
 fi
 
 # Verify a single result by running Docker
@@ -100,7 +100,7 @@ verify_single() {
         -v "$PROJECT_DIR/theories:/host_theories:ro" \
         -e ERROR_ON_EXPORT_DIFF="$ERROR_ON_EXPORT_DIFF" \
         -e USE_REFERENCE_OUT="$USE_REFERENCE_OUT" \
-        sf-bench-part1:latest \
+        lf-lean:latest \
         bash -c '
             set -e
             THEORIES_DIR="/workdir/theories"

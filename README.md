@@ -34,7 +34,7 @@ Run the verify script directly from the project directory:
 ```
 
 The script automatically:
-1. Builds the Docker image `sf-bench-part1` (first run takes ~10-15 minutes)
+1. Builds the Docker image `lf-lean` (first run takes ~10-15 minutes)
 2. Runs verification inside a Docker container with the correct mount configuration
 
 For faster subsequent runs, use `--no-rebuild` to skip rebuilding the image:
@@ -125,7 +125,7 @@ The Docker image includes:
 If you prefer to build the image manually:
 
 ```bash
-docker build -t sf-bench-part1 .
+docker build -t lf-lean .
 ```
 
 **Note**: When running Docker manually, mount the current directory at `/host`, not `/workdir`. The container's `/workdir` contains pre-compiled theories that should not be shadowed.
@@ -135,7 +135,7 @@ docker build -t sf-bench-part1 .
 To explore the container interactively:
 
 ```bash
-docker run -it --rm -v $(pwd):/host sf-bench-part1 bash
+docker run -it --rm -v $(pwd):/host lf-lean bash
 ```
 
 Then you can manually run commands:
@@ -323,7 +323,7 @@ The Docker image uses these specific versions:
 ## Repository Structure
 
 ```
-sf-bench-part1/
+lf-lean/
 ├── theories/                    # Core Rocq verification infrastructure
 │   ├── Original.v               # Original Software Foundations definitions
 │   ├── Imported.v               # Imports Lean definitions into Rocq

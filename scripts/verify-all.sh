@@ -1,5 +1,5 @@
 #!/bin/bash
-# Parallel verification script for sf-bench-part1 translations
+# Parallel verification script for lf-lean translations
 # Usage: ./scripts/verify-all.sh [--jobs N]
 #
 # Runs all verifications in parallel using multiple Docker containers.
@@ -41,11 +41,11 @@ done
 
 # Build the Docker image (default) or skip with --no-rebuild
 if [ "$REBUILD" = true ]; then
-    echo "Building Docker image 'sf-bench-part1'..."
-    docker build -t sf-bench-part1 "$PROJECT_DIR"
-elif ! docker image inspect sf-bench-part1 >/dev/null 2>&1; then
-    echo "Docker image 'sf-bench-part1' not found. Building..."
-    docker build -t sf-bench-part1 "$PROJECT_DIR"
+    echo "Building Docker image 'lf-lean'..."
+    docker build -t lf-lean "$PROJECT_DIR"
+elif ! docker image inspect lf-lean >/dev/null 2>&1; then
+    echo "Docker image 'lf-lean' not found. Building..."
+    docker build -t lf-lean "$PROJECT_DIR"
 fi
 
 # Find all result directories

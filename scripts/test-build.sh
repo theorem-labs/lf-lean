@@ -1,6 +1,6 @@
 #!/bin/bash
 # Test script to verify the Docker image has correctly built the theories
-# Run this inside the Docker container: docker run --rm sf-bench-part1 /usr/local/bin/test-build
+# Run this inside the Docker container: docker run --rm lf-lean /usr/local/bin/test-build
 
 set -e
 
