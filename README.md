@@ -1,4 +1,4 @@
-# SF-Bench Part 1: Rocq to Lean Translation Verification
+# lf-lean: Rocq to Lean Translation Verification
 
 This repository contains the verified translations of every single statement from the **Logical Foundations** volume of [Software Foundations](https://softwarefoundations.cis.upenn.edu/) from Rocq to Lean 4.
 
