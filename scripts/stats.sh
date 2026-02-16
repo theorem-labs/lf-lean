@@ -122,10 +122,11 @@ jq -r 'keys[]' problem-results.json | while read -r iso_name; do
     # Get the result directories for this iso
     result_dirs=$(jq -r --arg iso "$iso_name" '.[$iso][]' problem-results.json)
 
-    # Temporary file to store proof line counts for this iso
+    # Temporary files to store proof line and char counts for this iso
     proof_lines_file=$(mktemp)
+    char_counts_file=$(mktemp)
 
-    # For each result directory, run coqwc and extract proof lines
+    # For each result directory, run coqwc and count chars
     for result_dir in $result_dirs; do
         iso_file="results/$result_dir/theories/Isomorphisms/${iso_name}.v"
 
@@ -137,24 +138,29 @@ jq -r 'keys[]' problem-results.json | while read -r iso_name; do
             if [[ "$proof_lines" =~ ^[0-9]+$ ]]; then
                 echo "$proof_lines" >> "$proof_lines_file"
             else
-                # If coqwc failed or returned invalid data, count as 0
                 echo "0" >> "$proof_lines_file"
             fi
+
+            # Count characters
+            chars=$(wc -c < "$iso_file" | tr -d ' ')
+            echo "$chars" >> "$char_counts_file"
         else
-            # File doesn't exist in Isomorphisms folder, count as 0 proof lines
             echo "0" >> "$proof_lines_file"
+            echo "0" >> "$char_counts_file"
         fi
     done
 
-    # Calculate average if we have data
+    # Calculate averages if we have data
     if [ -s "$proof_lines_file" ]; then
         count=$(wc -l < "$proof_lines_file")
         sum=$(awk '{sum+=$1} END {print sum}' "$proof_lines_file")
         avg=$(awk -v sum="$sum" -v count="$count" 'BEGIN {printf "%.2f", sum/count}')
 
-        # Update the JSON with the average proof lines (iso-loc) and remove old field if present
-        # Reconstruct the object to ensure iso-loc comes after rocq-loc
-        jq --arg iso "$iso_name" --arg avg "$avg" \
+        char_sum=$(awk '{sum+=$1} END {print sum}' "$char_counts_file")
+        char_avg=$(awk -v sum="$char_sum" -v count="$count" 'BEGIN {printf "%.2f", sum/count}')
+
+        # Update the JSON with iso-loc, iso-chars, preserving rocq-loc and rocq-chars
+        jq --arg iso "$iso_name" --arg avg "$avg" --arg cavg "$char_avg" \
            'if has($iso) then
               .[$iso] = (.[$iso] |
                 {
@@ -167,23 +173,25 @@ jq -r 'keys[]' problem-results.json | while read -r iso_name; do
                   direct_deps,
                   reduced_deps,
                   "rocq-loc": (."rocq-loc" // null),
-                  "iso-loc": ($avg | tonumber)
+                  "rocq-chars": (."rocq-chars" // null),
+                  "iso-loc": ($avg | tonumber),
+                  "iso-chars": ($cavg | tonumber)
                 } +
-                (to_entries | map(select(.key | . != "short_name" and . != "logical_path" and . != "anchor" and . != "difficulty" and . != "dep_count" and . != "all_deps" and . != "direct_deps" and . != "reduced_deps" and . != "rocq-loc" and . != "iso-loc" and . != "avg_proof_lines")) | from_entries)
+                (to_entries | map(select(.key | . != "short_name" and . != "logical_path" and . != "anchor" and . != "difficulty" and . != "dep_count" and . != "all_deps" and . != "direct_deps" and . != "reduced_deps" and . != "rocq-loc" and . != "rocq-chars" and . != "iso-loc" and . != "iso-chars" and . != "avg_proof_lines")) | from_entries)
               )
             else . end' \
            "$temp_json" > "${temp_json}.new"
         mv "${temp_json}.new" "$temp_json"
 
-        echo "  $iso_name: $avg lines (across $count results)"
+        echo "  $iso_name: $avg lines, $char_avg chars (across $count results)"
     fi
 
-    # Clean up temporary file
-    rm -f "$proof_lines_file"
+    # Clean up temporary files
+    rm -f "$proof_lines_file" "$char_counts_file"
 done
 
 # Replace the original problem-deps.json with the updated version
 mv "$temp_json" problem-deps.json
 
 echo
-echo "Updated problem-deps.json with iso-loc (average proof lines)!"
+echo "Updated problem-deps.json with iso-loc, iso-chars (average proof lines and chars)!"
