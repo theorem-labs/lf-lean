@@ -1,6 +1,6 @@
 # lf-lean: Rocq to Lean Translation Verification
 
-This repository contains the verified translations of every single statement from the **Logical Foundations** volume of [Software Foundations](https://softwarefoundations.cis.upenn.edu/) from Rocq to Lean 4.
+This repository contains the verified translations of every single statement from the **Logical Foundations** volume of [Software Foundations](https://softwarefoundations.cis.upenn.edu/) from Rocq to Lean 4, as described in the blog post [`lf-lean`: The frontier of verified software engineering](https://theorem.dev/blog/lf-lean/).
 
 The repository includes 100 translation results, each with a formally verified proof that the Lean translation is semantically equivalent to the original Rocq definition, which will cover all 1276 distinct statements in **Logical Foundations**.
 
